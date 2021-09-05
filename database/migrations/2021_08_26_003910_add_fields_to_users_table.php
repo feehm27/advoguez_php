@@ -16,7 +16,7 @@ class AddFieldsToUsersTable extends Migration
 		Schema::table('users', function (Blueprint $table) {
 			$table->boolean('is_client')->default(0)->after('email');
 			$table->boolean('is_advocate')->default(0)->after('is_client');
-			$table->string('linkedin_id')->after('is_advocate');
+			$table->string('linkedin_id')->nullable()->after('is_advocate');
 		});
 	}
 
