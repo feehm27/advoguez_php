@@ -9,7 +9,8 @@
 
 As seguintes features foram desenvolvidas:
 
-- [x] Login - Laravel Sanctum
+- [x] Login com Laravel Sanctum
+- [x] Cadastro de usuários 
 - [x] Logout 
 - [x] Menus e permissões dos usuários
 
