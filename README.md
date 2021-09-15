@@ -9,7 +9,8 @@
 
 As seguintes features foram desenvolvidas:
 
-- [x] Login - Laravel Sanctum
+- [x] Login com Laravel Sanctum
+- [x] Cadastro de usuários 
 - [x] Logout 
 - [x] Menus e permissões dos usuários
 
@@ -19,6 +20,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 - [Laravel 8](https://laravel.com/docs/8.x/installation)
 - [PHP](https://www.php.net/docs.php)
+- [MySQL](https://www.mysql.com/)
 
 
 ### Pré-requisitos
