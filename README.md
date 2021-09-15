@@ -25,8 +25,9 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 ### Pré-requisitos
 
+ ```sh 
 # Clone este repositório
-$ git clone <https://github.com/feehm27/advoguez_php.git>
+$ git clone https://github.com/feehm27/advoguez_php.git
 
 # Acesse a pasta do projeto no terminal/cmd
 $ cd advoguez_php
@@ -37,7 +38,12 @@ $ composer install
 # Execute as migrations
 $ php artisan migrate
 
+# Execute as seeders
+$ php artisan db:seed
+
 # Execute a aplicação em modo de desenvolvimento
 $ php artisan serve
 
-# O servidor inciará na porta:8000 - acesse <http://localhost:8000> 
+# O servidor iniciará na porta:8000 - acesse <http://localhost:8000> 
+
+```
