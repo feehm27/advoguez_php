@@ -19,6 +19,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 
 - [Laravel 8](https://laravel.com/docs/8.x/installation)
 - [PHP](https://www.php.net/docs.php)
+- [MySQL](https://www.mysql.com/)
 
 
 ### Pré-requisitos
