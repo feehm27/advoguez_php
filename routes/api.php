@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\MenuPermissionController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +17,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth:sanctum'])->group(function () {
+
 	Route::get('me', [AuthController::class, 'me']);
 	Route::post('logout', [AuthController::class, 'logout']);
+
+	/**
+	 * Rotas necessárias para as permissões do menu
+	 */
+	Route::prefix('menu/permissions')->group(function () {
+		Route::get('', [MenuPermissionController::class, 'get']);
+		Route::post('', [MenuPermissionController::class, 'update']);
+	});
 });
 
 Route::post('/register', [AuthController::class, 'register']);

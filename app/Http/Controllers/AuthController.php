@@ -10,6 +10,7 @@ use App\Http\Utils\StatusCodeUtils;
 
 //Model
 use App\Models\User;
+use App\Repositories\AuthRepository;
 
 //Exception
 use Exception;
@@ -17,6 +18,11 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
+	public function __construct(AuthRepository $repository)
+	{
+		$this->repository = $repository;
+	}
+
 	/**
 	 * Registra um novo usuário
 	 */
@@ -35,6 +41,10 @@ class AuthController extends Controller
 			$user = User::create($inputs);
 			$token = $user->createToken('auth_token')->plainTextToken;
 
+			if ($user) {
+				$this->repository->attachPermissions($user, $request['is_advocate']);
+			}
+
 			return response()->json([
 				'access_token' 	=>  $token,
 				'token_type'   	=> 'Bearer',
@@ -50,6 +60,7 @@ class AuthController extends Controller
 	public function login(Login $request)
 	{
 		try {
+
 			$credentials = $request->only('email', 'password');
 
 			if (!Auth::attempt($credentials)) {
@@ -83,6 +94,9 @@ class AuthController extends Controller
 	 */
 	public function me(Request $request)
 	{
-		return $request->user();
+		$user = $request->user();
+		$user->permissions = $this->repository->getPermissionsByUser($user);
+
+		return $user;
 	}
 }
