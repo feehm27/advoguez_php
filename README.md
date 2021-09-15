@@ -1,5 +1,5 @@
 <h1 align="center">Projeto - Pós graduação - Puc Minas</h1>
-<p align="center">Sistema de gestão de advogados desenvolvido com Laravel 8</p>
+<p align="center">Sistema de gestão para advogados</p>
 
 <h4 align="center"> 
 	🚧 🚀 Em construção... 🚀 🚧
