@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdvocateController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MenuPermissionController;
 
@@ -27,6 +28,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('menu/permissions')->group(function () {
 		Route::get('', [MenuPermissionController::class, 'get']);
 		Route::post('', [MenuPermissionController::class, 'update']);
+	});
+
+	/**
+	 * Rotas necessárias para os dados do advogado
+	 */
+	Route::prefix('advocates/informations')->group(function () {
+		Route::get('', [AdvocateController::class, 'get']);
+		Route::post('', [AdvocateController::class, 'storeOrUpdate']);
 	});
 });
 
