@@ -7,7 +7,9 @@ use App\Http\Utils\ProfileTypesUtils;
 //Models
 use App\Models\Menu;
 use App\Models\MenuPermission;
+use App\Models\Permission;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class AuthRepository.
@@ -45,6 +47,32 @@ class AuthRepository
 	 */
 	public function getPermissionsByUser(User $user)
 	{
-		return MenuPermission::where('user_id', $user->id)->get();
+		$menuPermissions = MenuPermission::where('user_id', $user->id)->get();
+		$menuIds = $menuPermissions->where('menu_is_active', true)->pluck('menu_id')->toArray();
+		$menus = Menu::whereIn('id', $menuIds)->get();
+
+		foreach ($menus as $menu) {
+			$menuPermissionsUser = $menuPermissions->where('menu_id', $menu->id)
+				->where('permission_is_active');
+
+			$permissionsIds = $menuPermissionsUser->pluck('permission_id')->toArray();
+			$permissions = Permission::whereIn('id', $permissionsIds)->get();
+			$menu->permissions = $permissions;
+		}
+
+		return $menus;
+	}
+
+	/**
+	 * Obtém o link da logomarca do usuário
+	 */
+	public function getLogoByUser(Int $userId)
+	{
+		$path = 'public/images/' . $userId;
+		$existDirectory = Storage::exists($path);
+
+		if ($existDirectory) {
+			return asset('/storage/images/' . $userId . '/logo');
+		}
 	}
 }
