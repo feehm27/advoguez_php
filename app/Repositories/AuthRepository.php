@@ -9,6 +9,7 @@ use App\Models\Menu;
 use App\Models\MenuPermission;
 use App\Models\Permission;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * Class AuthRepository.
@@ -60,5 +61,18 @@ class AuthRepository
 		}
 
 		return $menus;
+	}
+
+	/**
+	 * Obtém o link da logomarca do usuário
+	 */
+	public function getLogoByUser(Int $userId)
+	{
+		$path = 'public/images/' . $userId;
+		$existDirectory = Storage::exists($path);
+
+		if ($existDirectory) {
+			return asset('/storage/images/' . $userId . '/logo');
+		}
 	}
 }

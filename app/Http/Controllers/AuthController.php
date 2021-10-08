@@ -96,6 +96,7 @@ class AuthController extends Controller
 	{
 		$user = $request->user();
 		$user->permissions = $this->repository->getPermissionsByUser($user);
+		$user->logo = $this->repository->getLogoByUser($user->id);
 
 		return $user;
 	}

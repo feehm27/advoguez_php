@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdvocateController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 
 use Illuminate\Support\Facades\Route;
@@ -36,6 +37,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('advocates/informations')->group(function () {
 		Route::get('', [AdvocateController::class, 'get']);
 		Route::post('', [AdvocateController::class, 'storeOrUpdate']);
+	});
+
+	/**
+	 * Rotas necessárias para os dados de identidade do advogado
+	 */
+	Route::prefix('identity')->group(function () {
+		Route::get('logo', [IdentityController::class, 'getLogo']);
+		Route::post('upload', [IdentityController::class, 'upload']);
 	});
 });
 
