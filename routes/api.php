@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdvocateController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 
@@ -45,6 +46,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('identity')->group(function () {
 		Route::get('logo', [IdentityController::class, 'getLogo']);
 		Route::post('upload', [IdentityController::class, 'upload']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão de clientes
+	 */
+	Route::prefix('advocates/clients')->group(function () {
+		Route::get('', [ClientController::class, 'index']);
+		Route::get('/{id}', [ClientController::class, 'show']);
+		Route::post('', [ClientController::class, 'create']);
+		Route::put('/{id}', [ClientController::class, 'update']);
+		Route::delete('/{id}', [ClientController::class, 'destroy']);
 	});
 });
 
