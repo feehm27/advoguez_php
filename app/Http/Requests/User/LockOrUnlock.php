@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Validation\Validator;
 
-//Utils
 use App\Http\Utils\StatusCodeUtils;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
-class Register extends FormRequest
+class LockOrUnlock extends FormRequest
 {
-	/**
+     /**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
@@ -31,25 +29,21 @@ class Register extends FormRequest
 	public function rules()
 	{
 		return [
-			'name' 		  		=> 'required|string|max:255',
-			'email' 	  		=> 'required|string|email|max:255|unique:users',
-			'is_client'   		=> 'required|boolean',
-			'is_advocate' 		=> 'required|boolean',
-			'facebook_id' 	    => 'nullable|string',
-			'password' 	 		=> 'required|string|min:8',
-			'advocate_user_id'  => 'nullable|integer',
+			'id'    	=> 'required',
+            'blocked' 	=> 'required|boolean',
+			'user' 		=> 'required'
 		];
 	}
 
 	/**
-	 * Get the error messages for thec defined validation rules.
+	 * Get the error messages for the defined validation rules.
 	 *
 	 * @return array
 	 */
 	public function messages()
 	{
 		return [
-			'email.unique' => 'Já existe um usuário cadastrado com este email',
+			'user.required' => "Usuário não encontrado",
 		];
 	}
 
@@ -60,16 +54,10 @@ class Register extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$user = Auth::user();
-		$this->advocateUserId = null;
-
-		if($user && $user->is_advocate === 1){
-			$this->advocateUserId = $user->id;
-		}
+		$this->user = User::find($this->id);
 
 		$this->merge([
-			'advocate_user_id'  => $this->advocateUserId,
-			'password' 			=>  Hash::make($this->password),
+			'user' =>  $this->user
 		]);
 	}
 

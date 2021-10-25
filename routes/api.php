@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
+use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('', [ClientController::class, 'create']);
 		Route::put('/{id}', [ClientController::class, 'update']);
 		Route::delete('/{id}', [ClientController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão de clientes
+	 */
+	Route::prefix('advocates/users')->group(function () {
+		Route::get('', [UserController::class, 'index']);
+		Route::put('/block', [UserController::class, 'lockOrUnlock']);
+		Route::put('/{id}', [UserController::class, 'update']);
+		Route::delete('/{id}', [UserController::class, 'destroy']);
 	});
 });
 

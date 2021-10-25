@@ -77,7 +77,7 @@ class ClientController extends Controller
 				'email' 	  => $request['email_user'],
 				'is_client'   => $request['is_client'],
 				'is_advocate' => $request['is_advocate'],
-				'linkedin_id' => $request['linkedin_id'],
+				'facebook_id' => $request['facebook_id'],
 				'password' 	  => $request['password_user']
 			];
 

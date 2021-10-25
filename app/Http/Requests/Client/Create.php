@@ -56,7 +56,7 @@ class Create extends FormRequest
             'password_user'     => 'required|string|min:8',
             'is_client'         => 'required|boolean',
             'is_advocate'       => 'required|boolean',
-			'linkedin_id'       => 'nullable|string',
+			'facebook_id'       => 'nullable|string',
             'advocate_user_id'  => 'required',
             'has_user'          => 'required|boolean'
         ];
@@ -114,7 +114,7 @@ class Create extends FormRequest
             'password_user'     => Hash::make($this->password_user),
             'is_client'         => 1,
             'is_advocate'       => 0,
-            'linkedin_id'       => null,
+            'facebook_id'       => null,
             'cpf'               => $this->cpf,
             'telephone'         => $this->telephone,
             'cellphone'         => $this->cellphone,

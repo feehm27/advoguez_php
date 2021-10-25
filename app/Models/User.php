@@ -22,7 +22,9 @@ class User extends Authenticatable
 		'password',
 		'is_client',
 		'is_advocate',
-		'linkedin_id'
+		'facebook_id',
+		'blocked',
+		'advocate_user_id'
 	];
 
 	/**

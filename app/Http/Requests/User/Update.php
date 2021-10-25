@@ -1,17 +1,15 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\User;
 
+use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Validation\Validator;
-
-//Utils
-use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
-class Register extends FormRequest
+class Update extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -31,12 +29,13 @@ class Register extends FormRequest
 	public function rules()
 	{
 		return [
+            'id'          		=> 'required|integer',
 			'name' 		  		=> 'required|string|max:255',
-			'email' 	  		=> 'required|string|email|max:255|unique:users',
-			'is_client'   		=> 'required|boolean',
-			'is_advocate' 		=> 'required|boolean',
-			'facebook_id' 	    => 'nullable|string',
-			'password' 	 		=> 'required|string|min:8',
+			'email'       		=> 'required|string|email|max:255|unique:users,email,' . $this->id,
+			'is_client'   		=> 'nullable|boolean',
+			'is_advocate' 		=> 'nullable|boolean',
+			'facebook_id' 		=> 'nullable|string',
+			'password' 	  		=> 'required|string|min:8',
 			'advocate_user_id'  => 'nullable|integer',
 		];
 	}
@@ -63,13 +62,15 @@ class Register extends FormRequest
 		$user = Auth::user();
 		$this->advocateUserId = null;
 
-		if($user && $user->is_advocate === 1){
+		if($user->is_advocate == 1){
 			$this->advocateUserId = $user->id;
 		}
 
 		$this->merge([
-			'advocate_user_id'  => $this->advocateUserId,
+            'id'       			=> $this->id,
 			'password' 			=>  Hash::make($this->password),
+			'facebook_id' 		=> null,
+			'advocate_user_id'  => $this->advocateUserId
 		]);
 	}
 
