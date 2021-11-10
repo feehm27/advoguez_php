@@ -9,7 +9,6 @@ use Illuminate\Contracts\Validation\Validator;
 
 //Utils
 use App\Http\Utils\StatusCodeUtils;
-use Illuminate\Support\Facades\Auth;
 
 class Register extends FormRequest
 {
@@ -60,15 +59,7 @@ class Register extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$user = Auth::user();
-		$this->advocateUserId = null;
-
-		if($user && $user->is_advocate === 1){
-			$this->advocateUserId = $user->id;
-		}
-
 		$this->merge([
-			'advocate_user_id'  => $this->advocateUserId,
 			'password' 			=>  Hash::make($this->password),
 		]);
 	}

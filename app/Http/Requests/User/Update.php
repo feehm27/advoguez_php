@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+
 
 class Update extends FormRequest
 {
@@ -34,9 +32,6 @@ class Update extends FormRequest
 			'email'       		=> 'required|string|email|max:255|unique:users,email,' . $this->id,
 			'is_client'   		=> 'nullable|boolean',
 			'is_advocate' 		=> 'nullable|boolean',
-			'facebook_id' 		=> 'nullable|string',
-			'password' 	  		=> 'required|string|min:8',
-			'advocate_user_id'  => 'nullable|integer',
 		];
 	}
 
@@ -59,18 +54,8 @@ class Update extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$user = Auth::user();
-		$this->advocateUserId = null;
-
-		if($user->is_advocate == 1){
-			$this->advocateUserId = $user->id;
-		}
-
 		$this->merge([
             'id'       			=> $this->id,
-			'password' 			=>  Hash::make($this->password),
-			'facebook_id' 		=> null,
-			'advocate_user_id'  => $this->advocateUserId
 		]);
 	}
 
