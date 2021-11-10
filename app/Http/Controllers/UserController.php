@@ -7,6 +7,7 @@ use App\Http\Requests\User\Index;
 use App\Http\Requests\User\LockOrUnlock;
 use App\Http\Requests\User\Update;
 use App\Http\Utils\StatusCodeUtils;
+use App\Repositories\UserRepository;
 use Exception;
 
 class UserController extends Controller
@@ -42,9 +43,6 @@ class UserController extends Controller
                 'email' 	  		=> $request['email'],
                 'is_client'   		=> $request['is_client'],
                 'is_advocate' 		=> $request['is_advocate'],
-                'facebook_id' 		=> $request['facebook_id'],
-                'password' 	  		=> $request['password'],
-				'advocate_user_id'	=> $request['advocate_user_id']
             ];
 
 			$data = $this->repository->update($inputs);

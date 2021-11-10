@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Identity\Upload;
 use App\Http\Utils\StatusCodeUtils;
+use App\Repositories\IdentityRepository;
+
 use Exception;
 
 class IdentityController extends Controller

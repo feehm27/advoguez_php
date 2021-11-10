@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Repositories;
 
 use App\Models\Client;
 use App\Models\ClientUser;
 use App\Models\User;
 use Illuminate\Support\Collection;
 
-class UserRepository extends Controller
+class UserRepository 
 {
     public function __construct(User $model)
 	{
@@ -65,6 +65,8 @@ class UserRepository extends Controller
      */
     public function delete(User $user)
     {
+
+
         return $user->delete();
     }
 }
