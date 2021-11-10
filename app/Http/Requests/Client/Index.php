@@ -1,24 +1,26 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
-//Utils
 use App\Http\Utils\StatusCodeUtils;
 
-class Login extends FormRequest
+class Index extends FormRequest
 {
-	/**
+    /**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize()
 	{
-		return true;
+		if ($this->user->is_advocate == 1) return true;
+
+		return false;
 	}
 
 	/**
@@ -29,23 +31,7 @@ class Login extends FormRequest
 	public function rules()
 	{
 		return [
-			'email' 	  => 'required|string|email',
-			'password' 	  => 'required|string|min:8',
-			'facebook_id' => 'nullable|string'
-		];
-	}
-
-	/**
-	 * Get the error messages for the defined validation rules.
-	 *
-	 * @return array
-	 */
-	public function messages()
-	{
-		return [
-			'email.required' 		=> 'E-mail obrigatório',
-			'password.required' 	=> 'Senha obrigatória',
-			'password.min' 			=> 'Informe no mínimo 8 caracteres',
+			'user_id' => 'required',
 		];
 	}
 
@@ -56,13 +42,10 @@ class Login extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		if($this->facebook_id){
-			$this->password = 'facebook';
-		}
+		$this->user = Auth::user();
 
 		$this->merge([
-            'id'       			=> $this->id,
-			'password'          => $this->password
+			'user_id' =>  $this->user->id
 		]);
 	}
 

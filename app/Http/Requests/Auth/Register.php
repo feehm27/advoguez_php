@@ -30,12 +30,13 @@ class Register extends FormRequest
 	public function rules()
 	{
 		return [
-			'name' 		  => 'required|string|max:255',
-			'email' 	  => 'required|string|email|max:255|unique:users',
-			'is_client'   => 'required|boolean',
-			'is_advocate' => 'required|boolean',
-			'linkedin_id' => 'nullable|string',
-			'password' 	  => 'required|string|min:8',
+			'name' 		  		=> 'required|string|max:255',
+			'email' 	  		=> 'required|string|email|max:255|unique:users',
+			'is_client'   		=> 'required|boolean',
+			'is_advocate' 		=> 'required|boolean',
+			'facebook_id' 	    => 'nullable|string',
+			'password' 	 		=> 'required|string|min:8',
+			'advocate_user_id'  => 'nullable|integer',
 		];
 	}
 
@@ -59,7 +60,7 @@ class Register extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->merge([
-			'password' =>  Hash::make($this->password),
+			'password' 			=>  Hash::make($this->password),
 		]);
 	}
 

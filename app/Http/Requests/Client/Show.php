@@ -1,41 +1,40 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-//Utils
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\Client;
 
-class Login extends FormRequest
+class Show extends FormRequest
 {
-	/**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
-	public function authorize()
-	{
-		return true;
-	}
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
 
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		return [
-			'email' 	  => 'required|string|email',
-			'password' 	  => 'required|string|min:8',
-			'facebook_id' => 'nullable|string'
-		];
-	}
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'id'      => 'required|integer',
+            'client'  => 'required'
+        ];
+    }
 
-	/**
+    /**
 	 * Get the error messages for the defined validation rules.
 	 *
 	 * @return array
@@ -43,30 +42,28 @@ class Login extends FormRequest
 	public function messages()
 	{
 		return [
-			'email.required' 		=> 'E-mail obrigatório',
-			'password.required' 	=> 'Senha obrigatória',
-			'password.min' 			=> 'Informe no mínimo 8 caracteres',
+            'id.required'     => 'Identificador do cliente é obrigatorio',
+			'client.required' => "Cliente não encontrado",
 		];
 	}
 
-	/**
+    /**
 	 * Prepare the data for validation.
 	 *
 	 * @return void
 	 */
 	protected function prepareForValidation()
 	{
-		if($this->facebook_id){
-			$this->password = 'facebook';
-		}
+        $this->id = $this->route('id');
+		$this->client = Client::find($this->id);
 
 		$this->merge([
-            'id'       			=> $this->id,
-			'password'          => $this->password
+			'client' 	=> $this->client,
+            'id'        => $this->id
 		]);
 	}
 
-	/**
+    /**
 	 * Return validation errors as json response
 	 *
 	 * @param Validator $validator

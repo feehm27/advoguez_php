@@ -22,7 +22,9 @@ class User extends Authenticatable
 		'password',
 		'is_client',
 		'is_advocate',
-		'linkedin_id'
+		'facebook_id',
+		'blocked',
+		'advocate_user_id'
 	];
 
 	/**
@@ -43,4 +45,9 @@ class User extends Authenticatable
 	protected $casts = [
 		'email_verified_at' => 'datetime',
 	];
+
+	public function permissions()
+	{
+		return $this->hasOne(MenuPermission::class);
+	}
 }

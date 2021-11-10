@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Repositories;
 
 use Illuminate\Support\Facades\Storage;
 
-class IdentityRepository extends Controller
+class IdentityRepository 
 {
 	public function upload($image, Int $userId)
 	{

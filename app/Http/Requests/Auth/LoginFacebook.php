@@ -2,16 +2,15 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-//Utils
-use App\Http\Utils\StatusCodeUtils;
-
-class Login extends FormRequest
+class LoginFacebook extends FormRequest
 {
-	/**
+    /**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
@@ -29,23 +28,25 @@ class Login extends FormRequest
 	public function rules()
 	{
 		return [
-			'email' 	  => 'required|string|email',
-			'password' 	  => 'required|string|min:8',
-			'facebook_id' => 'nullable|string'
+			'name' 		  		=> 'required|string|max:255',
+			'email' 	  		=> 'required|string|email|max:255',
+			'is_client'   		=> 'required|boolean',
+			'is_advocate' 		=> 'required|boolean',
+			'facebook_id' 	    => 'required|string',
+			'password' 	 		=> 'required|string|min:8',
+			'advocate_user_id'  => 'nullable|integer',
 		];
 	}
 
 	/**
-	 * Get the error messages for the defined validation rules.
+	 * Get the error messages for thec defined validation rules.
 	 *
 	 * @return array
 	 */
 	public function messages()
 	{
 		return [
-			'email.required' 		=> 'E-mail obrigatório',
-			'password.required' 	=> 'Senha obrigatória',
-			'password.min' 			=> 'Informe no mínimo 8 caracteres',
+			//
 		];
 	}
 
@@ -56,13 +57,8 @@ class Login extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		if($this->facebook_id){
-			$this->password = 'facebook';
-		}
-
 		$this->merge([
-            'id'       			=> $this->id,
-			'password'          => $this->password
+			'password' 	=>  Hash::make(rand(0,5)),
 		]);
 	}
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\Auth;
+namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-//Utils
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\User;
 
-class Login extends FormRequest
+class LockOrUnlock extends FormRequest
 {
-	/**
+     /**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
@@ -29,9 +29,9 @@ class Login extends FormRequest
 	public function rules()
 	{
 		return [
-			'email' 	  => 'required|string|email',
-			'password' 	  => 'required|string|min:8',
-			'facebook_id' => 'nullable|string'
+			'id'    	=> 'required',
+            'blocked' 	=> 'required|boolean',
+			'user' 		=> 'required'
 		];
 	}
 
@@ -43,9 +43,7 @@ class Login extends FormRequest
 	public function messages()
 	{
 		return [
-			'email.required' 		=> 'E-mail obrigatório',
-			'password.required' 	=> 'Senha obrigatória',
-			'password.min' 			=> 'Informe no mínimo 8 caracteres',
+			'user.required' => "Usuário não encontrado",
 		];
 	}
 
@@ -56,13 +54,10 @@ class Login extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		if($this->facebook_id){
-			$this->password = 'facebook';
-		}
+		$this->user = User::find($this->id);
 
 		$this->merge([
-            'id'       			=> $this->id,
-			'password'          => $this->password
+			'user' =>  $this->user
 		]);
 	}
 

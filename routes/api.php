@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\AdvocateController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
+use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +48,29 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('logo', [IdentityController::class, 'getLogo']);
 		Route::post('upload', [IdentityController::class, 'upload']);
 	});
+
+	/**
+	 * Rotas necessárias para a gestão de clientes
+	 */
+	Route::prefix('advocates/clients')->group(function () {
+		Route::get('', [ClientController::class, 'index']);
+		Route::get('/{id}', [ClientController::class, 'show']);
+		Route::post('', [ClientController::class, 'create']);
+		Route::put('/{id}', [ClientController::class, 'update']);
+		Route::delete('/{id}', [ClientController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão de clientes
+	 */
+	Route::prefix('advocates/users')->group(function () {
+		Route::get('', [UserController::class, 'index']);
+		Route::put('/block', [UserController::class, 'lockOrUnlock']);
+		Route::put('/{id}', [UserController::class, 'update']);
+		Route::delete('/{id}', [UserController::class, 'destroy']);
+	});
 });
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/facebook', [AuthController::class, 'loginWithFacebook']);
