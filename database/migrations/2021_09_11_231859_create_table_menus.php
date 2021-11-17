@@ -17,7 +17,7 @@ class CreateTableMenus extends Migration
 			$table->id();
 			$table->string('name');
 			$table->boolean('is_active')->default(true);
-			$table->json('permissions_ids');
+			$table->longText('permissions_ids');
 			$table->unsignedBigInteger('profile_type_id');
 			$table->timestamps();
 			$table->foreign('profile_type_id')->references('id')->on('profile_types');
