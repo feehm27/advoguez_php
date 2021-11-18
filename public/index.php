@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 
 define('LARAVEL_START', microtime(true));
 
-ob_start ()
+ob_start ();
 
 /*
 |--------------------------------------------------------------------------
