@@ -45,7 +45,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	 * Rotas necessárias para os dados de identidade do advogado
 	 */
 	Route::prefix('identity')->group(function () {
-		Route::get('logo', [IdentityController::class, 'getLogo']);
 		Route::post('upload', [IdentityController::class, 'upload']);
 	});
 
