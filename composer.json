@@ -2,7 +2,10 @@
     "name": "laravel/laravel",
     "type": "project",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
@@ -60,8 +63,9 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-	"post-install-cmd": [
-		"php artisan clear-compiled",
-		"chmod -R 777 public/"
-	]
+    "post-install-cmd": [
+        "php artisan clear-compiled",
+        "chmod -R 777 public/",
+        "ln -sr storage/app/public public/storage"
+    ]
 }
