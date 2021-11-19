@@ -37,11 +37,15 @@ class MenuPermissionController extends Controller
 	public function update(Update $request)
 	{
 		try {
-			$menuPermissions = $request->menu_permissions_array;
-			$this->repository->updateMenuPermissions($menuPermissions);
+
+			$menuPermissions = $request->menus_permissions;
+			$user = $request->user;
+
+			$this->repository->updateMenuPermissions($menuPermissions, $user);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data'          => []
 			]);
 		} catch (Exception $error) {
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Validation\Validator;
 
 //Utils
 use App\Http\Utils\StatusCodeUtils;
-
+use Illuminate\Support\Facades\Auth;
 
 class Update extends FormRequest
 {
@@ -30,8 +30,8 @@ class Update extends FormRequest
 	public function rules()
 	{
 		return [
-			'menu_permissions' 			=> 'required|json',
-			'menu_permissions_array'	=> 'required|array'
+			'menus_permissions' => 'required|array',
+			'user'              => 'required'
 		];
 	}
 
@@ -42,14 +42,17 @@ class Update extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->menuPermissionsArray = [];
-
-		if ($this->menu_permissions) {
-			$this->menuPermissionsArray = json_decode($this->menu_permissions, true);
+		$menusPermissions = [];
+		
+		if($this->menus_permissions){
+			$menusPermissions = json_decode($this->menus_permissions, TRUE);	
 		}
 
+		$user = Auth::user();
+
 		$this->merge([
-			'menu_permissions_array'	=>  $this->menuPermissionsArray
+			'menus_permissions' => $menusPermissions,
+			'user'              => $user
 		]);
 	}
 

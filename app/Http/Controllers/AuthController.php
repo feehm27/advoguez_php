@@ -44,7 +44,7 @@ class AuthController extends Controller
 			$token = $user->createToken('auth_token')->plainTextToken;
 
 			if ($user) {
-				$this->repository->attachPermissions($user, $request['is_advocate']);
+				$this->repository->attachPermissions($user);
 			}
 
 			return response()->json([
@@ -139,7 +139,7 @@ class AuthController extends Controller
 			$token = $user->createToken('auth_token')->plainTextToken;
 
 			if ($user) {
-				$this->repository->attachPermissions($user, $request['is_advocate']);
+				$this->repository->attachPermissions($user);
 			}
 
 			return response()->json([

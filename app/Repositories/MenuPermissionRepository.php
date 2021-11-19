@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Menu;
 use App\Models\MenuPermission;
 use App\Models\Permission;
+use App\Models\User;
 
 /**
  * Class MenuPermissionRepository
@@ -38,13 +39,35 @@ class MenuPermissionRepository
 	 * @param array $menuPermissions
 	 * 
 	 */
-	public function updateMenuPermissions(array $menuPermissions)
+	public function updateMenuPermissions(array $menuPermissions, User $user)
 	{
-		foreach ($menuPermissions as $menuPermission) {
-			$menuPermissionId =  $menuPermission['id'];
-			unset($menuPermission['id']);
-			$this->model->where('id', $menuPermissionId)->update($menuPermission);
+		$menusIds = array_column($menuPermissions['menus'], 'menu_id');
+		$menusFromUser = $this->model->where('user_id', $user->id)->whereIn('menu_id', $menusIds)->get();
+		$permissions = $menuPermissions['permissions'];
+
+		/**
+		 * Atualiza os menus
+		 */
+		foreach ($menuPermissions['menus'] as $menu) {
+			$getMenus = $menusFromUser->where('menu_id', $menu['menu_id']);
+			$ids = $getMenus->pluck('id')->toArray();
+			$this->model->whereIn('id', $ids)->update(['menu_is_active' => $menu['checked']]);	
 		}
-		return $menuPermissions;
+
+		/**
+		 * Atualiza as permissões
+		 */
+		foreach ($menuPermissions['permissions'] as $permissions) {
+
+			foreach($permissions as $permission)
+			{
+				$getPermission = $menusFromUser->where('menu_id', $permission['menu_id'])
+					->where('permission_id', $permission['permission_id'])->first();
+
+				if($getPermission){
+					$getPermission->update(['permission_is_active' => $permission['checked']]);
+				}
+			}
+		}
 	}
 }
