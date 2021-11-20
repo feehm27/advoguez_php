@@ -18,18 +18,13 @@ class AuthRepository
 	/**
 	 * Salva as permissões do usuário como ativas ao cadastrar um usuário
 	 */
-	public function attachPermissions(User $user, String $isAdvocate)
+	public function attachPermissions(User $user)
 	{
-		$profileTypeId = ProfileTypesUtils::CLIENT;
-
-		if ($isAdvocate) {
-			$profileTypeId = ProfileTypesUtils::ADVOCATE;
-		}
-
 		$menuPermissions = [];
-		$menus = Menu::where('profile_type_id', $profileTypeId)->where('is_active', TRUE)->get();
+		$menus = Menu::where('is_active', TRUE)->get();
 
-		foreach ($menus as $menu) {
+		foreach ($menus as $menu) 
+		{
 			foreach ($menu->permissions_ids as $permissionId) {
 				array_push($menuPermissions, [
 					'menu_id' 		=> $menu->id,
@@ -46,32 +41,32 @@ class AuthRepository
 	 */
 	public function getPermissionsByUser(User $user)
 	{
-		$menus = Menu::where('profile_type_id', $user->is_advocate ? 1 : 2)->orderBy('id')->get();
+		$allMenus = Menu::orderBy('id')->get();
 		$permissionsChecked = [];
 		$menusChecked = [];
 
-		foreach ($menus as $menu)
+		foreach ($allMenus as $allMenu)
 		{
-			$permissionsIds = $menu->permissions_ids;
+			$permissionsIds = $allMenu->permissions_ids;
 
-			$permissions = MenuPermission::where('menu_id', $menu->id)
+			$permissions = MenuPermission::where('menu_id', $allMenu->id)
 				->where('user_id', $user->id)
 				->whereIn('permission_id', $permissionsIds)
 				->get(['menu_id', 'permission_id', 'permission_is_active as checked']);
 
-			$teste = MenuPermission::where('menu_id', $menu->id)
+			$menus = MenuPermission::where('menu_id', $allMenu->id)
 				->where('user_id', $user->id)
 				->first(['menu_id', 'menu_is_active as checked']);
 		
 			array_push($permissionsChecked, $permissions);
-			array_push($menusChecked, $teste);
+			array_push($menusChecked, $menus);
 
 		}
 
 		return [
 			"permissions_checked" => $permissionsChecked,
 			"menus_checked"       => $menusChecked
-		];
+		];		
 	}
 
 	/**
