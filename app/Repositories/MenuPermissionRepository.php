@@ -43,8 +43,22 @@ class MenuPermissionRepository
 	{
 		$menusIds = array_column($menuPermissions['menus'], 'menu_id');
 		$menusFromUser = $this->model->where('user_id', $user->id)->whereIn('menu_id', $menusIds)->get();
-		$permissions = $menuPermissions['permissions'];
 
+		$this->update($menuPermissions, $menusFromUser);
+
+		$users = User::where('advocate_user_id', $user->id)->get();
+
+		if(!$users->isEmpty()){
+			foreach($users as $user)
+			{
+				$menus = $this->model->where('user_id', $user->id)->whereIn('menu_id', $menusIds)->get();
+				$this->update($menuPermissions, $menus);
+			}
+		}
+	}
+
+	private function update($menuPermissions, $menusFromUser)
+	{
 		/**
 		 * Atualiza os menus
 		 */
@@ -69,5 +83,6 @@ class MenuPermissionRepository
 				}
 			}
 		}
+
 	}
 }
