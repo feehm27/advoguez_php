@@ -14,11 +14,7 @@ class IdentityRepository
 	public function upload($image, Int $userId)
 	{
 		$path = $path = 'images/'. $userId;
-		$existDirectory = Storage::disk('public')->exists($path);
-
-		if ($existDirectory) {
-			Storage::deleteDirectory($path);
-		}
+		Storage::disk('public')->deleteDirectory($path);
 
 		$imagePublic = Storage::disk('public')->put($path, $image);
 		$urlPublic = Storage::url($imagePublic);
