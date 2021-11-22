@@ -6,18 +6,33 @@ use Illuminate\Support\Facades\Storage;
 
 class IdentityRepository 
 {
+	public function __construct(UserRepository $userRepository)
+	{
+		$this->userRepository = $userRepository;
+	}
+
 	public function upload($image, Int $userId)
 	{
-		$path = 'public/images/' . $userId;
-		$existDirectory = Storage::exists($path);
+		$path = $path = 'images/'. $userId;
+		$existDirectory = Storage::disk('public')->exists($path);
 
 		if ($existDirectory) {
 			Storage::deleteDirectory($path);
 		}
 
-		$imagePath = '/public/images/' . $userId;
-		$image->storeAs($imagePath, 'logo');
+		$imagePublic = Storage::disk('public')->put($path, $image);
+		$urlPublic = Storage::url($imagePublic);
 
-		return asset('/storage/images/' . $userId . '/' . 'logo');
+		$assetUrl = asset($urlPublic);
+		$urlPublic = str_replace("/storage", "", $assetUrl);
+		
+		$updatedLogo = [
+			'id'  	=> $userId,
+			'logo'	 => $urlPublic
+		];
+
+		$this->userRepository->update($updatedLogo);
+
+		return $urlPublic;
 	}
 }

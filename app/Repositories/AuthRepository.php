@@ -74,11 +74,6 @@ class AuthRepository
 	 */
 	public function getLogoByUser(Int $userId)
 	{
-		$path = 'public/images/' . $userId;
-		$existDirectory = Storage::exists($path);
-
-		if ($existDirectory) {
-			return asset('/storage/images/' . $userId . '/logo');
-		}
+		return User::where('id', $userId)->first()->logo;
 	}
 }

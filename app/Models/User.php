@@ -23,6 +23,7 @@ class User extends Authenticatable
 		'is_client',
 		'is_advocate',
 		'facebook_id',
+		'logo',
 		'blocked',
 		'advocate_user_id'
 	];
