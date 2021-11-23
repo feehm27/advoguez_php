@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Auth;
 
-use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
+//Utils
+use App\Http\Utils\StatusCodeUtils;
 
-class Update extends FormRequest
+class ForgotPassword extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -28,23 +29,20 @@ class Update extends FormRequest
 	public function rules()
 	{
 		return [
-            'id'          		=> 'required|integer',
-			'name' 		  		=> 'required|string|max:255',
-			'email'       		=> 'required|string|email|max:255|unique:users,email,' . $this->id,
-			'is_client'   		=> 'nullable|boolean',
-			'is_advocate' 		=> 'nullable|boolean',
+			'email' 	  => 'required|email',
 		];
 	}
 
 	/**
-	 * Get the error messages for thec defined validation rules.
+	 * Get the error messages for the defined validation rules.
 	 *
 	 * @return array
 	 */
 	public function messages()
 	{
 		return [
-			'email.unique' => 'Já existe um usuário cadastrado com este email',
+			'email.required' 		=> 'E-mail obrigatório',
+			'email.email' 	        => 'O e-mail informado é inválido',
 		];
 	}
 
@@ -56,7 +54,7 @@ class Update extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->merge([
-            'id'       			=> $this->id,
+			'email' =>  $this->email,
 		]);
 	}
 

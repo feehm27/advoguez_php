@@ -20,7 +20,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/user', function() {
+    return auth()->user();
+})->middleware('auth:sanctum');
+
 Route::middleware(['auth:sanctum'])->group(function () {
+
+	/**
+	 * Rotas necessárias para o usuário
+	 */
+	Route::prefix('user')->group(function () {
+		Route::get(' ', function() {return auth()->user();});
+		Route::put('change/password', [UserController::class, 'changePassword']);
+	});
 
 	Route::get('me', [AuthController::class, 'me']);
 	Route::post('logout', [AuthController::class, 'logout']);
@@ -73,3 +85,5 @@ Route::middleware(['auth:sanctum'])->group(function () {
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/facebook', [AuthController::class, 'loginWithFacebook']);
+Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
+
