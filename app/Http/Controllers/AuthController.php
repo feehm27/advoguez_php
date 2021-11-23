@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Auth\ForgotPassword;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests\Auth\Login;
 use App\Http\Requests\Auth\LoginFacebook;
 use App\Http\Requests\Auth\Register;
 use App\Http\Utils\StatusCodeUtils;
-
+use App\Mail\ResetPasswordMail;
 //Model
 use App\Models\User;
 use App\Repositories\AuthRepository;
-
+use Carbon\Carbon;
 //Exception
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -114,7 +117,7 @@ class AuthController extends Controller
 		try{
 
 			$existUser = User::where('facebook_id', $request->facebook_id)->first();
-
+			
 			if($existUser) {
 				Auth::loginUsingId($existUser->id);
 				$token = $existUser->createToken('auth_token')->plainTextToken;
@@ -149,6 +152,36 @@ class AuthController extends Controller
 	
 		}catch(Exception $error){
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public function forgotPassword(ForgotPassword $request)
+	{
+		try{
+
+			$existUser = User::where('email', $request->email)->first();
+	
+			if(!$existUser){
+				return response()->json([
+					'status_code' 	=>  StatusCodeUtils::BAD_REQUEST,
+					'errors' 		=>  ["email" => "Não conseguimos encontrar um usuário com esse endereço de e-mail"]
+				]);
+			}
+
+			$token = $existUser->createToken('auth_token')->plainTextToken;
+
+			DB::table('password_resets')->insert([
+				'email' => $request->email, 
+				'token' => $token, 
+				'created_at' => Carbon::now()
+			  ]);
+
+			$existUser->token = $token;
+
+			Mail::to($existUser->email)->send(new ResetPasswordMail($existUser));
+			
+		}catch(Exception $error) {
+			return response()->json(['error' => $error->getMessage()],StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
 }

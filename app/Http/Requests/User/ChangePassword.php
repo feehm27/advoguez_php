@@ -2,13 +2,18 @@
 
 namespace App\Http\Requests\User;
 
-use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Contracts\Validation\Validator;
 
+//Utils
+use App\Http\Utils\StatusCodeUtils;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Sanctum\PersonalAccessToken;
 
-class Update extends FormRequest
+class ChangePassword extends FormRequest
 {
 	/**
 	 * Determine if the user is authorized to make this request.
@@ -28,11 +33,8 @@ class Update extends FormRequest
 	public function rules()
 	{
 		return [
-            'id'          		=> 'required|integer',
-			'name' 		  		=> 'required|string|max:255',
-			'email'       		=> 'required|string|email|max:255|unique:users,email,' . $this->id,
-			'is_client'   		=> 'nullable|boolean',
-			'is_advocate' 		=> 'nullable|boolean',
+			'password' 	 		=> 'required|string|min:8',
+            'user'              => 'required'
 		];
 	}
 
@@ -44,7 +46,7 @@ class Update extends FormRequest
 	public function messages()
 	{
 		return [
-			'email.unique' => 'Já existe um usuário cadastrado com este email',
+			'password.required' => 'Senha obrigatória',
 		];
 	}
 
@@ -55,8 +57,11 @@ class Update extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
+        $user = Auth::user();
+
 		$this->merge([
-            'id'       			=> $this->id,
+			'password' =>  Hash::make($this->password),
+            'user'    => $user         
 		]);
 	}
 
