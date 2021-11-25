@@ -33,6 +33,7 @@ class AuthController extends Controller
 	public function register(Register $request)
 	{
 		try {
+
 			$inputs = [
 				'name' 		  		=> $request['name'],
 				'email' 	  		=> $request['email'],
@@ -45,9 +46,10 @@ class AuthController extends Controller
 
 			$user = User::create($inputs);
 			$token = $user->createToken('auth_token')->plainTextToken;
+			$advocateUserId = $request->advocate_user_id;
 
 			if ($user) {
-				$this->repository->attachPermissions($user);
+				$this->repository->attachPermissions($user, $advocateUserId);
 			}
 
 			return response()->json([
@@ -108,6 +110,11 @@ class AuthController extends Controller
 		$user = $request->user();
 		$user->checkeds = $this->repository->getPermissionsByUser($user);
 		$user->logo = $this->repository->getLogoByUser($user->id);
+		$user->isAdmin = false;
+
+		if($user->is_advocate === 1 && $user->advocate_user_id === null){
+			$user->isAdmin = true;
+		}
 
 		return $user;
 	}

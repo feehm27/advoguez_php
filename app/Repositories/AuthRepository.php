@@ -18,21 +18,36 @@ class AuthRepository
 	/**
 	 * Salva as permissões do usuário como ativas ao cadastrar um usuário
 	 */
-	public function attachPermissions(User $user)
+	public function attachPermissions(User $user, $advocateUserId = null)
 	{
 		$menuPermissions = [];
-		$menus = Menu::where('is_active', TRUE)->get();
 
-		foreach ($menus as $menu) 
-		{
-			foreach ($menu->permissions_ids as $permissionId) {
-				array_push($menuPermissions, [
-					'menu_id' 		=> $menu->id,
-					'permission_id' => $permissionId,
-					'user_id'		=> $user->id
-				]);
+		if($advocateUserId) {
+
+			$menusReplicate = MenuPermission::where('user_id', $advocateUserId)
+				->get()->toArray();
+
+			foreach ($menusReplicate as $menuReplicate){
+				$menuReplicate['id'] = null;
+				$menuReplicate['user_id'] = $user->id;
+				array_push($menuPermissions, $menuReplicate);
+			}
+
+		}else{
+			$menus = Menu::where('is_active', TRUE)->get();
+
+			foreach ($menus as $menu) 
+			{
+				foreach ($menu->permissions_ids as $permissionId) {
+					array_push($menuPermissions, [
+						'menu_id' 		=> $menu->id,
+						'permission_id' => $permissionId,
+						'user_id'		=> $user->id
+					]);
+				}
 			}
 		}
+
 		MenuPermission::insert($menuPermissions);
 	}
 
