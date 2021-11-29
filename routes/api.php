@@ -30,7 +30,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	 * Rotas necessárias para o usuário
 	 */
 	Route::prefix('user')->group(function () {
-		Route::get(' ', function() {return auth()->user();});
+		Route::get('', function() {return auth()->user();});
 		Route::put('change/password', [UserController::class, 'changePassword']);
 	});
 
@@ -66,13 +66,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('advocates/clients')->group(function () {
 		Route::get('', [ClientController::class, 'index']);
 		Route::get('/{id}', [ClientController::class, 'show']);
+		Route::post('/download', [ClientController::class, 'generatePDF']);
 		Route::post('', [ClientController::class, 'create']);
 		Route::put('/{id}', [ClientController::class, 'update']);
 		Route::delete('/{id}', [ClientController::class, 'destroy']);
 	});
 
 	/**
-	 * Rotas necessárias para a gestão de clientes
+	 * Rotas necessárias para a gestão de usuários
 	 */
 	Route::prefix('advocates/users')->group(function () {
 		Route::get('', [UserController::class, 'index']);

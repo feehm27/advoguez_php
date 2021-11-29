@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Client\Create;
 use App\Http\Requests\Client\Destroy;
+use App\Http\Requests\Client\Download;
 use App\Http\Requests\Client\Index;
 use App\Http\Requests\Client\Show;
 use App\Http\Requests\Client\Update;
@@ -154,6 +155,27 @@ class ClientController extends Controller
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
 				'data' 			=>  []
 			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public function generatePDF(Download $request)
+	{
+		try {
+
+			$client = $request->client;
+			$allClients = $request->all_clients;
+			$clients = $request->clients;
+			$user = $request->user;
+		
+			$data = $this->repository->generatePDF($client, $allClients, $clients, $user);
+
+			return [
+				"status_code"  => StatusCodeUtils::SUCCESS,
+				"link"   => $data
+			];
+
 		} catch (Exception $error) {
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
