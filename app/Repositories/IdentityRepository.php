@@ -13,7 +13,7 @@ class IdentityRepository
 
 	public function upload($image, Int $userId)
 	{
-		$path = $path =  $userId.'/logo';
+		$path = $userId.'/logo';
 		Storage::disk('s3')->deleteDirectory($path);
 
 		$upload = Storage::disk('s3')->put($path, $image);

@@ -2,10 +2,19 @@
 
 namespace App\Repositories;
 
+use App\Http\Utils\HeaderPDFUtils;
+use App\Http\Utils\MaskUtils;
+
 use App\Models\Client;
 use App\Models\ClientUser;
 use App\Models\MenuPermission;
 use App\Models\User;
+
+use Illuminate\Support\Facades\Storage;
+
+use Carbon\Carbon;
+use PDF;
+
 
 /**
  * Class ClientRepository.
@@ -78,5 +87,59 @@ class ClientRepository
         }
 
         $client->delete();
+    }
+
+    /**
+     * Gera o PDF de um cliente especifico ou de todos os clientes associados ao advogado
+     */
+    public function generatePDF(Client $client = null, $allClients, $clients = null, User $user)
+    {   
+        $title = 'Relatório de Clientes';
+        $headers = HeaderPDFUtils::HEADER_CLIENTS;
+        $logo = User::find($user->id)->first()->logo;
+
+        if($allClients){
+            
+            foreach($clients as $client)
+            {
+                $client->birthday = Carbon::parse($client->birthday)->format('d/m/Y');
+                $client->telephone = MaskUtils::maskPhone($client->telephone);
+                $client->cellphone = MaskUtils::maskPhone($client->cellphone);
+                $client->cpf = MaskUtils::maskCPF($client->cpf);    
+            }
+            
+            $body = $clients->toArray();
+        
+        }else {
+
+            $client->birthday = Carbon::parse($client->birthday)->format('d/m/Y');
+            $client->telephone = MaskUtils::maskPhone($client->telephone);
+            $client->cellphone = MaskUtils::maskPhone($client->cellphone);
+            $client->cpf = MaskUtils::maskCPF($client->cpf);
+
+            $body = [$client->only(HeaderPDFUtils::ATTRIBUTES_CLIENT)];
+        }
+
+        $currentDate = Carbon::now()->subHours(3)->format('d/m/Y H:i:s');
+        
+        $pdf = PDF::loadView('generate-pdf', [ 
+                'title'     => $title, 
+                'logo'      => $logo,
+                'headers'   => $headers,
+                'date'      => $currentDate, 
+                'rows'      => $body
+            ]
+        );
+
+        $pdf->setPaper('letter', 'landscape');
+    
+        // Faz upload do arquivo no s3
+        $fileName = $allClients ? 'clients' : 'client';
+        $path = 'downloads/'.$user->id.'/'.$fileName;
+
+        Storage::disk('s3')->deleteDirectory($path);
+        Storage::disk('s3')->put($path, $pdf->output());
+
+        return Storage::disk('s3')->url($path);
     }
 }
