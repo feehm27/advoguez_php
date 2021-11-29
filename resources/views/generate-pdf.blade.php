@@ -21,8 +21,8 @@
     }
     .header img {
         float: left;
-        width: 100px;
-        height: 100px;
+        width: 150px;
+        height: 150px;
     }
     .header h3 {
         position: relative;

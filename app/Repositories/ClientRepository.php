@@ -98,6 +98,10 @@ class ClientRepository
         $headers = HeaderPDFUtils::HEADER_CLIENTS;
         $logo = User::find($user->id)->first()->logo;
 
+        if(!$logo){
+            $logo = env('DEFAULT_LOGO');
+        }
+
         if($allClients){
             
             foreach($clients as $client)
