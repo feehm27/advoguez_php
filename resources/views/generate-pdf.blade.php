@@ -2,9 +2,10 @@
 <html>
 <style>
     .title {
-        position: relative;
-        left: 370px;
-        top: 2px
+        margin: auto;
+        width: 50%;
+        top: 8px;
+        text-align: center;
     }
     table {
         font-family: arial, sans-serif;
@@ -12,12 +13,14 @@
         width: 100%;
     }
     td, th {
-        border: 1px solid #dddddd;
+        border: 1px solid #000000;
         text-align: left;
         padding: 8px;
     }
     tr:nth-child(even) {
-        background-color: #dddddd;
+        background-color: #E0E0E0;
+        border: 1px solid #000000;
+        padding: 8px;
     }
     .header img {
         float: left;
@@ -37,6 +40,9 @@
         position: relative;
         top: 20px;
     }
+    .size {
+        font-size: 60%;
+    }
 </style>
 <body>
     <div class="header">
@@ -45,22 +51,23 @@
         <span>Data de geração: {{$date}} </span>
         <hr>
     </div>
-   
-    <h2 class="title">{{$title}}</h2>
+    <p></p>
+        <h2 class="title">{{$title}}</h2>
+    <p></p>
     <table class="table table-striped">
-        <tr>
+        <tr class="size">
             @foreach($headers as $header)
                 <th>{{$header}}</th>
             @endforeach
         </tr>
-        <tbody>
-            <tr>
-                @foreach($rows as $row)
+        <tbody class="size">
+            @foreach($rows as $row)
+                <tr>
                     @foreach($row as $value)
                         <td>{{$value}}</td>
                     @endforeach
-                @endforeach
-            </tr>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </body>
