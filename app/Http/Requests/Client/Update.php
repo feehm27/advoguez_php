@@ -83,6 +83,10 @@ class Update extends FormRequest
 			$this->cpf = str_replace($characters, '', $this->cpf);
 		}
 
+        if ($this->cep) {
+			$this->cep = str_replace($characters, '', $this->cep);
+		}
+
         if ($this->telephone) {
 			$this->telephone = str_replace($characters, '', $this->telephone);
 		}
@@ -94,6 +98,7 @@ class Update extends FormRequest
 		$this->merge([
             'id'  => $this->id,
             'cpf' => $this->cpf,
+            'cep' => $this->cep,
             'telephone' => $this->telephone,
             'cellphone' => $this->cellphone,
 			'advocate_user_id' 	=> $this->user->id,
