@@ -51,8 +51,8 @@ class MessageController extends Controller
                 'subject'           => $request->subject,
                 'message'           => $request->message,
                 'read'              => $request->read,
-                'client_send'       => $request->client_send,
-                'advocate_send'     => $request->advocate_send,
+                'client_sent'       => $request->client_sent,
+                'advocate_sent'     => $request->advocate_sent,
                 'user_id'           => $request->user_id,
             ];
 

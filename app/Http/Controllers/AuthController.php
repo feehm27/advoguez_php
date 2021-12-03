@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\LoginFacebook;
 use App\Http\Requests\Auth\Register;
 use App\Http\Utils\StatusCodeUtils;
 use App\Mail\ResetPasswordMail;
+use App\Models\ClientUser;
 //Model
 use App\Models\User;
 use App\Repositories\AuthRepository;
@@ -50,6 +51,11 @@ class AuthController extends Controller
 
 			if ($user) {
 				$this->repository->attachPermissions($user, $advocateUserId);
+			}
+
+			if($request->client_id) {
+				$inputs = ['user_id' => $user->id, 'client_id' => $request->client_id];
+				ClientUser::create($inputs);
 			}
 
 			return response()->json([

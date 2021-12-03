@@ -33,6 +33,7 @@ class Update extends FormRequest
 			'email'       		=> 'required|string|email|max:255|unique:users,email,' . $this->id,
 			'is_client'   		=> 'nullable|boolean',
 			'is_advocate' 		=> 'nullable|boolean',
+			'client_id'         => 'nullable'
 		];
 	}
 

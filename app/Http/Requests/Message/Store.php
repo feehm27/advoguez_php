@@ -35,8 +35,8 @@ class Store extends FormRequest
             'subject'           => 'required|string',
             'message'           => 'required|string|max:500',
             'read'              => 'required|boolean',
-            'client_send'       => 'required|boolean',
-            'advocate_send'     => 'required|boolean',
+            'client_sent'       => 'required|boolean',
+            'advocate_sent'     => 'required|boolean',
             'user_id'           => 'required|integer',
         ];
     }
@@ -59,8 +59,8 @@ class Store extends FormRequest
 	protected function prepareForValidation()
 	{
         $recipientName = '';
-        $user = User::where('user_id', $this->user_id)->first();
-        
+        $user = User::where('id', $this->user_id)->first();
+
         if($user->is_client && $user->advocate_user_id) {
             $userAdvocate = User::where('advocate_user_id', $user->advocate_user_id)->first();
             $recipientName = $userAdvocate->name;
