@@ -51,4 +51,9 @@ class User extends Authenticatable
 	{
 		return $this->hasOne(MenuPermission::class);
 	}
+
+	public function clientUser()
+	{
+		return $this->hasMany('App\Models\ClientUser', 'user_id');
+	}
 }

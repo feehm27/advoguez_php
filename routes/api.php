@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -80,6 +81,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::put('/block', [UserController::class, 'lockOrUnlock']);
 		Route::put('/{id}', [UserController::class, 'update']);
 		Route::delete('/{id}', [UserController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para as mensagens do cliente e do advogado
+	 */
+	Route::prefix('messages')->group(function () {
+		Route::get('', [MessageController::class, 'index']);
+		Route::get('sent', [MessageController::class, 'getMessagesSent']);
+		Route::post('', [MessageController::class, 'store']);
 	});
 });
 

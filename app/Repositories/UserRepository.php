@@ -30,7 +30,7 @@ class UserRepository
             if(!$clientUsers->isEmpty()){
                 
                 $usersIds = $clientUsers->pluck('user_id');
-                $users = $this->model->whereIn('id', $usersIds)->get();
+                $users = $this->model->whereIn('id', $usersIds)->with('clientUser')->get();
 
                 if(!$users->isEmpty()){
                     $allUsers = $users;
@@ -38,7 +38,9 @@ class UserRepository
             }
         }
 
-        $usersByAdvocate = $this->model->where('advocate_user_id', $advocateUser->id)->get();
+        $usersByAdvocate = $this->model->where('advocate_user_id', $advocateUser->id)
+            ->with('clientUser')->get();
+
         $allUsers = $allUsers->merge($usersByAdvocate)->push($advocateUser);
     
         return $allUsers;
@@ -49,6 +51,22 @@ class UserRepository
     */
     public function update(Array $inputs)
     {
+        if(isset($inputs['client_id'])){
+           
+            $clientId =  $inputs['client_id'];
+            $userId = $inputs['id'];
+
+            $clientUser = ClientUser::where('client_id', $clientId)
+                ->where('user_id', $userId)
+                ->first();
+
+            if(!$clientUser) {
+                ClientUser::create(['client_id' => $inputs['client_id'], 'user_id' => $inputs['id']]);
+            }
+
+            unset($inputs['client_id']);
+        }
+
 		return $this->model->where('id', $inputs['id'])->update($inputs);
     }
 

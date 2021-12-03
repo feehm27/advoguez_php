@@ -51,6 +51,10 @@ class UserController extends Controller
                 'is_advocate' 		=> $request['is_advocate'],
             ];
 
+			if($request->client_id) {
+				$inputs['client_id'] = $request->client_id;
+			}
+
 			$data = $this->repository->update($inputs);
 
 			return response()->json([
@@ -102,7 +106,6 @@ class UserController extends Controller
 
 			$user = $request->user;
 			$token = $request->bearerToken();
-
 
 			$updatePassword = DB::table('password_resets')
 				->where(['email' => $user->email, 'token' => $token])

@@ -37,8 +37,9 @@ class Register extends FormRequest
 			'facebook_id' 	    => 'nullable|string',
 			'password' 	 		=> 'required|string|min:8',
 			'advocate_user_id'  => 'nullable|integer',
+			'client_id'         => 'nullable'
 		];
-	}
+ 	}
 
 	/**
 	 * Get the error messages for thec defined validation rules.
