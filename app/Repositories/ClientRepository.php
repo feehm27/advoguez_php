@@ -96,7 +96,7 @@ class ClientRepository
     {   
         $title = 'Relatório de Clientes';
         $headers = HeaderPDFUtils::HEADER_CLIENTS;
-        $logo = User::find($user->id)->first()->logo;
+        $logo = User::find($user->id)->logo;
 
         if(!$logo){
             $logo = env('DEFAULT_LOGO');
