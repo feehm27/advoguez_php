@@ -87,8 +87,14 @@ class AuthRepository
 	/**
 	 * Obtém o link da logomarca do usuário
 	 */
-	public function getLogoByUser(Int $userId)
+	public function getLogoByUser(User $user)
 	{
-		return User::where('id', $userId)->first()->logo;
+		if($user->is_client && $user->advocate_user_id) 
+		{
+			$lawyerUser = User::where('id', $user->advocate_user_id)->first();
+			return $lawyerUser->logo;
+		}
+
+		return User::where('id', $user->id)->first()->logo;
 	}
 }

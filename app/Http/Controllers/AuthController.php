@@ -115,7 +115,7 @@ class AuthController extends Controller
 	{
 		$user = $request->user();
 		$user->checkeds = $this->repository->getPermissionsByUser($user);
-		$user->logo = $this->repository->getLogoByUser($user->id);
+		$user->logo = $this->repository->getLogoByUser($user);
 		$user->isAdmin = false;
 
 		if($user->is_advocate === 1 && $user->advocate_user_id === null){
