@@ -74,12 +74,13 @@ class ClientController extends Controller
 			];
 
 			$inputsUser = [
-				'name' 		  => $request['name_user'],
-				'email' 	  => $request['email_user'],
-				'is_client'   => $request['is_client'],
-				'is_advocate' => $request['is_advocate'],
-				'facebook_id' => $request['facebook_id'],
-				'password' 	  => $request['password_user']
+				'name' 		  		=> $request['name_user'],
+				'email' 	  		=> $request['email_user'],
+				'is_client'   		=> $request['is_client'],
+				'is_advocate' 		=> $request['is_advocate'],
+				'facebook_id' 		=> $request['facebook_id'],
+				'password' 	  		=> $request['password_user'],
+				'advocate_user_id'	=> $request['advocate_user_id']
 			];
 
 			$data = $this->repository->createClientAndUser($inputsClient, $inputsUser);

@@ -62,7 +62,8 @@ class Store extends FormRequest
         $user = User::where('id', $this->user_id)->first();
 
         if($user->is_client && $user->advocate_user_id) {
-            $userAdvocate = User::where('advocate_user_id', $user->advocate_user_id)->first();
+
+            $userAdvocate = User::where('id', $user->advocate_user_id)->first();
             $recipientName = $userAdvocate->name;
         }
 
