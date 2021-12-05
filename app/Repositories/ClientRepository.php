@@ -8,6 +8,7 @@ use App\Http\Utils\MaskUtils;
 use App\Models\Client;
 use App\Models\ClientUser;
 use App\Models\MenuPermission;
+use App\Models\Message;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Storage;
@@ -86,6 +87,25 @@ class ClientRepository
             $user->delete();
         }
 
+        $clientUsers = ClientUser::where('client_id', $client->id)->get();
+
+        if(!$clientUsers->isEmpty()) {
+
+            $usersIds = $clientUsers->pluck('user_id')->toArray();
+            
+            $clientUsers->each(function ($clientUser) {
+                $clientUser->delete();
+            });
+
+            $users = User::whereIn('id', $usersIds)->get();
+            MenuPermission::whereIn('user_id', $usersIds)->delete();
+            Message::whereIn('user_id', $usersIds)->delete();
+
+            $users->each(function ($user) {
+                $user->delete();
+            });
+        }
+
         $client->delete();
     }
 
@@ -96,7 +116,7 @@ class ClientRepository
     {   
         $title = 'Relatório de Clientes';
         $headers = HeaderPDFUtils::HEADER_CLIENTS;
-        $logo = User::find($user->id)->first()->logo;
+        $logo = User::find($user->id)->logo;
 
         if(!$logo){
             $logo = env('DEFAULT_LOGO');

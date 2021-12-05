@@ -28,9 +28,9 @@ class MessageController extends Controller
         try {
 
 			$advocateUserId = $request->advocate_user_id;
-            $clientId = $request->client_id;
+			$userId = $request->user_id;
 
-			$data = $this->repository->getMessages($advocateUserId, $clientId);
+			$data = $this->repository->getMessages($advocateUserId, $userId);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
@@ -48,6 +48,7 @@ class MessageController extends Controller
             $inputs = [              
                 'sender_name'       => $request->sender_name,
                 'recipient_name'    => $request->recipient_name,
+				'recipient_email'	=> $request->recipient_email,
                 'subject'           => $request->subject,
                 'message'           => $request->message,
                 'read'              => $request->read,
