@@ -25,20 +25,25 @@ class MessageRepository
         //Obtém as mensagens do cliente
         if($userId){
             return $this->model->where('user_id', $userId)
-                ->where('read',0)
-                    ->orderBy('read','desc')->get();
+                    ->where('advocate_sent', 1)
+                        ->orderBy('read','desc')->get();
         }   
 
         //Obtém as mensagens do advogado
         $clients = Client::where('advocate_user_id', $advocateUserId)->get();
-        $clientIds = $clients->pluck('id')->toArray();
-        
-        $clientsUser = ClientUser::whereIn('client_id', $clientIds)->get();
-        $usersIds = $clientsUser->pluck('user_id')->toArray();
 
-        return $this->model->whereIn('user_id', $usersIds)
-            ->where('read',0)
-                ->orderBy('read', 'desc')->get();
+        foreach($clients as $client) {
+
+            $clientUsers = ClientUser::where('client_id', $client->id)->get();
+            $usersIds = $clientUsers->pluck('user_id')->toArray();
+            $messages = $this->model->whereIn('user_id', $usersIds)
+                ->where('read',0)
+                    ->orderBy('created_at', 'desc')->get();
+
+            $client->messages = $messages;
+        } 
+
+       return $clients;
     }
 
     /**

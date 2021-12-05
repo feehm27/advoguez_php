@@ -32,6 +32,7 @@ class Store extends FormRequest
         return [              
             'sender_name'       => 'required|string',
             'recipient_name'    => 'required|string',
+            'recipient_email'   => 'required|string',
             'subject'           => 'required|string',
             'message'           => 'required|string|max:500',
             'read'              => 'required|boolean',
@@ -58,17 +59,18 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-        $recipientName = '';
         $user = User::where('id', $this->user_id)->first();
-
+        
         if($user->is_client && $user->advocate_user_id) {
 
             $userAdvocate = User::where('id', $user->advocate_user_id)->first();
-            $recipientName = $userAdvocate->name;
+            $this->recipient_name = $userAdvocate->name;
+            $this->recipient_email = $userAdvocate->email;
         }
 
         $this->merge([
-			'recipient_name' =>  $recipientName
+			'recipient_name'    =>  $this->recipient_name,
+            'recipient_email'   => $this->recipient_email
 		]);
 	}
 
