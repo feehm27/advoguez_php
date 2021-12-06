@@ -33,7 +33,7 @@ class Upload extends FormRequest
 	{
 		return [
 			'user_id' 	    => 'required|integer',
-			'image'			=> 'required|image|mimes:jpg,png,jpge|max:1500',
+			'image'			=> 'nullable|image|mimes:jpg,png,jpge|max:1500',
 		];
 	}
 
@@ -45,7 +45,6 @@ class Upload extends FormRequest
 	public function messages()
 	{
 		return [
-			'image.required' => "Imagem obrigatória.",
 			'image.max'      => "Tamanho máximo de 3MB ultrapassado.",
 			'image.mimes'    => "Formato do arquivo inválido.",
 			'image.image'    => "O arquivo precisa ser uma imagem."

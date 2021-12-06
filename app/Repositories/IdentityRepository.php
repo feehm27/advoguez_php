@@ -13,16 +13,30 @@ class IdentityRepository
 
 	public function upload($image, Int $userId)
 	{
-		$path = $userId.'/logo';
-		Storage::disk('s3')->deleteDirectory($path);
+		
+		if($image) {
 
-		$upload = Storage::disk('s3')->put($path, $image);
-		$urlPublic = Storage::disk('s3')->url($upload);
+			$path = $userId.'/logo';
+			Storage::disk('s3')->deleteDirectory($path);
 	
-		$inputs = ['id' => $userId, 'logo'	=> $urlPublic];
+			$upload = Storage::disk('s3')->put($path, $image);
+			$urlPublic = Storage::disk('s3')->url($upload);
+		
+			$inputs = ['id' => $userId, 'logo'	=> $urlPublic];
+	
+			$this->userRepository->update($inputs);
+	
+			return $urlPublic;
 
-		$this->userRepository->update($inputs);
+		}else{
 
-		return $urlPublic;
+			$path = $userId.'/logo';
+			Storage::disk('s3')->deleteDirectory($path);
+
+			$inputs = ['id' => $userId, 'logo'	=> null];
+			$this->userRepository->update($inputs);
+			
+			return env('DEFAULT_LOGO');
+		}
 	}
 }
