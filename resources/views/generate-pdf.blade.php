@@ -23,9 +23,9 @@
         padding: 8px;
     }
     .header img {
+        width: 100px;
+        height: 100px;
         float: left;
-        width: 150px;
-        height: 150px;
     }
     .header h3 {
         position: relative;
@@ -46,7 +46,7 @@
 </style>
 <body>
     <div class="header">
-        <img src={{$logo}} alt="logo"/>
+        <img src={{$logo}} alt="logo" >
         <h3>Sistema Advoguez</h3>
         <span>Data de geração: {{$date}} </span>
         <hr>
