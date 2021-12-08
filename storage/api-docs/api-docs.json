@@ -8,13 +8,15 @@
     },
     "servers": [
         {
-            "url": "http://localhost:8000/api"
+            "url": "https://advoguez-php.herokuapp.com/api"
         }
     ],
     "paths": {
         "/advocates/informations": {
             "get": {
-                "tags": ["Advocate"],
+                "tags": [
+                    "Advocate"
+                ],
                 "summary": "Retorna os dados do advogado",
                 "description": "Retorna os dados do advogado",
                 "operationId": "e0d3524273262dda51caadbe109947d0",
@@ -42,7 +44,9 @@
                 ]
             },
             "post": {
-                "tags": ["Advocate"],
+                "tags": [
+                    "Advocate"
+                ],
                 "summary": "Cria ou atualiza os dados do advogado",
                 "description": "Cria ou atualiza os dados do advogado",
                 "operationId": "b693cc3964e35c18a34966f31371ac2a",
@@ -123,7 +127,9 @@
         },
         "/register": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Cadastra um novo usuário",
                 "description": "Cria um novo usuário",
                 "operationId": "0903f2e0df1a8857bee538fc055417f0",
@@ -171,7 +177,9 @@
         },
         "/login": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Loga um usuário e retorna o token",
                 "description": "Loga um usuário",
                 "operationId": "2dd578ff7aba2721293dac66833b27d1",
@@ -202,7 +210,9 @@
         },
         "/me": {
             "get": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Obtém os dados do usuário",
                 "description": "Obtém os dados do usuário",
                 "operationId": "e18baa7d6dfc432241dca2fc1985ce40",
@@ -220,7 +230,9 @@
         },
         "/facebook": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Loga ou cria o usuário integrando com o Facebook",
                 "description": "Loga ou cria o usuário integrando com o Facebook",
                 "operationId": "a51d289496be7a4c259277bfaf1d6890",
@@ -266,7 +278,9 @@
         },
         "/forgot-password": {
             "post": {
-                "tags": ["Authentication"],
+                "tags": [
+                    "Authentication"
+                ],
                 "summary": "Recuperação de senha",
                 "description": "Recupera a senha do usuário",
                 "operationId": "da27e3923ff357f8610f31cf2cb83224",
@@ -294,7 +308,9 @@
         },
         "/advocates/clients": {
             "get": {
-                "tags": ["Client"],
+                "tags": [
+                    "Client"
+                ],
                 "summary": "Obtém a lista de clientes do advogado",
                 "description": "Obtém a lista de clientes do advogado",
                 "operationId": "a68772dc0bb44d8b931189928cca75fd",
@@ -310,7 +326,9 @@
                 ]
             },
             "put": {
-                "tags": ["Client"],
+                "tags": [
+                    "Client"
+                ],
                 "summary": "Atualiza um cliente",
                 "description": "Atualiza um cliente",
                 "operationId": "5f5bae9829f22952892b2fccddd3448d",
@@ -491,7 +509,9 @@
                 ]
             },
             "post": {
-                "tags": ["Client"],
+                "tags": [
+                    "Client"
+                ],
                 "summary": "Cadastra um novo cliente",
                 "description": "Cria um novo cliente",
                 "operationId": "6116752192316c0db0c2471aa5336e29",
@@ -581,7 +601,9 @@
         },
         "/advocates/clients/{id}": {
             "get": {
-                "tags": ["Client"],
+                "tags": [
+                    "Client"
+                ],
                 "summary": "Obtém um cliente pelo seu identificador.",
                 "description": "Obtém um cliente pelo seu identificador",
                 "operationId": "39cdd499d7e1c5cfe0fa72d238b344f9",
@@ -608,7 +630,9 @@
                 ]
             },
             "delete": {
-                "tags": ["Client"],
+                "tags": [
+                    "Client"
+                ],
                 "summary": "Deleta um cliente",
                 "description": "Deleta um cliente",
                 "operationId": "4f4ed6eaed22da17114b393e5127882f",
@@ -637,7 +661,9 @@
         },
         "/advocates/clients/download": {
             "post": {
-                "tags": ["Client"],
+                "tags": [
+                    "Client"
+                ],
                 "summary": "Exporta um ou mais clientes",
                 "description": "Exporta um ou mais clientes em pdf.",
                 "operationId": "7b3c1cae001d7aa25f618b3c69241080",
@@ -673,7 +699,9 @@
         },
         "/identity": {
             "post": {
-                "tags": ["Visual Identity"],
+                "tags": [
+                    "Visual Identity"
+                ],
                 "summary": "Upload da logomarca",
                 "description": "Faz upload da logomarca",
                 "operationId": "f63a6eba00d04ea9db9de9247e2fda0f",
@@ -702,7 +730,9 @@
         },
         "/menu/permissions": {
             "get": {
-                "tags": ["MenuPermissions"],
+                "tags": [
+                    "MenuPermissions"
+                ],
                 "summary": "Obtém os menus e as permissões do sistema",
                 "description": "Obtém os menus e as permissões do menu do sistema",
                 "operationId": "e502972be0e906e8c413c99fbbf1a7bd",
@@ -718,7 +748,9 @@
                 ]
             },
             "post": {
-                "tags": ["MenuPermissions"],
+                "tags": [
+                    "MenuPermissions"
+                ],
                 "summary": "Atualiza os menus e as permissões do usuário",
                 "description": "Atualiza os menus e as permissões do usuário",
                 "operationId": "e72b964d6163e218fe0cba044739b94c",
@@ -751,7 +783,9 @@
         },
         "/advocates/users": {
             "get": {
-                "tags": ["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Obtém a lista de usuários",
                 "description": "Obtém a lista de usuários",
                 "operationId": "e442cbe23b408b2f58d3e7091839d979",
@@ -769,7 +803,9 @@
         },
         "/advocates/users/{id}": {
             "put": {
-                "tags": ["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Atualiza um usuário",
                 "description": "Atualiza um usuário",
                 "operationId": "482fc5f5a5d9459a983359c5cc6dc534",
@@ -843,7 +879,9 @@
         },
         "/advocates/users/block": {
             "put": {
-                "tags": ["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Bloqueia ou desbloqueia um usuário",
                 "description": "Bloqueia ou desbloqueia um usuário",
                 "operationId": "c357ec480581cd7543e4859fe45ac39f",
@@ -881,7 +919,9 @@
         },
         "/user/change/password": {
             "put": {
-                "tags": ["User"],
+                "tags": [
+                    "User"
+                ],
                 "summary": "Altera a senha do usuário",
                 "description": "Altera a senha do usuário",
                 "operationId": "be879f6234dc8f24ef3cc82677801879",
