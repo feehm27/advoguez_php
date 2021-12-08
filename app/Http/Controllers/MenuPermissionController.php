@@ -15,8 +15,16 @@ class MenuPermissionController extends Controller
 	}
 
 	/**
-	 * Obtém os menus e suas permissões
-	 */
+     * @OA\Get(
+     *     tags={"MenuPermissions"},
+     *     summary="Obtém os menus e as permissões do sistema",
+     *     description="Obtém os menus e as permissões do menu do sistema",
+     *     path="/menu/permissions",
+	 * 	   security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Menus e permissões."),
+     * ),
+     * 
+    */
 	public function get()
 	{
 		try {
@@ -32,8 +40,23 @@ class MenuPermissionController extends Controller
 	}
 
 	/**
-	 * Atualiza os menus e suas permissões
-	 */
+     * @OA\Post(
+     *     tags={"MenuPermissions"},
+     *     summary="Atualiza os menus e as permissões do usuário",
+     *     description="Atualiza os menus e as permissões do usuário",
+     *     path="/menu/permissions",
+	 *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Menus e permissões."),
+	 *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="menu_permissions", type="object"),
+     *          )
+     *      ),
+     * ),
+     * 
+    */
 	public function update(Update $request)
 	{
 		try {

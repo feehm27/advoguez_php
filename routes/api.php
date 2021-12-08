@@ -21,9 +21,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/user', function() {
-    return auth()->user();
-})->middleware('auth:sanctum');
+Route::get('/user', function() {return auth()->user();})->middleware('auth:sanctum');
 
 Route::middleware(['auth:sanctum'])->group(function () {
 
@@ -80,7 +78,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('', [UserController::class, 'index']);
 		Route::put('/block', [UserController::class, 'lockOrUnlock']);
 		Route::put('/{id}', [UserController::class, 'update']);
-		Route::delete('/{id}', [UserController::class, 'destroy']);
 	});
 
 	/**
