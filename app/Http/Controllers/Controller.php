@@ -15,7 +15,7 @@ class Controller extends BaseController
 /**
  * @SWG\Swagger(
  *     schemes={"http"},
- *     host="http://advoguez-php.herokuapp.com/api",
+ *     host="https://advoguez-php.herokuapp.com/api",
  *     basePath="/api",
  *     @OA\Info(
  *         version="1.0.0",
@@ -24,7 +24,7 @@ class Controller extends BaseController
  *         termsOfService="",
  *     ),
  *    @OA\Server(
- *      url="http://advoguez-php.herokuapp.com/api",
+ *      url="https://advoguez-php.herokuapp.com/api",
  *     ),
  *     @OA\SecurityScheme(
  *      type="http",
