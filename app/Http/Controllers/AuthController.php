@@ -11,10 +11,12 @@ use App\Http\Requests\Auth\Register;
 use App\Http\Utils\StatusCodeUtils;
 use App\Mail\ResetPasswordMail;
 use App\Models\ClientUser;
+
 //Model
 use App\Models\User;
 use App\Repositories\AuthRepository;
 use Carbon\Carbon;
+
 //Exception
 use Exception;
 use Illuminate\Http\Request;
@@ -29,8 +31,28 @@ class AuthController extends Controller
 	}
 
 	/**
-	 * Registra um novo usuário
-	 */
+     * @OA\Post(
+     *     tags={"Authentication"},
+     *     summary="Cadastra um novo usuário",
+     *     description="Cria um novo usuário",
+     *     path="/register",
+	 *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Usuário criado."),
+	 *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="name", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="is_client", type="boolean"),
+     *              @OA\Property(property="is_advocate", type="boolean"),
+     *              @OA\Property(property="facebook_id", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *          )
+     *      ),
+     * ),
+     * 
+    */
 	public function register(Register $request)
 	{
 		try {
@@ -68,8 +90,23 @@ class AuthController extends Controller
 	}
 
 	/**
-	 * Autentica um usuário 
-	 */
+     * @OA\Post(
+     *     tags={"Authentication"},
+     *     summary="Loga um usuário e retorna o token",
+     *     description="Loga um usuário",
+     *     path="/login",
+     *     @OA\Response(response="200", description="Usuário logado."),
+	 *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="password", type="string"),
+     *          )
+     *      ),
+     * ),
+     * 
+    */
 	public function login(Login $request)
 	{
 		try {
@@ -109,8 +146,16 @@ class AuthController extends Controller
 	}
 
 	/**
-	 * Obtém um usuário pelo token
-	 */
+     * @OA\Get(
+     *     tags={"Authentication"},
+     *     summary="Obtém os dados do usuário",
+     *     description="Obtém os dados do usuário",
+     *     path="/me",
+	 *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Dados do usuário."),
+     * ),
+     * 
+    */
 	public function me(Request $request)
 	{
 		$user = $request->user();
@@ -125,6 +170,30 @@ class AuthController extends Controller
 		return $user;
 	}
 
+	/**
+     * @OA\Post(
+     *     tags={"Authentication"},
+     *     summary="Loga ou cria o usuário integrando com o Facebook",
+     *     description="Loga ou cria o usuário integrando com o Facebook",
+     *     path="/facebook",
+     *     @OA\Response(response="200", description="Usuário logado pelo facebook."),
+	 *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="name", type="string"),
+     *              @OA\Property(property="email", type="string"),
+     *              @OA\Property(property="is_client", type="boolean"),
+     *              @OA\Property(property="is_advocate", type="boolean"),
+     *              @OA\Property(property="facebook_id", type="string"),
+     *              @OA\Property(property="password", type="string"),
+	 *              @OA\Property(property="advocate_user_id", type="integer"),
+     *          )
+     *      ),
+     * ),
+     * 
+     * 
+    */
 	public function loginWithFacebook(LoginFacebook $request)
 	{
 		try{
@@ -132,6 +201,7 @@ class AuthController extends Controller
 			$existUser = User::where('facebook_id', $request->facebook_id)->first();
 			
 			if($existUser) {
+
 				Auth::loginUsingId($existUser->id);
 				$token = $existUser->createToken('auth_token')->plainTextToken;
 
@@ -168,6 +238,23 @@ class AuthController extends Controller
 		}
 	}
 
+	/**
+     * @OA\Post(
+     *     tags={"Authentication"},
+     *     summary="Recuperação de senha",
+     *     description="Recupera a senha do usuário",
+     *     path="/forgot-password",
+     *     @OA\Response(response="200", description="Email de recuperação de senha enviado com sucesso."),
+	 *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="email", type="string"),
+     *          )
+     *      ),
+     * ),
+     * 
+    */
 	public function forgotPassword(ForgotPassword $request)
 	{
 		try{

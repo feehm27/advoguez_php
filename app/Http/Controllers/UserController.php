@@ -23,6 +23,17 @@ class UserController extends Controller
 		$this->repository = $repository;
 	}
 
+	/**
+     * @OA\Get(
+     *     tags={"User"},
+     *     summary="Obtém a lista de usuários",
+     *     description="Obtém a lista de usuários",
+     *     path="/advocates/users",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Lista de usuários."),
+     * ),
+     * 
+    */
     public function index(Index $request)
     {
         try {
@@ -39,6 +50,71 @@ class UserController extends Controller
 		}
     }
 
+	/**
+     * @OA\Put(
+     *     tags={"User"},
+     *     summary="Atualiza um usuário",
+     *     description="Atualiza um usuário",
+     *     path="/advocates/users/{id}",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Usuário atualizado com sucesso"),
+	 *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Identificador do usuário",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="integer",
+	 * 			)
+     *      ),
+	 *       @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         description="Nome do usuário",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="string",
+	 * 			)
+	 * 		),
+	 *      @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         description="Email do usuário",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="email",
+	 * 			)
+	 * 		),
+	 *      @OA\Parameter(
+     *         name="is_client",
+     *         in="query",
+     *         description="Se o usuário é do tipo cliente",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="boolean",
+	 * 			)
+	 * 		),
+	 *      @OA\Parameter(
+     *         name="is_advocate",
+     *         in="query",
+     *         description="Se o usuário é do tipo advogado",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="boolean",
+	 * 			)
+	 * 		),
+	 *      @OA\Parameter(
+     *         name="client_id",
+     *         in="query",
+     *         description="Identificador do cliente",
+     *         required=false,
+	 *         @OA\Schema(
+     *           type="integer",
+	 * 			)
+	 * 		),
+     * ),
+     * 
+    */
     public function update(Update $request)
     {
         try {
@@ -66,6 +142,35 @@ class UserController extends Controller
 		} 
     }
 
+	/**
+     * @OA\Put(
+     *     tags={"User"},
+     *     summary="Bloqueia ou desbloqueia um usuário",
+     *     description="Bloqueia ou desbloqueia um usuário",
+     *     path="/advocates/users/block",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Usuário bloqueado ou desbloqueado com sucesso."),
+	 *     @OA\Parameter(
+     *         name="id",
+     *         in="query",
+     *         description="Identificador do usuário",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="integer",
+	 * 			)
+     *      ),
+	 *     @OA\Parameter(
+     *         name="blocked",
+     *         in="query",
+     *         description="Bloquear",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="boolean",
+	 * 			)
+     *      ),
+     * ),
+     * 
+    */
     public function lockOrUnlock(LockOrUnlock $request)
     {
         try {
@@ -84,22 +189,26 @@ class UserController extends Controller
 		}
     }
 
-	public function destroy(Destroy $request)
-	{
-		try {
-
-			$user = $request->user;
-			$this->repository->delete($user);
-
-			return response()->json([
-				'status_code' 	=>  StatusCodeUtils::SUCCESS,
-				'data' 			=>  []
-			]);
-		} catch (Exception $error) {
-			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
-		}
-	}
-
+	/**
+     * @OA\Put(
+     *     tags={"User"},
+     *     summary="Altera a senha do usuário",
+     *     description="Altera a senha do usuário",
+     *     path="/user/change/password",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Senha alterada com sucesso."),
+	 *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         description="Nova senha",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="password",
+	 * 			)
+     *      ),
+     * ),
+     * 
+    */
 	public function changePassword(ChangePassword $request)
 	{
 		try{

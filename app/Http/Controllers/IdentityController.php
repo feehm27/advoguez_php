@@ -16,8 +16,25 @@ class IdentityController extends Controller
 	}
 
 	/**
-	 * Faz upload da logomarca do advogado
-	 */
+     * @OA\Post(
+     *     tags={"Visual Identity"},
+     *     summary="Upload da logomarca",
+     *     description="Faz upload da logomarca",
+     *     path="/identity",
+	 *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Logomarca criada."),
+	 *      @OA\Parameter(
+     *         name="image",
+     *         in="query",
+     *         description="Upload de imagem",
+     *         required=false,
+	 * 			@OA\Schema(
+     *           type="file",
+     *         )
+     *      ),
+     * ),
+     * 
+    */
 	public function upload(Upload $request)
 	{
 		try {

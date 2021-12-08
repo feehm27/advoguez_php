@@ -11,3 +11,25 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 }
+
+/**
+ * @SWG\Swagger(
+ *     schemes={"http"},
+ *     host=http://localhost:8000/api/,
+ *     basePath="/api",
+ *     @OA\Info(
+ *         version="1.0.0",
+ *         title="Swagger Advoguez",
+ *         description="Esta é uma documentação do sistema Advoguez",
+ *         termsOfService="",
+ *     ),
+ *    @OA\Server(
+ *      url="http://localhost:8000/api",
+ *     ),
+ *     @OA\SecurityScheme(
+ *      type="http",
+ *      scheme="bearer",
+ *      securityScheme="bearerAuth",
+ *     )
+ * )
+ */

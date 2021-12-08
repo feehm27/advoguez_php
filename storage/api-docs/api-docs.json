@@ -1,2564 +1,919 @@
 {
-    "swagger": "2.0",
+    "openapi": "3.0.0",
     "info": {
-        "description": "Esta é uma documentação do sistema advoguez",
-        "version": "1.0.0",
         "title": "Swagger Advoguez",
-        "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
-        }
+        "description": "Esta é uma documentação do sistema Advoguez",
+        "termsOfService": "",
+        "version": "1.0.0"
     },
-    "host": "https://advoguez-php.herokuapp.com",
-    "schemes": ["https", "http"],
+    "servers": [
+        {
+            "url": "http://localhost:8000/api"
+        }
+    ],
     "paths": {
-        "/advogado": {
-            "post": {
-                "tags": ["Advogado"],
-                "summary": "Adiciona os dados do advogado",
-                "description": "Adiciona os dados do advogado",
-                "operationId": "addAdvogado",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do advogado",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Advogado"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["Advogado"],
-                "summary": "Atualiza os dados de um advogado existente",
-                "description": "",
-                "operationId": "atualizaAdvogado",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do advogado",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Advogado"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Advogado não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/advogado/{idAdvogado}": {
+        "/advocates/informations": {
             "get": {
-                "tags": ["Advogado"],
-                "summary": "Procura o advogado pelo identificador",
-                "description": "Retorna um advogado",
-                "operationId": "obtemAdgovadoPeloId",
-                "produces": ["application/json"],
+                "tags": ["Advocate"],
+                "summary": "Retorna os dados do advogado",
+                "description": "Retorna os dados do advogado",
+                "operationId": "e0d3524273262dda51caadbe109947d0",
                 "parameters": [
                     {
-                        "name": "idAdvogado",
-                        "in": "path",
-                        "description": "ID do advogado",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Advogado"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Advogado não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/cliente": {
-            "post": {
-                "tags": ["Cliente"],
-                "summary": "Adiciona os dados do cliente",
-                "description": "Adiciona os dados do cliente",
-                "operationId": "addCliente",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do cliente",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Cliente"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["Cliente"],
-                "summary": "Atualiza os dados de um cliente existente",
-                "description": "",
-                "operationId": "atualizaCliente",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do cliente",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Cliente"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/cliente/{idCliente}": {
-            "get": {
-                "tags": ["Cliente"],
-                "summary": "Procura o cliente pelo identificador",
-                "description": "Retorna um cliente",
-                "operationId": "obtemClientePeloId",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idCliente",
-                        "in": "path",
-                        "description": "ID do cliente",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Cliente"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": ["Cliente"],
-                "summary": "Deleta o cliente",
-                "description": "",
-                "operationId": "deletaCliente",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "api_key",
-                        "in": "header",
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Identificador do usuário",
                         "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "idCliente",
-                        "in": "path",
-                        "description": "ID do cliente que será deletado",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/cliente/{idCliente}/exportacoes": {
-            "post": {
-                "tags": ["Cliente"],
-                "summary": "Exporta os dados do cliente",
-                "description": "Retorna um arquivo em PDF",
-                "operationId": "exportaCliente",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idCliente",
-                        "in": "path",
-                        "description": "ID do cliente",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "type": "string",
-                            "example": "https://advoguez/documents/cliente.pdf"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
+                        "description": "Dados do advogado."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
-            }
-        },
-        "/cliente/exportacoes": {
+            },
             "post": {
-                "tags": ["Cliente"],
-                "summary": "Exporta os dados de todos os clientes do usuário",
-                "description": "Retorna um arquivo em PDF",
-                "operationId": "exportaTodosClientes",
-                "produces": ["application/json"],
+                "tags": ["Advocate"],
+                "summary": "Cria ou atualiza os dados do advogado",
+                "description": "Cria ou atualiza os dados do advogado",
+                "operationId": "b693cc3964e35c18a34966f31371ac2a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "cpf": {
+                                        "type": "string"
+                                    },
+                                    "nationality": {
+                                        "type": "string"
+                                    },
+                                    "civil_status": {
+                                        "type": "string"
+                                    },
+                                    "register_oab": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "cep": {
+                                        "type": "string"
+                                    },
+                                    "street": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "integer"
+                                    },
+                                    "complement": {
+                                        "type": "string"
+                                    },
+                                    "district": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "agency": {
+                                        "type": "string"
+                                    },
+                                    "account": {
+                                        "type": "string"
+                                    },
+                                    "bank": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "type": "string",
-                            "example": "https://advoguez/documents/clientes.pdf"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
+                        "description": "Advogado criado ou atualizado."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
             }
         },
-        "/contrato": {
+        "/register": {
             "post": {
-                "tags": ["Contrato"],
-                "summary": "Adiciona os dados do contrato",
-                "description": "Adiciona os dados do contrato",
-                "operationId": "addContrato",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do contrato",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Contrato"
+                "tags": ["Authentication"],
+                "summary": "Cadastra um novo usuário",
+                "description": "Cria um novo usuário",
+                "operationId": "0903f2e0df1a8857bee538fc055417f0",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "is_client": {
+                                        "type": "boolean"
+                                    },
+                                    "is_advocate": {
+                                        "type": "boolean"
+                                    },
+                                    "facebook_id": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
                     }
-                ],
+                },
                 "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
+                    "200": {
+                        "description": "Usuário criado."
                     }
                 },
                 "security": [
                     {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/login": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "Loga um usuário e retorna o token",
+                "description": "Loga um usuário",
+                "operationId": "2dd578ff7aba2721293dac66833b27d1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário logado."
+                    }
+                }
+            }
+        },
+        "/me": {
+            "get": {
+                "tags": ["Authentication"],
+                "summary": "Obtém os dados do usuário",
+                "description": "Obtém os dados do usuário",
+                "operationId": "e18baa7d6dfc432241dca2fc1985ce40",
+                "responses": {
+                    "200": {
+                        "description": "Dados do usuário."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/facebook": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "Loga ou cria o usuário integrando com o Facebook",
+                "description": "Loga ou cria o usuário integrando com o Facebook",
+                "operationId": "a51d289496be7a4c259277bfaf1d6890",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "is_client": {
+                                        "type": "boolean"
+                                    },
+                                    "is_advocate": {
+                                        "type": "boolean"
+                                    },
+                                    "facebook_id": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string"
+                                    },
+                                    "advocate_user_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Usuário logado pelo facebook."
+                    }
+                }
+            }
+        },
+        "/forgot-password": {
+            "post": {
+                "tags": ["Authentication"],
+                "summary": "Recuperação de senha",
+                "description": "Recupera a senha do usuário",
+                "operationId": "da27e3923ff357f8610f31cf2cb83224",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Email de recuperação de senha enviado com sucesso."
+                    }
+                }
+            }
+        },
+        "/advocates/clients": {
+            "get": {
+                "tags": ["Client"],
+                "summary": "Obtém a lista de clientes do advogado",
+                "description": "Obtém a lista de clientes do advogado",
+                "operationId": "a68772dc0bb44d8b931189928cca75fd",
+                "responses": {
+                    "200": {
+                        "description": "Lista de clientes."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             },
             "put": {
-                "tags": ["Contrato"],
-                "summary": "Atualiza os dados de um contrato existente",
-                "description": "",
-                "operationId": "atualizaContrato",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
+                "tags": ["Client"],
+                "summary": "Atualiza um cliente",
+                "description": "Atualiza um cliente",
+                "operationId": "5f5bae9829f22952892b2fccddd3448d",
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do contrato",
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do cliente",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Contrato"
+                            "type": "string"
                         }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
                     },
-                    "404": {
-                        "description": "Contrato não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
                     {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/contrato/{idContrato}": {
-            "get": {
-                "tags": ["Contrato"],
-                "summary": "Procura o contrato pelo identificador",
-                "description": "Retorna um contrato",
-                "operationId": "obtemContratoPeloId",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idContrato",
-                        "in": "path",
-                        "description": "ID do contrato",
+                        "name": "email",
+                        "in": "query",
+                        "description": "E-mail do cliente",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
                         "schema": {
-                            "$ref": "#/definitions/Contrato"
+                            "type": "email"
                         }
                     },
-                    "400": {
-                        "description": "ID inválido"
+                    {
+                        "name": "cpf",
+                        "in": "query",
+                        "description": "CPF do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "true"
+                        }
                     },
-                    "404": {
-                        "description": "Contrato não encontrado"
-                    }
-                },
-                "security": [
                     {
-                        "api_key": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": ["Contrato"],
-                "summary": "Deleta o contrato",
-                "description": "",
-                "operationId": "deletaContrato",
-                "produces": ["application/json"],
-                "parameters": [
+                        "name": "rg",
+                        "in": "query",
+                        "description": "RG do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "true"
+                        }
+                    },
                     {
-                        "name": "api_key",
-                        "in": "header",
+                        "name": "issuing_organ",
+                        "in": "query",
+                        "description": "Orgão emissor",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "nationality",
+                        "in": "query",
+                        "description": "Nacionalidade do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "birthday",
+                        "in": "query",
+                        "description": "Data de nascimento no formato YYYY-MM-DD",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "gender",
+                        "in": "query",
+                        "description": "Gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "civil_status",
+                        "in": "query",
+                        "description": "Estado civil",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "telephone",
+                        "in": "query",
+                        "description": "Telefone",
                         "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "idContrato",
-                        "in": "path",
-                        "description": "ID do contrato que será deletado",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Contrato não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/contrato/{idContrato}/cancelados": {
-            "put": {
-                "tags": ["Contrato"],
-                "summary": "Cancela o contrato",
-                "description": "Altera o status do contrato",
-                "operationId": "atualizaStatusContrato",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idContrato",
-                        "in": "path",
-                        "description": "ID do contrato",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
                         "schema": {
-                            "$ref": "#/definitions/Contrato"
+                            "type": "string"
                         }
                     },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Contrato não encontrado"
-                    }
-                },
-                "security": [
                     {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/contrato/{idContrato}/exportacoes": {
-            "post": {
-                "tags": ["Contrato"],
-                "summary": "Exporta os dados do contrato",
-                "description": "Retorna um arquivo em PDF",
-                "operationId": "exportaContrato",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idContrato",
-                        "in": "path",
-                        "description": "ID do contrato",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "type": "string",
-                            "example": "https://advoguez/documents/contrato.pdf"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Contrato não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/contrato/exportacoes": {
-            "post": {
-                "tags": ["Contrato"],
-                "summary": "Exporta os dados de todos os contrato do usuário",
-                "description": "Retorna um arquivo em PDF",
-                "operationId": "exportaTodosContratos",
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "type": "string",
-                            "example": "https://advoguez/documents/contratos.pdf"
-                        }
-                    },
-                    "404": {
-                        "description": "Sem dados para exportação"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/contrato/clientes/{idCliente}": {
-            "get": {
-                "tags": ["Contrato"],
-                "summary": "Procura o contrato pelo identificador do cliente",
-                "description": "Retorna um contrato",
-                "operationId": "obtemContratoPeloCliente",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idCliente",
-                        "in": "path",
-                        "description": "ID do cliente",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Contrato"
-                        }
-                    },
-                    "400": {
-                        "description": "ID do cliente inválido"
-                    },
-                    "404": {
-                        "description": "Contrato não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/processo": {
-            "post": {
-                "tags": ["Processo"],
-                "summary": "Adiciona os dados do processo",
-                "description": "Adiciona os dados do processo",
-                "operationId": "addProcesso",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do processo",
+                        "name": "cellphone",
+                        "in": "query",
+                        "description": "Celular",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Processo"
+                            "type": "string"
                         }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
+                    },
                     {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["Processo"],
-                "summary": "Atualiza os dados de um processo existente",
-                "description": "",
-                "operationId": "atualizaProcesso",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do processo",
+                        "name": "cep",
+                        "in": "query",
+                        "description": "CEP do endereço",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Processo"
+                            "type": "string"
                         }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
                     },
-                    "404": {
-                        "description": "Processo não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
                     {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/processo/{idProcesso}": {
-            "get": {
-                "tags": ["Processo"],
-                "summary": "Procura o processo pelo identificador",
-                "description": "Retorna um processo",
-                "operationId": "obtemProcessoPeloId",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idProcesso",
-                        "in": "path",
-                        "description": "ID do processo",
+                        "name": "street",
+                        "in": "query",
+                        "description": "Rua do endereço",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
                         "schema": {
-                            "$ref": "#/definitions/Processo"
+                            "type": "string"
                         }
                     },
-                    "400": {
-                        "description": "ID inválido"
+                    {
+                        "name": "number",
+                        "in": "query",
+                        "description": "Número do endereço",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
                     },
-                    "404": {
-                        "description": "Processo não encontrado"
-                    }
-                },
-                "security": [
                     {
-                        "api_key": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": ["Processo"],
-                "summary": "Deleta o processo",
-                "description": "",
-                "operationId": "deletaProcesso",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "api_key",
-                        "in": "header",
+                        "name": "complement",
+                        "in": "query",
+                        "description": "Complemento do endereço",
                         "required": false,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
                     },
                     {
-                        "name": "idProcesso",
-                        "in": "path",
-                        "description": "ID do processo que será deletado",
+                        "name": "district",
+                        "in": "query",
+                        "description": "Bairro do endereço",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
+                        "schema": {
+                            "type": "string"
+                        }
                     },
-                    "404": {
-                        "description": "Processo não encontrado"
-                    }
-                },
-                "security": [
                     {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/processo/{idProcesso}/modificacoes": {
-            "get": {
-                "tags": ["Processo"],
-                "summary": "Procura as modificações do processo pelo identificador",
-                "description": "Retorna as modificacoes de um processo",
-                "operationId": "obtemModificacoesProcesso",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idProcesso",
-                        "in": "path",
-                        "description": "ID do processo",
+                        "name": "state",
+                        "in": "query",
+                        "description": "Estado do endereço",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "city",
+                        "in": "query",
+                        "description": "Cidade do endereço",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/ProcessoAtualizacao"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Processo não encontrado"
+                        "description": "Cliente atualizado."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/processo/modificacoes": {
-            "post": {
-                "tags": ["Processo"],
-                "summary": "Adiciona os dados do processo",
-                "description": "Adiciona os dados do processo",
-                "operationId": "modificaProcesso",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do processo",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/ProcessoAtualizacao"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/processo/{idProcesso}/exportacoes": {
-            "post": {
-                "tags": ["Processo"],
-                "summary": "Exporta os dados do processo",
-                "description": "Retorna um arquivo em PDF",
-                "operationId": "exportaProcesso",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idProcesso",
-                        "in": "path",
-                        "description": "ID do processo",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "type": "string",
-                            "example": "https://advoguez/documents/processo.pdf"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Processo não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/processo/clientes/{idCliente}": {
-            "get": {
-                "tags": ["Processo"],
-                "summary": "Procura o prcoesso pelo identificador do cliente",
-                "description": "Retorna um processo",
-                "operationId": "obtemProcessoPeloCliente",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idCliente",
-                        "in": "path",
-                        "description": "ID do cliente",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Processo"
-                        }
-                    },
-                    "400": {
-                        "description": "ID do cliente inválido"
-                    },
-                    "404": {
-                        "description": "Processo não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/agenda": {
-            "post": {
-                "tags": ["Agenda"],
-                "summary": "Adiciona os dados na agenda",
-                "description": "Adiciona os dados na agenda",
-                "operationId": "addAgenda",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados na agenda",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Agenda"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
+                        "bearerAuth": []
                     }
                 ]
             },
-            "put": {
-                "tags": ["Agenda"],
-                "summary": "Atualiza os dados na agenda",
-                "description": "",
-                "operationId": "atualizaAgenda",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados na agenda",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Agenda"
+            "post": {
+                "tags": ["Client"],
+                "summary": "Cadastra um novo cliente",
+                "description": "Cria um novo cliente",
+                "operationId": "6116752192316c0db0c2471aa5336e29",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "cpf": {
+                                        "type": "string"
+                                    },
+                                    "rg": {
+                                        "type": "string"
+                                    },
+                                    "issuing_organ": {
+                                        "type": "string"
+                                    },
+                                    "nationality": {
+                                        "type": "string"
+                                    },
+                                    "birthday": {
+                                        "type": "date"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    },
+                                    "civil_status": {
+                                        "type": "string"
+                                    },
+                                    "telephone": {
+                                        "type": "string"
+                                    },
+                                    "cellphone": {
+                                        "type": "string"
+                                    },
+                                    "cep": {
+                                        "type": "string"
+                                    },
+                                    "street": {
+                                        "type": "string"
+                                    },
+                                    "number": {
+                                        "type": "integer"
+                                    },
+                                    "complement": {
+                                        "type": "string"
+                                    },
+                                    "district": {
+                                        "type": "string"
+                                    },
+                                    "city": {
+                                        "type": "string"
+                                    },
+                                    "name_user": {
+                                        "type": "string"
+                                    },
+                                    "email_user": {
+                                        "type": "string"
+                                    },
+                                    "password_user": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
                         }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Agenda não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
                     }
                 },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/agenda/{mes}": {
-            "get": {
-                "tags": ["Agenda"],
-                "summary": "Procura os dados da agenda pelo mês",
-                "description": "Retorna um agenda",
-                "operationId": "obtemAgendaPeloMês",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "mes",
-                        "in": "path",
-                        "description": "Mês a ser consultado",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Agenda"
-                        }
-                    },
-                    "400": {
-                        "description": "Mês inválido"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/agenda/agendamentos": {
-            "delete": {
-                "tags": ["Agenda"],
-                "summary": "Deleta os agendamentos",
-                "description": "",
-                "operationId": "deletaAgendamentos",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Dados necessários para o agendamento",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Agenda"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida"
-                    },
-                    "400": {
-                        "description": "Mês inválido"
+                        "description": "Cliente criado."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
             }
         },
-        "/agenda/agendamentos/{idCliente}": {
+        "/advocates/clients/{id}": {
             "get": {
-                "tags": ["Agenda"],
-                "summary": "Procura os agendamentos pelo identificador do cliente",
-                "description": "",
-                "operationId": "obtemAgendaPeloCliente",
-                "produces": ["application/json"],
+                "tags": ["Client"],
+                "summary": "Obtém um cliente pelo seu identificador.",
+                "description": "Obtém um cliente pelo seu identificador",
+                "operationId": "39cdd499d7e1c5cfe0fa72d238b344f9",
                 "parameters": [
                     {
-                        "name": "idCliente",
+                        "name": "id",
                         "in": "path",
                         "description": "Identificador do cliente",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Agenda"
-                        }
-                    },
-                    "400": {
-                        "description": "ID do cliente inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
+                        "description": "Lista de clientes."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/agenda/horarios/{idTipoHorario}": {
-            "get": {
-                "tags": ["Agenda"],
-                "summary": "Obtém os horários pelo tipo",
-                "description": "",
-                "operationId": "obtemHorarioPeloTipo",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idTipoHorario",
-                        "in": "path",
-                        "description": "Identificador do tipo de horário",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    },
-                    {
-                        "name": "mes",
-                        "in": "query",
-                        "description": "Mes de busca dos tipos de horário",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Agenda"
-                        }
-                    },
-                    "400": {
-                        "description": "ID do cliente inválido"
-                    },
-                    "404": {
-                        "description": "Cliente não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/mensagem": {
-            "post": {
-                "tags": ["Mensagem"],
-                "summary": "Adiciona os dados da mensagem",
-                "description": "Adiciona os dados da mensagem",
-                "operationId": "addMensagem",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados da mensagem",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Mensagem"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/mensagem/{idMensagem}": {
-            "get": {
-                "tags": ["Mensagem"],
-                "summary": "Procura o mensagem pelo identificador",
-                "description": "Retorna um mensagem",
-                "operationId": "obtemMensagemPeloId",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idMensagem",
-                        "in": "path",
-                        "description": "ID do mensagem",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Mensagem"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Mensagem não encontrada"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
             },
             "delete": {
-                "tags": ["Mensagem"],
-                "summary": "Deleta a mensagem",
-                "description": "",
-                "operationId": "deletaMensagem",
-                "produces": ["application/json"],
+                "tags": ["Client"],
+                "summary": "Deleta um cliente",
+                "description": "Deleta um cliente",
+                "operationId": "4f4ed6eaed22da17114b393e5127882f",
                 "parameters": [
                     {
-                        "name": "api_key",
-                        "in": "header",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "idMensagem",
+                        "name": "id",
                         "in": "path",
-                        "description": "ID da mensagem que será deletada",
+                        "description": "Identificador do cliente",
                         "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Mensagem não encontrada"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/mensagem/{idUsuario}/mensagens": {
-            "get": {
-                "tags": ["Mensagem"],
-                "summary": "Obtém as mensagens pelo identificador do usuário",
-                "description": "Retorna as mensagens do usuário",
-                "operationId": "obtemMensagens",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idUsuario",
-                        "in": "path",
-                        "description": "ID do usuário",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Mensagem"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
+                        "description": "Deleta um cliente."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
             }
         },
-        "/mensagem/clientes/{idCliente}": {
-            "get": {
-                "tags": ["Mensagem"],
-                "summary": "Obtém as mensagens pelo identificador do cliente",
-                "description": "Retorna as mensagens do cliente",
-                "operationId": "obtemMensagensDoCliente",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idCliente",
-                        "in": "path",
-                        "description": "ID do cliente",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Mensagem"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/lembrete": {
+        "/advocates/clients/download": {
             "post": {
-                "tags": ["Lembrete"],
-                "summary": "Adiciona os lembretes",
-                "description": "Adiciona os lembretes",
-                "operationId": "addLembrete",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do lembrete",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Lembrete"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["Lembrete"],
-                "summary": "Atualiza os dados na lembrete",
-                "description": "",
-                "operationId": "atualizaLembrete",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do lembrete",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Lembrete"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Lembrete não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/lembrete/{idLembrete}": {
-            "delete": {
-                "tags": ["Lembrete"],
-                "summary": "Deleta o lembrete",
-                "description": "",
-                "operationId": "deletaLembrete",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "api_key",
-                        "in": "header",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "idLembrete",
-                        "in": "path",
-                        "description": "ID do lembrete que será deletada",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Lembrete não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/lembrete/lembretes": {
-            "get": {
-                "tags": ["Lembrete"],
-                "summary": "Procura os dados do lembrete pela data",
-                "description": "Retorna uma lista de lembretes",
-                "operationId": "obtemLembretePelaData",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "data",
-                        "in": "query",
-                        "description": "Data a ser consultada",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Lembrete"
-                        }
-                    },
-                    "400": {
-                        "description": "Data inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/lembrete/{idUsuario}/lembretes": {
-            "get": {
-                "tags": ["Lembrete"],
-                "summary": "Obtém os lembretes pelo identificador do usuário",
-                "description": "Retorna os lembretes do usuário",
-                "operationId": "obtemLembretes",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idUsuario",
-                        "in": "path",
-                        "description": "ID do usuário",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Lembrete"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/relatorio": {
-            "post": {
-                "tags": ["Relatorio"],
-                "summary": "Adiciona os dados do relatorio",
-                "description": "Adiciona os dados do relatorio",
-                "operationId": "addRelatorio",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do relatorio",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Relatorio"
-                        }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Entrada inválida"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            },
-            "put": {
-                "tags": ["Relatorio"],
-                "summary": "Atualiza os dados de um relatorio existente",
-                "description": "",
-                "operationId": "atualizaRelatorio",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do relatorio",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Relatorio"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Relatorio não encontrado"
-                    },
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/relatorio/{idRelatorio}": {
-            "get": {
-                "tags": ["Relatorio"],
-                "summary": "Procura o relatorio pelo identificador",
-                "description": "Retorna um relatorio",
-                "operationId": "obtemRelatorioPeloId",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idRelatorio",
-                        "in": "path",
-                        "description": "ID do relatorio",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Relatorio"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Relatorio não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": ["Relatorio"],
-                "summary": "Deleta o relatorio",
-                "description": "",
-                "operationId": "deletaRelatorio",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "api_key",
-                        "in": "header",
-                        "required": false,
-                        "type": "string"
-                    },
-                    {
-                        "name": "idRelatorio",
-                        "in": "path",
-                        "description": "ID do relatorio que será deletado",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Relatorio não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/relatorio/{idRelatorio}/exportacoes": {
-            "post": {
-                "tags": ["Relatorio"],
-                "summary": "Exporta os dados do relatorio",
-                "description": "Retorna um arquivo em PDF",
-                "operationId": "exportaRelatorio",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idRelatorio",
-                        "in": "path",
-                        "description": "ID do relatorio",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "type": "string",
-                            "example": "https://advoguez/documents/relatorio.pdf"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Relatorio não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/relatorio/filtros": {
-            "get": {
-                "tags": ["Relatorio"],
-                "summary": "Obtém os filtros do relatório",
-                "description": "Retorna os filtros do relatório",
-                "operationId": "obtemFiltrosRelatorio",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idRelatorio",
-                        "in": "query",
-                        "description": "ID do relatorio",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/FiltroRelatorio"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Relatorio não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/relatorio/tipos": {
-            "get": {
-                "tags": ["Relatorio"],
-                "summary": "Obtém os tipos de relatório",
-                "description": "Retorna os tipos de relatório",
-                "operationId": "obtemTiposRelatorio",
-                "produces": ["application/json"],
-                "responses": {
-                    "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/TipoRelatorio"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Relatorio não encontrado"
-                    }
-                },
-                "security": [
-                    {
-                        "api_key": []
-                    }
-                ]
-            }
-        },
-        "/usuario": {
-            "post": {
-                "tags": ["Usuario"],
-                "summary": "Adiciona os dados do usuario",
-                "description": "",
-                "operationId": "addUsuario",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para adicionar os dados do usuario",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Usuario"
-                        }
-                    }
-                ],
-                "responses": {
-                    "default": {
-                        "description": "Operacao bem sucedida"
-                    }
-                }
-            }
-        },
-        "/usuario/login": {
-            "get": {
-                "tags": ["Usuario"],
-                "summary": "Registra o usuario no sistema",
-                "description": "",
-                "operationId": "loginUsuario",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "usuarioname",
-                        "in": "query",
-                        "description": "Nome do usuario para login",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "name": "senha",
-                        "in": "query",
-                        "description": "Senha criptografada para login",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Operacao bem sucedida",
-                        "schema": {
-                            "type": "string"
-                        },
-                        "headers": {
-                            "X-Rate-Limit": {
-                                "type": "integer",
-                                "format": "int32",
-                                "description": "Chamadas por hora permitidas pelo usuario"
-                            },
-                            "X-Expires-After": {
-                                "type": "string",
-                                "format": "date-time",
-                                "description": "Data em UTC de quando o token expira"
+                "tags": ["Client"],
+                "summary": "Exporta um ou mais clientes",
+                "description": "Exporta um ou mais clientes em pdf.",
+                "operationId": "7b3c1cae001d7aa25f618b3c69241080",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "all_clients": {
+                                        "type": "boolean"
+                                    }
+                                },
+                                "type": "object"
                             }
                         }
-                    },
-                    "400": {
-                        "description": "E-mail ou senha inválidos"
                     }
-                }
-            }
-        },
-        "/usuario/logout": {
-            "get": {
-                "tags": ["Usuario"],
-                "summary": "Sai da sessão do usuario logado",
-                "description": "",
-                "operationId": "logoutUsuario",
-                "produces": ["application/json"],
-                "parameters": [],
-                "responses": {
-                    "default": {
-                        "description": "Operacao bem sucedida"
-                    }
-                }
-            }
-        },
-        "/usuario/{idUsuario}": {
-            "get": {
-                "tags": ["Usuario"],
-                "summary": "Obtem o usuario pelo seu identificador",
-                "description": "",
-                "operationId": "obtemUsuarioPeloId",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idUsuario",
-                        "in": "path",
-                        "description": "ID do usuario",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
-                    }
-                ],
+                },
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Usuario"
-                        }
-                    },
-                    "400": {
-                        "description": "ID inválido"
-                    },
-                    "404": {
-                        "description": "Usuario não encontrado"
+                        "description": "Exporta um ou mais clientes em pdf"
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
-            },
-            "put": {
-                "tags": ["Usuario"],
-                "summary": "Atualiza um usuario existente",
-                "description": "",
-                "operationId": "atualizaUsuario",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idUsuario",
-                        "in": "path",
-                        "description": "ID do usuário para atualizacao",
-                        "required": true,
-                        "type": "string"
-                    },
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados do usuario",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/Usuario"
-                        }
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID do usuário inválido"
-                    },
-                    "404": {
-                        "description": "Usuario não encontrado"
-                    }
-                }
-            },
-            "delete": {
-                "tags": ["Usuario"],
-                "summary": "Deleta um usuario",
-                "description": "Isso so pode ser feito pelo usuario logado.",
-                "operationId": "deletaUsuario",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idUsuario",
-                        "in": "path",
-                        "description": "Identificador do usuario que será deletado",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID do usuário inválido"
-                    },
-                    "404": {
-                        "description": "Usuario não encontrado"
-                    }
-                }
             }
         },
-        "/usuario/bloqueado": {
-            "put": {
-                "tags": ["Usuario"],
-                "summary": "Bloqueia um usuario existente",
-                "description": "Isso so pode ser feito pelo usuario logado.",
-                "operationId": "bloqueiaUsuario",
-                "produces": ["application/json"],
+        "/identity": {
+            "post": {
+                "tags": ["Visual Identity"],
+                "summary": "Upload da logomarca",
+                "description": "Faz upload da logomarca",
+                "operationId": "f63a6eba00d04ea9db9de9247e2fda0f",
                 "parameters": [
                     {
-                        "name": "idUsuario",
+                        "name": "image",
                         "in": "query",
-                        "description": "Identificador do usuario que será deletado",
-                        "required": true,
-                        "type": "string"
-                    }
-                ],
-                "responses": {
-                    "400": {
-                        "description": "ID do usuário inválido"
-                    },
-                    "404": {
-                        "description": "Usuario não encontrado"
-                    }
-                }
-            }
-        },
-        "/perfil/usuarios": {
-            "get": {
-                "tags": ["Perfil"],
-                "summary": "Obtém o perfil do usuario",
-                "description": "Retorna os tipos de perfil",
-                "operationId": "obtemPerfilPeloUsuario",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "token",
-                        "in": "header",
-                        "required": true,
-                        "type": "string"
+                        "description": "Upload de imagem",
+                        "required": false,
+                        "schema": {
+                            "type": "file"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Perfil"
-                        }
+                        "description": "Logomarca criada."
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
                     }
                 ]
             }
         },
-        "/permissao": {
+        "/menu/permissions": {
+            "get": {
+                "tags": ["MenuPermissions"],
+                "summary": "Obtém os menus e as permissões do sistema",
+                "description": "Obtém os menus e as permissões do menu do sistema",
+                "operationId": "e502972be0e906e8c413c99fbbf1a7bd",
+                "responses": {
+                    "200": {
+                        "description": "Menus e permissões."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": ["MenuPermissions"],
+                "summary": "Atualiza os menus e as permissões do usuário",
+                "description": "Atualiza os menus e as permissões do usuário",
+                "operationId": "e72b964d6163e218fe0cba044739b94c",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "menu_permissions": {
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Menus e permissões."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/users": {
+            "get": {
+                "tags": ["User"],
+                "summary": "Obtém a lista de usuários",
+                "description": "Obtém a lista de usuários",
+                "operationId": "e442cbe23b408b2f58d3e7091839d979",
+                "responses": {
+                    "200": {
+                        "description": "Lista de usuários."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/users/{id}": {
             "put": {
-                "tags": ["Permissao"],
-                "summary": "Atualiza as permissoes de um perfil",
-                "description": "",
-                "operationId": "atualizaPermissoes",
-                "consumes": ["application/json"],
-                "produces": ["application/json"],
+                "tags": ["User"],
+                "summary": "Atualiza um usuário",
+                "description": "Atualiza um usuário",
+                "operationId": "482fc5f5a5d9459a983359c5cc6dc534",
                 "parameters": [
                     {
-                        "in": "body",
-                        "name": "body",
-                        "description": "Objeto necessário para alterar os dados de permissao",
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do usuário",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/Permissao"
+                            "type": "integer"
                         }
-                    }
-                ],
-                "responses": {
-                    "405": {
-                        "description": "Exceção de validação"
-                    }
-                },
-                "security": [
-                    {
-                        "advoguez_auth": ["write:advoguez", "read:advoguez"]
-                    }
-                ]
-            }
-        },
-        "/permissao/{idPerfil}": {
-            "get": {
-                "tags": ["Permissao"],
-                "summary": "Procura as permissoes de um perfil especifico",
-                "description": "",
-                "operationId": "obtemPermissaoPeloPerfil",
-                "produces": ["application/json"],
-                "parameters": [
-                    {
-                        "name": "idPerfil",
-                        "in": "path",
-                        "description": "ID do perfil",
-                        "required": true,
-                        "type": "integer",
-                        "format": "int64"
                     },
                     {
-                        "name": "token",
-                        "in": "header",
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do usuário",
                         "required": true,
-                        "type": "string"
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "email"
+                        }
+                    },
+                    {
+                        "name": "is_client",
+                        "in": "query",
+                        "description": "Se o usuário é do tipo cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "is_advocate",
+                        "in": "query",
+                        "description": "Se o usuário é do tipo advogado",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "query",
+                        "description": "Identificador do cliente",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "Operação bem sucedida",
-                        "schema": {
-                            "$ref": "#/definitions/Permissao"
-                        }
-                    },
-                    "400": {
-                        "description": "ID do perfil inválido"
-                    },
-                    "404": {
-                        "description": "Perfil não encontrado"
+                        "description": "Usuário atualizado com sucesso"
                     }
                 },
                 "security": [
                     {
-                        "api_key": []
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/users/block": {
+            "put": {
+                "tags": ["User"],
+                "summary": "Bloqueia ou desbloqueia um usuário",
+                "description": "Bloqueia ou desbloqueia um usuário",
+                "operationId": "c357ec480581cd7543e4859fe45ac39f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Identificador do usuário",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "blocked",
+                        "in": "query",
+                        "description": "Bloquear",
+                        "required": true,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Usuário bloqueado ou desbloqueado com sucesso."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/user/change/password": {
+            "put": {
+                "tags": ["User"],
+                "summary": "Altera a senha do usuário",
+                "description": "Altera a senha do usuário",
+                "operationId": "be879f6234dc8f24ef3cc82677801879",
+                "parameters": [
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Nova senha",
+                        "required": true,
+                        "schema": {
+                            "type": "password"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Senha alterada com sucesso."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
                     }
                 ]
             }
         }
     },
-    "securityDefinitions": {
-        "advoguez_auth": {
-            "type": "oauth2",
-            "authorizationUrl": "http://advoguez.swagger.io/oauth/dialog",
-            "flow": "implicit",
-            "scopes": {
-                "write:advoguez": "Modifica os dados",
-                "read:advoguez": "Lê os dados"
-            }
-        },
-        "api_key": {
-            "type": "apiKey",
-            "name": "api_key",
-            "in": "header"
-        }
-    },
-    "definitions": {
-        "Advogado": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nome": {
-                    "type": "string"
-                },
-                "cpf": {
-                    "type": "number"
-                },
-                "nacionalidade": {
-                    "type": "string"
-                },
-                "idEstadoCivil": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "registroOab": {
-                    "type": "number"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "cep": {
-                    "type": "string"
-                },
-                "rua": {
-                    "type": "string"
-                },
-                "numero": {
-                    "type": "number"
-                },
-                "bairro": {
-                    "type": "string"
-                },
-                "complemento": {
-                    "type": "string"
-                },
-                "idEstado": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCidade": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "agencia": {
-                    "type": "string"
-                },
-                "conta": {
-                    "type": "string"
-                },
-                "banco": {
-                    "type": "string"
-                },
-                "url_foto": {
-                    "type": "string"
-                }
-            }
-        },
-        "Cliente": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nome": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "cpf": {
-                    "type": "number"
-                },
-                "rg": {
-                    "type": "number"
-                },
-                "orgaoEmissor": {
-                    "type": "string"
-                },
-                "dataNascimento": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "nacionalidade": {
-                    "type": "string"
-                },
-                "idEstadoCivil": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idGenero": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "telefoneFixo": {
-                    "type": "number"
-                },
-                "telefoneCelular": {
-                    "type": "number"
-                },
-                "cep": {
-                    "type": "string"
-                },
-                "rua": {
-                    "type": "string"
-                },
-                "numero": {
-                    "type": "number",
-                    "format": "int64"
-                },
-                "bairro": {
-                    "type": "string"
-                },
-                "complemento": {
-                    "type": "string"
-                },
-                "idEstado": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCidade": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idUsuario": {
-                    "type": "integer",
-                    "format": "int64"
-                }
-            }
-        },
-        "Contrato": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCliente": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idAdvogado": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nomeAdvogado": {
-                    "type": "string"
-                },
-                "emailAdvogado": {
-                    "type": "string"
-                },
-                "cpfAdvogado": {
-                    "type": "number",
-                    "format": "int64"
-                },
-                "dataInicioContrato": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "dataFimContrato": {
-                    "type": "string"
-                },
-                "diaPagamento": {
-                    "type": "integer",
-                    "format": "date"
-                },
-                "valorMensal": {
-                    "type": "number",
-                    "format": "float"
-                },
-                "valorMulta": {
-                    "type": "number",
-                    "format": "float"
-                },
-                "usarDadosdePagamento": {
-                    "type": "boolean"
-                },
-                "statusContrato": {
-                    "type": "string",
-                    "description": "Status do Contrato",
-                    "enum": ["Ativo", "Cancelado"]
-                },
-                "agencia": {
-                    "type": "string"
-                },
-                "conta": {
-                    "type": "string"
-                },
-                "banco": {
-                    "type": "string"
-                }
-            }
-        },
-        "Processo": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCliente": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "numeroProcesso": {
-                    "type": "number",
-                    "format": "int64"
-                },
-                "vara": {
-                    "type": "string"
-                },
-                "assunto": {
-                    "type": "string"
-                },
-                "statusProcesso": {
-                    "type": "string",
-                    "description": "Status do Processo",
-                    "enum": [
-                        "Em conciliação",
-                        "Em execução",
-                        "Inicial",
-                        "Em julgamento",
-                        "Liquidação",
-                        "Recursal",
-                        "Encerrado",
-                        "Suspenso"
-                    ]
-                },
-                "urlProcesso": {
-                    "type": "string"
-                },
-                "dataUltimaModificacao": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "descricaoModificacao": {
-                    "type": "string"
-                }
-            }
-        },
-        "ProcessoAtualizacao": {
-            "type": "object",
-            "properties": {
-                "idProcesso": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "modificacoes": {
-                    "type": "object",
-                    "properties": {
-                        "id": {
-                            "type": "integer",
-                            "format": "int64"
-                        },
-                        "idStatusProcesso": {
-                            "type": "number"
-                        },
-                        "descricaoModificacao": {
-                            "type": "string"
-                        },
-                        "dataModificacao": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "Agenda": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idUsuario": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCliente": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "data": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "horarios": {
-                    "type": "object",
-                    "properties": {
-                        "horario": {
-                            "type": "number"
-                        },
-                        "idTipoHorario": {
-                            "type": "integer",
-                            "format": "int64"
-                        },
-                        "idCliente": {
-                            "type": "integer",
-                            "format": "int64"
-                        },
-                        "idUsuario": {
-                            "type": "integer",
-                            "format": "int64"
-                        },
-                        "dataCriacao": {
-                            "type": "string",
-                            "format": "date"
-                        },
-                        "dataAtualizacao": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    }
-                }
-            }
-        },
-        "Mensagem": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCliente": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idUsuario": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nomeRemetente": {
-                    "type": "string"
-                },
-                "nomeDestinario": {
-                    "type": "string"
-                },
-                "assunto": {
-                    "type": "string"
-                },
-                "mensagem": {
-                    "type": "string"
-                }
-            }
-        },
-        "Lembrete": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idUsuario": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "data": {
-                    "type": "string",
-                    "format": "date"
-                },
-                "horarios": {
-                    "type": "object",
-                    "properties": {
-                        "horario": {
-                            "type": "number"
-                        },
-                        "titulo": {
-                            "type": "string"
-                        },
-                        "descricao": {
-                            "type": "string"
-                        },
-                        "receberNotificacao": {
-                            "type": "boolean"
-                        },
-                        "tempoNotificacao": {
-                            "type": "number"
-                        },
-                        "dataCriacao": {
-                            "type": "string",
-                            "format": "date"
-                        },
-                        "dataAtualizacao": {
-                            "type": "string",
-                            "format": "date"
-                        }
-                    }
-                }
-            }
-        },
-        "Relatorio": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idUsuario": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nomeRelatorio": {
-                    "type": "string"
-                },
-                "idTipoRelatorio": {
-                    "type": "string"
-                },
-                "formato": {
-                    "type": "string"
-                }
-            }
-        },
-        "FiltroRelatorio": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idRelatorio": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nomeFiltro": {
-                    "type": "string"
-                },
-                "tipoFiltro": {
-                    "type": "string"
-                }
-            }
-        },
-        "TipoRelatorio": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nome": {
-                    "type": "string",
-                    "format": "int64"
-                }
-            }
-        },
-        "Usuario": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idCliente": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nomeDoUsuario": {
-                    "type": "string"
-                },
-                "email": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "idPerfilUsuario": {
-                    "type": "integer",
-                    "format": "int64",
-                    "description": "Tipo de perfil do usuario"
-                },
-                "statusUsuario": {
-                    "type": "integer",
-                    "format": "int32",
-                    "description": "Status do Usuario"
-                }
-            }
-        },
-        "Perfil": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "nome": {
-                    "type": "string"
-                }
-            }
-        },
-        "Permissao": {
-            "type": "object",
-            "properties": {
-                "id": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idMenu": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "idPerfil": {
-                    "type": "integer",
-                    "format": "int64"
-                },
-                "permissoes": {
-                    "type": "object",
-                    "properties": {
-                        "nomePermissao": {
-                            "type": "string"
-                        },
-                        "ativa": {
-                            "type": "boolean"
-                        }
-                    }
-                },
-                "idUsuario": {
-                    "type": "integer",
-                    "format": "int64"
-                }
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
