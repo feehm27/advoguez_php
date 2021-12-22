@@ -697,6 +697,275 @@
                 ]
             }
         },
+        "/advocates/contracts": {
+            "get": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Obtém a lista de contratos do advogado",
+                "description": "Obtém a lista de contratos do advogado",
+                "operationId": "e16d55dd8951c00fdbe1bd623acbef65",
+                "responses": {
+                    "200": {
+                        "description": "Lista de contratos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/contract": {
+            "post": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Cadastra um novo contrato",
+                "description": "Cria um novo contrato",
+                "operationId": "ba183652c84f32b74c5c8a20fa80e304",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "finish_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "payment_day": {
+                                        "type": "integer",
+                                        "example": "30"
+                                    },
+                                    "contract_price": {
+                                        "type": "double",
+                                        "example": "150,00"
+                                    },
+                                    "fine_price": {
+                                        "type": "double",
+                                        "example": "100,00"
+                                    },
+                                    "agency": {
+                                        "type": "string",
+                                        "example": "1963-4"
+                                    },
+                                    "account": {
+                                        "type": "string",
+                                        "example": "10555-9"
+                                    },
+                                    "bank": {
+                                        "type": "string",
+                                        "example": "Banco do brasil"
+                                    },
+                                    "advocate_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "client_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contrato criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/contract/{id}": {
+            "get": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Obtém um contrato pelo seu identificador",
+                "description": "Obtém um contrato pelo seu identificador",
+                "operationId": "ccf518a275aac5692e24a0432ae6899c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contrato."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/contracts/{id}": {
+            "put": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Atualiza um contrato",
+                "description": "Atualiza um contrato",
+                "operationId": "1775c75ca8553753b7be268da2fce79a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Identificador do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Data inicial do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "2021-12-01"
+                    },
+                    {
+                        "name": "finish_date",
+                        "in": "query",
+                        "description": "Data final do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "2021-12-01"
+                    },
+                    {
+                        "name": "payment_day",
+                        "in": "query",
+                        "description": "Dia do pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "contract_price",
+                        "in": "query",
+                        "description": "Preço do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "fine_price",
+                        "in": "query",
+                        "description": "Valor da multa",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "agency",
+                        "in": "query",
+                        "description": "Agência para pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "account",
+                        "in": "query",
+                        "description": "Conta para pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "bank",
+                        "in": "query",
+                        "description": "Banco para pagamento",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contrato atualizado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/contracts/canceled": {
+            "put": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Cancela um contrato",
+                "description": "Cancela um contrato",
+                "operationId": "edda32ad2dc30f2805520e23227fccd1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "query",
+                        "description": "Identificador do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "canceled",
+                        "in": "query",
+                        "description": "Data de cancelamento do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "2021-12-01"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Contrato cancelado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/identity": {
             "post": {
                 "tags": [

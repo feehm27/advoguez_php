@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdvocateController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
@@ -78,6 +79,17 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('', [UserController::class, 'index']);
 		Route::put('/block', [UserController::class, 'lockOrUnlock']);
 		Route::put('/{id}', [UserController::class, 'update']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão de contratos
+	 */
+	Route::prefix('advocates/contracts')->group(function () {
+		Route::get('', [ContractController::class, 'index']);
+		Route::get('/{id}', [ContractController::class, 'show']);
+		Route::post('', [ContractController::class, 'store']);
+		Route::put('/{id}', [ContractController::class, 'update']);
+		Route::put('/canceled', [ContractController::class, 'canceled']);
 	});
 
 	/**
