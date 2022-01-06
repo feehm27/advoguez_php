@@ -31,8 +31,8 @@ class Store extends FormRequest
     public function rules()
     {
         return [              
-            'start_date'        => 'required|data|date_format:YYYY-MM-DD',
-            'finish_date'       => 'required|data|date_format:YYYY-MM-DD',
+            'start_date'        => 'required|date_format:Y-m-d',
+            'finish_date'       => 'required|date_format:Y-m-d',
             'payment_day'       => 'required|integer',
             'contract_price'    => 'required|string',
             'fine_price'        => 'required|string',

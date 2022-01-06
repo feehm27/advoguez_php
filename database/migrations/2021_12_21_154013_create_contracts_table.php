@@ -19,8 +19,8 @@ class CreateContractsTable extends Migration
             $table->date('start_date');
             $table->date('finish_date');
             $table->integer('payment_day');
-            $table->double('contract_price', 8,2);
-            $table->double('fine_price', 8,2);
+            $table->double('contract_price', 15,2);
+            $table->double('fine_price', 15,2);
             $table->string('agency', 6);
 			$table->string('account', 30);
 			$table->string('bank', 100);
