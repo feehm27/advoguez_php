@@ -34,16 +34,14 @@ class Update extends FormRequest
     {
         return [       
             'id'                => 'required|integer',       
-            'start_date'        => 'required|date|date_format:YYYY-MM-DD',
-            'finish_date'       => 'required|date|date_format:YYYY-MM-DD',
+            'start_date'        => 'required|date_format:Y-m-d',
+            'finish_date'       => 'required|date_format:Y-m-d',
             'payment_day'       => 'required|integer',
             'contract_price'    => 'required|string',
             'fine_price'        => 'required|string',
             'agency'            => 'required|string',
             'account'           => 'required|string',
             'bank'              => 'required|string',
-            'client_id'         => 'required|integer',
-            'advocate_id'       => 'required|integer',
             'contract'          => 'required'
         ];
     }
@@ -68,15 +66,24 @@ class Update extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
+        if ($this->contract_price) {
+			$this->contract_price = str_replace(',', '.', $this->contract_price);
+		}
+
+        if ($this->fine_price) {
+			$this->fine_price = str_replace(',', '.', $this->fine_price);
+		}
+
 		$this->user = Auth::user();
-        
         $this->id = $this->route('id');
 		$this->contract = Contract::find($this->id);
 
 		$this->merge([
-			'contract' 	=> $this->contract,
-            'id'        => $this->id,
-            'user'      => $this->user
+			'contract' 	        => $this->contract,
+            'id'                => $this->id,
+            'user'              => $this->user,
+            'contract_price'    => $this->contract_price,
+            'fine_price'        => $this->fine_price
 		]);
 	}
 

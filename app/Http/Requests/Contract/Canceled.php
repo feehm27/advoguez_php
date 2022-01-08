@@ -10,6 +10,7 @@ use App\Http\Utils\StatusCodeUtils;
 
 //Model
 use App\Models\Contract;
+use Carbon\Carbon;
 
 class Canceled extends FormRequest
 {
@@ -31,9 +32,9 @@ class Canceled extends FormRequest
     public function rules()
     {
         return [
-            'id'        => 'required|integer',
-            'canceled'  => 'required|date|date_format:YYY-MM-DD',
-            'contract'  => 'required'
+            'contract_id'    => 'required|integer',
+            'canceled_at'    => 'required',
+            'contract'  	 => 'required'
         ];
     }
 
@@ -56,10 +57,12 @@ class Canceled extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->contract = Contract::find($this->id);
+		$this->contract = Contract::find($this->contract_id);
+		$this->canceled_at = Carbon::now();
 
 		$this->merge([
-			'contract' 	=> $this->contract,
+			'contract' 	   => $this->contract,
+ 			'canceled_at'  => $this->canceled_at
 		]);
 	}
 
