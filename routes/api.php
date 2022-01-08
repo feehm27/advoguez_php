@@ -88,8 +88,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('', [ContractController::class, 'index']);
 		Route::get('/{id}', [ContractController::class, 'show']);
 		Route::post('', [ContractController::class, 'store']);
-		Route::put('/{id}', [ContractController::class, 'update']);
 		Route::put('/canceled', [ContractController::class, 'canceled']);
+		Route::put('/{id}', [ContractController::class, 'update']);
 	});
 
 	/**

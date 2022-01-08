@@ -241,8 +241,6 @@ class ContractController extends Controller
                 'agency'            => $request->agency,
                 'account'           => $request->account,
                 'bank'              => $request->bank,
-                'client_id'         => $request->client_id,
-                'advocate_id'       => $request->advocate_id       
 			];
 
             $contract = $request->contract; 
@@ -294,9 +292,9 @@ class ContractController extends Controller
         try {
 
             $contract = $request->contract;
-            $canceled = $request->canceled;
+            $inputs = ["canceled_at" => $request->canceled_at];
 
-			$data = $this->repository->cancelContract($contract, $canceled);
+			$data = $this->repository->update($contract, $inputs);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,

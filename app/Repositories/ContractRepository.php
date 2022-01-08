@@ -2,6 +2,8 @@
 
 namespace App\Repositories;
 
+use App\Models\Advocate;
+use App\Models\Client;
 use App\Models\Contract;
 use JasonGuru\LaravelMakeRepository\Repository\BaseRepository;
 //use Your Model
@@ -19,9 +21,20 @@ class ContractRepository
     /**
      * Obtém os contratos do advogado
      */
-    public function getContracts(Int $advocateId)
+    public function getContracts(Int $advocateUserId)
     {
-        return $this->model->where('advocate_id', $advocateId)->get();
+        $contracts = $this->model->where('advocate_user_id', $advocateUserId)->get();
+
+        foreach($contracts as $contract) 
+        {
+            $client = Client::find($contract->client_id);
+            $contract->client = $client;
+
+            $advocate = Advocate::find($contract->advocate_id);
+            $contract->advocate = $advocate;
+        }
+
+        return $contracts;
     }
 
     /**
@@ -37,17 +50,6 @@ class ContractRepository
      */
     public function update(Contract $contract, Array $inputs)
     {
-		$contract->update($inputs);
-        return $contract;
+        return $this->model->where('id', $contract->id)->update($inputs);
     }
-
-    /**
-     * Cancela um contrato
-     */
-    public function cancelContract(Contract $contract, $canceledAt)
-    {
-        $contract->update(["canceled_at" => $canceledAt]);
-        return $contract;
-    }
-
 }
