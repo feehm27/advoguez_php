@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Contract\Canceled;
+use App\Http\Requests\Contract\Destroy;
 use App\Http\Requests\Contract\Index;
 use App\Http\Requests\Contract\Show;
 use App\Http\Requests\Contract\Store;
@@ -304,4 +305,40 @@ class ContractController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
     }
+
+    /**
+     * @OA\Delete(
+     *     tags={"Contract"},
+     *     summary="Deleta um contrato",
+     *     description="Deleta um contrato",
+     *     path="/advocates/contracts/{id}",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Deleta um contrato."),
+	 *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Identificador do contrato",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="integer",
+	 * 			)
+     *      ),
+     * ),
+     * 
+    */
+	public function destroy(Destroy $request)
+	{
+		try {
+
+			$contract = $request->contract;
+			$contract->delete();
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  []
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
 }

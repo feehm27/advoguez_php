@@ -36,7 +36,7 @@ class Update extends FormRequest
             'id'                => 'required|integer',       
             'start_date'        => 'required|date_format:Y-m-d',
             'finish_date'       => 'required|date_format:Y-m-d',
-            'payment_day'       => 'required|integer',
+            'payment_day'       => 'required|string',
             'contract_price'    => 'required|string',
             'fine_price'        => 'required|string',
             'agency'            => 'required|string',

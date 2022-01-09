@@ -57,8 +57,9 @@ class Destroy extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->user = Auth::user();
+		$this->id = $this->route('id');
         $this->client = Client::find($this->id);
-
+	
 		$this->merge([
 			'id'      => $this->id,
             'client'  => $this->client

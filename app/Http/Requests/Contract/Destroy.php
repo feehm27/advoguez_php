@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\Contract;
 
-class Store extends FormRequest
+class Destroy extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +21,7 @@ class Store extends FormRequest
     {
         if ($this->user->is_advocate == 1) return true;
 
-		return false;    
+		return false;   
     }
 
     /**
@@ -30,21 +31,13 @@ class Store extends FormRequest
      */
     public function rules()
     {
-        return [              
-            'start_date'        => 'required|date_format:Y-m-d',
-            'finish_date'       => 'required|date_format:Y-m-d',
-            'payment_day'       => 'required|string',
-            'contract_price'    => 'required|string',
-            'fine_price'        => 'required|string',
-            'agency'            => 'required|string',
-            'account'           => 'required|string',
-            'bank'              => 'required|string',
-            'client_id'         => 'required|integer',
-            'advocate_id'       => 'required|integer'
+        return [
+            'id'             => 'required|integer',
+            'contract'        => 'required'
         ];
     }
 
-    /**
+     /**
 	 * Get the error messages for the defined validation rules.
 	 *
 	 * @return array
@@ -52,8 +45,8 @@ class Store extends FormRequest
 	public function messages()
 	{
 		return [
-			'required' => "O campo :attribute é obrigatório",
-		];
+            "client.required"           => 'Cliente não encontrado.'
+        ];
 	}
 
     /**
@@ -64,6 +57,13 @@ class Store extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->user = Auth::user();
+		$this->id = $this->route('id');
+        $this->contract = Contract::find($this->id);
+
+		$this->merge([
+			'id'      	=> $this->id,
+            'contract'  => $this->contract
+		]);
 	}
 
     /**
@@ -79,4 +79,5 @@ class Store extends FormRequest
 		];
 		throw new HttpResponseException(response()->json($response, StatusCodeUtils::BAD_REQUEST));
 	}
+
 }

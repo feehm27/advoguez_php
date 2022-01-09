@@ -90,6 +90,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('', [ContractController::class, 'store']);
 		Route::put('/canceled', [ContractController::class, 'canceled']);
 		Route::put('/{id}', [ContractController::class, 'update']);
+		Route::delete('/{id}', [ContractController::class, 'destroy']);
 	});
 
 	/**

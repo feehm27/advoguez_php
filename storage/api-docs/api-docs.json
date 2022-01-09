@@ -923,6 +923,35 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Deleta um contrato",
+                "description": "Deleta um contrato",
+                "operationId": "14a0ce76adcc9120f554aa10a194f04e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta um contrato."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/advocates/contracts/canceled": {
