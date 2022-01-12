@@ -40,7 +40,8 @@ class Store extends FormRequest
             'account'           => 'required|string',
             'bank'              => 'required|string',
             'client_id'         => 'required|integer',
-            'advocate_id'       => 'required|integer'
+            'advocate_id'       => 'required|integer',
+            'advocate_user_id'  => 'required|integer'
         ];
     }
 
@@ -64,6 +65,10 @@ class Store extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->user = Auth::user();
+
+        $this->merge([
+			'advocate_user_id' 	=> $this->user->id,
+		]);
 	}
 
     /**

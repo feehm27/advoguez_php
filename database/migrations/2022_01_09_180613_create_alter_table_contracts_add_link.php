@@ -14,7 +14,7 @@ class CreateAlterTableContractsAddLink extends Migration
     public function up()
     {
         Schema::table('contracts', function (Blueprint $table) {
-            $table->string('link_contract')->after('client_id');
+            $table->string('link_contract')->after('client_id')->nullable();
             $table->string('payment_day')->change();
         });
     }

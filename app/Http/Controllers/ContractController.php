@@ -87,7 +87,8 @@ class ContractController extends Controller
                 'account'           => $request->account,
                 'bank'              => $request->bank,
                 'client_id'         => $request->client_id,
-                'advocate_id'       => $request->advocate_id       
+                'advocate_id'       => $request->advocate_id,
+                'advocate_user_id'  => $request->advocate_user_id    
 			];
 
 			$data = $this->repository->create($inputs);
@@ -293,13 +294,12 @@ class ContractController extends Controller
         try {
 
             $contract = $request->contract;
-            $inputs = ["canceled_at" => $request->canceled_at];
-
-			$data = $this->repository->update($contract, $inputs);
+            $contract->canceled_at = $request->canceled_at;
+            $contract->save();
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
-				'data' 			=>  $data,
+				'data' 			=>  $contract,
 			]);
 		} catch (Exception $error) {
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);

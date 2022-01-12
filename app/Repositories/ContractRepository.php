@@ -46,10 +46,10 @@ class ContractRepository
     {
         $contract = $this->model->create($inputs);
 
-        if($contract) {
+        if($contract) 
+        {
             $url = $this->generateContract($contract);
-            $contract->link_contract = $url;
-            $contract->save();
+            $contract = $this->model->where('id', $contract->id)->update(["link_contract" => $url]);
         }
 
         return $contract;
