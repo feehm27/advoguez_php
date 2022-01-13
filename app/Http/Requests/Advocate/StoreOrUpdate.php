@@ -85,10 +85,17 @@ class StoreOrUpdate extends FormRequest
 			$this->cep = str_replace($characters, '', $this->cep);
 		}
 
+		$characters = array('.', '/', '-');
+
+		$this->account = str_replace($characters, '', $this->account);
+		$this->agency = str_replace($characters, '', $this->agency);
+
 		$this->merge([
 			'user_id' 	=> $this->user->id,
 			'cpf'     	=> $this->cpf,
-			'cep'	  	=> $this->cep
+			'cep'	  	=> $this->cep,
+			'account'   => $this->account,
+			'agency'    => $this->agency
 		]);
 	}
 

@@ -25,7 +25,9 @@ class ContractRepository
      */
     public function getContracts(Int $advocateUserId)
     {
-        $contracts = $this->model->where('advocate_user_id', $advocateUserId)->get();
+        $contracts = $this->model->where('advocate_user_id', $advocateUserId)
+            ->orderBy('created_at', 'desc')
+                ->get();
 
         foreach($contracts as $contract) 
         {
