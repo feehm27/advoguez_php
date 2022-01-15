@@ -25,6 +25,8 @@ class Contract extends Model
         'account',
         'bank',
         'advocate_id',
-        'client_id'
+        'client_id',
+        'link_contract',
+        'advocate_user_id'
 	];
 }

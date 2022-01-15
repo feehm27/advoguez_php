@@ -7,6 +7,7 @@ use App\Http\Utils\MaskUtils;
 
 use App\Models\Client;
 use App\Models\ClientUser;
+use App\Models\Contract;
 use App\Models\MenuPermission;
 use App\Models\Message;
 use App\Models\User;
@@ -106,7 +107,15 @@ class ClientRepository
             });
         }
 
+        $contracts = Contract::where('client_id', $client->id)->get();
+        
+        if(!$contracts->isEmpty()) {
+            $contractIds = $contracts->pluck('id')->toArray();
+            Contract::whereIn('id', $contractIds)->delete();
+        }
+        
         $client->delete();
+
     }
 
     /**

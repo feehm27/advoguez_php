@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Contract\Canceled;
+use App\Http\Requests\Contract\Destroy;
 use App\Http\Requests\Contract\Index;
 use App\Http\Requests\Contract\Show;
 use App\Http\Requests\Contract\Store;
@@ -86,7 +87,8 @@ class ContractController extends Controller
                 'account'           => $request->account,
                 'bank'              => $request->bank,
                 'client_id'         => $request->client_id,
-                'advocate_id'       => $request->advocate_id       
+                'advocate_id'       => $request->advocate_id,
+                'advocate_user_id'  => $request->advocate_user_id    
 			];
 
 			$data = $this->repository->create($inputs);
@@ -292,16 +294,51 @@ class ContractController extends Controller
         try {
 
             $contract = $request->contract;
-            $inputs = ["canceled_at" => $request->canceled_at];
-
-			$data = $this->repository->update($contract, $inputs);
+            $contract->canceled_at = $request->canceled_at;
+            $contract->save();
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
-				'data' 			=>  $data,
+				'data' 			=>  $contract,
 			]);
 		} catch (Exception $error) {
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
     }
+
+    /**
+     * @OA\Delete(
+     *     tags={"Contract"},
+     *     summary="Deleta um contrato",
+     *     description="Deleta um contrato",
+     *     path="/advocates/contracts/{id}",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Deleta um contrato."),
+	 *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Identificador do contrato",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="integer",
+	 * 			)
+     *      ),
+     * ),
+     * 
+    */
+	public function destroy(Destroy $request)
+	{
+		try {
+
+			$contract = $request->contract;
+			$contract->delete();
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  []
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
 }

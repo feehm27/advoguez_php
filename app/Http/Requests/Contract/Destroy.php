@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Client;
+namespace App\Http\Requests\Contract;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
-use App\Models\Client;
+use App\Models\Contract;
 
 class Destroy extends FormRequest
 {
@@ -32,8 +32,8 @@ class Destroy extends FormRequest
     public function rules()
     {
         return [
-            'id'            => 'required|integer',
-            'client'        => 'required'
+            'id'             => 'required|integer',
+            'contract'        => 'required'
         ];
     }
 
@@ -58,11 +58,11 @@ class Destroy extends FormRequest
 	{
 		$this->user = Auth::user();
 		$this->id = $this->route('id');
-        $this->client = Client::find($this->id);
-	
+        $this->contract = Contract::find($this->id);
+
 		$this->merge([
-			'id'      => $this->id,
-            'client'  => $this->client
+			'id'      	=> $this->id,
+            'contract'  => $this->contract
 		]);
 	}
 
