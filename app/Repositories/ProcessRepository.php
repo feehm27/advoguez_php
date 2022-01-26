@@ -16,6 +16,22 @@ class ProcessRepository
 	}
 
     /**
+     * Obtém os processos do advogado
+     */
+    public function getProcesses(Int $advocateUserId)
+    {
+        $processes = $this->model->where('advocate_user_id', $advocateUserId)
+            ->orderBy('created_at', 'desc')
+                ->get();
+
+        foreach($processes as $process) {
+            $process->client = $process->client()->first();
+        }
+
+        return $processes;
+    }
+
+    /**
      * Cria um processo
      */
     public function create(Array $inputs) 
@@ -38,14 +54,9 @@ class ProcessRepository
      */
     public function update(Process $process, Array $inputs)
     {
-        $file = $inputs['file'];
-
-        if($file) {
-           $link = $this->uploadProcess($file, $process->client_id, $process->id);
+        if(isset($inputs['file'])){
+           $link = $this->uploadProcess($inputs['file'], $process->client_id, $process->id);
            $inputs['file'] = $link;
-
-        }else {
-            unset($inputs['file']);
         }
 
         $process->update($inputs);
@@ -59,9 +70,9 @@ class ProcessRepository
      */
     private function uploadProcess($file, $clientId, $processId) 
     {
-        $path = $clientId.'/processes/'.$processId;
+        $path = 'processes/'.$processId;
         Storage::disk('s3')->deleteDirectory($path);
-
+        
         $upload = Storage::disk('s3')->put($path, $file);
         $urlPublic = Storage::disk('s3')->url($upload);
 

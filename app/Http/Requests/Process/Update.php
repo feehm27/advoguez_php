@@ -35,11 +35,10 @@ class Update extends FormRequest
             'labor_stick'       => 'required|string',
             'petition'          => 'required|string',
             'status'            => 'required|string',
-            'file'              => 'required|mimes:pdf',
+            'file'              => 'nullable|mimes:pdf',
             'start_date'        => 'required|date_format:Y-m-d',
             'end_date'          => 'nullable|date_format:Y-m-d',
             'observations'      => 'nullable|string',
-            'client_id'         => 'required|integer',
         ];
     }
 
@@ -64,21 +63,48 @@ class Update extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
+        $this->user = Auth::user();
+        $this->id = $this->route('id');
+		$this->process = Process::find($this->id);
+
         $characters = array('.', '/', '-', ',');
+
+        if($this->values) {
+
+            $this->values = json_decode($this->values);
+            $this->number = $this->values->number;
+            $this->labor_stick = $this->values->labor_stick;
+            $this->petition = $this->values->petition;
+            $this->status = $this->values->status;
+            $this->start_date = $this->values->start_date;
+            $this->start_date = $this->values->start_date;
+          
+            if(isset($this->values->end_date)){
+                $this->end_date = $this->values->end_date;
+            }else{
+                $this->end_date = null;
+            }
+
+            $this->observations = $this->values->observations;
+        }
 
         if ($this->number) {
             $this->number = str_replace($characters, '', $this->number);
 		}
 
-		$this->user = Auth::user();
-        $this->id = $this->route('id');
-		$this->process = Process::find($this->id);
-
         $this->merge([
-            'id'            => $this->id,
-            'number'        => $this->number,
-            'process'       => $this->process,
-            'user'          => $this->user
+            'id'                => $this->id,
+            'number'            => $this->number,
+            'process'           => $this->process,
+            'user'              => $this->user,
+            'number'            => $this->number,
+            'labor_stick'       => $this->labor_stick,
+            'petition'          => $this->petition,
+            'status'            => $this->status,
+            'start_date'        => $this->start_date,
+            'end_date'          => $this->end_date,
+            'observations'      => $this->observations,
+            'user'              => $this->user,
 		]);
 	}
 

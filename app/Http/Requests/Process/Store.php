@@ -40,6 +40,7 @@ class Store extends FormRequest
             'start_date'        => 'required|date_format:Y-m-d',
             'end_date'          => 'nullable|date_format:Y-m-d',
             'observations'      => 'nullable|string',
+            'advocate_user_id'  => 'required|integer'
         ];
     }
 
@@ -65,6 +66,22 @@ class Store extends FormRequest
 	{
         $characters = array('.', '/', '-', ',');
 
+        if($this->values){
+
+            $this->values = json_decode($this->values);
+            $this->number = $this->values->number;
+            $this->labor_stick = $this->values->labor_stick;
+            $this->petition = $this->values->petition;
+            $this->status = $this->values->status;
+            $this->start_date = $this->values->start_date;
+            $this->start_date = $this->values->start_date;
+            $this->client_id = $this->values->client_id;
+            if(isset($this->values->end_date)){
+                $this->end_date = $this->values->end_date;
+            }
+            $this->observations = $this->values->observations;
+        }
+
         if ($this->number) {
             $this->number = str_replace($characters, '', $this->number);
 		}
@@ -72,8 +89,16 @@ class Store extends FormRequest
 		$this->user = Auth::user();
 
         $this->merge([
-			'number'        => $this->number,
-            'user'          => $this->user,
+			'number'            => $this->number,
+            'labor_stick'       => $this->labor_stick,
+            'petition'          => $this->petition,
+            'status'            => $this->status,
+            'start_date'        => $this->start_date,
+            'end_date'          => $this->end_date,
+            'observations'      => $this->observations,
+            'user'              => $this->user,
+            'advocate_user_id' 	=> $this->user->id,
+            'client_id'         => $this->client_id
 		]);
 	}
 

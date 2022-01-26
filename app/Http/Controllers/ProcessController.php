@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Process\Destroy;
+use App\Http\Requests\Process\Index;
 use App\Http\Requests\Process\Store;
 use App\Http\Requests\Process\Update;
 use App\Http\Utils\StatusCodeUtils;
@@ -14,6 +16,33 @@ class ProcessController extends Controller
 	{
 		$this->repository = $repository;
 	}
+
+    /**
+     * @OA\Get(
+     *     tags={"Process"},
+     *     summary="Obtém a lista de processos do advogado",
+     *     description="Obtém a lista de processos do advogado",
+     *     path="/advocates/processes",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Lista de processos."),
+     * ),
+     * 
+    */
+    public function index(Index $request)
+    {
+        try {
+
+			$advocateUserId = $request->user->id;
+			$data = $this->repository->getProcesses($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+    }
 
     /**
      * @OA\Post(
@@ -54,6 +83,7 @@ class ProcessController extends Controller
 		try {
 
 			$inputs = [     
+                'number'            => $request->number,
                 'labor_stick'       => $request->labor_stick,
                 'petition'          => $request->petition,
                 'status'            => $request->status,
@@ -62,6 +92,7 @@ class ProcessController extends Controller
                 'end_date'          => $request->end_date,
                 'observations'      => $request->observations,
                 'client_id'         => $request->client_id,
+                'advocate_user_id'  => $request->advocate_user_id
 			];
 
 			$data = $this->repository->create($inputs);
@@ -159,11 +190,14 @@ class ProcessController extends Controller
                 'labor_stick'       => $request->labor_stick,
                 'petition'          => $request->petition,
                 'status'            => $request->status,
-                'file'              => $request->file,
                 'start_date'        => $request->start_date,
                 'end_date'          => $request->end_date,
                 'observations'      => $request->observations,
 			];
+
+            if($request->file){
+                $inputs['file'] = $request->file;
+            }
 
             $process = $request->process; 
 
@@ -178,4 +212,39 @@ class ProcessController extends Controller
 		}
 	}
 
+    /**
+     * @OA\Delete(
+     *     tags={"Process"},
+     *     summary="Deleta um processo",
+     *     description="Deleta um processo",
+     *     path="/advocates/processes/{id}",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Deleta um processo."),
+	 *      @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Identificador do processo",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="integer",
+	 * 			)
+     *      ),
+     * ),
+     * 
+    */
+	public function destroy(Destroy $request)
+	{
+		try {
+
+			$process = $request->process;
+			$process->delete();
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  []
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -820,14 +820,14 @@
                 ]
             }
         },
-        "/advocates/processes/{id}": {
+        "/advocates/contracts/{id}": {
             "put": {
                 "tags": [
-                    "Process"
+                    "Contract"
                 ],
-                "summary": "Atualiza um processo",
-                "description": "Atualiza um processo",
-                "operationId": "060d543bac97f71cdbd2a813f41f86e2",
+                "summary": "Atualiza um contrato",
+                "description": "Atualiza um contrato",
+                "operationId": "1775c75ca8553753b7be268da2fce79a",
                 "parameters": [
                     {
                         "name": "id",
@@ -923,6 +923,35 @@
                         "bearerAuth": []
                     }
                 ]
+            },
+            "delete": {
+                "tags": [
+                    "Contract"
+                ],
+                "summary": "Deleta um contrato",
+                "description": "Deleta um contrato",
+                "operationId": "14a0ce76adcc9120f554aa10a194f04e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do contrato",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta um contrato."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/advocates/contracts/canceled": {
@@ -957,37 +986,6 @@
                 "responses": {
                     "200": {
                         "description": "Contrato cancelado."
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/advocates/contracts/{id}": {
-            "delete": {
-                "tags": [
-                    "Contract"
-                ],
-                "summary": "Deleta um contrato",
-                "description": "Deleta um contrato",
-                "operationId": "14a0ce76adcc9120f554aa10a194f04e",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Identificador do contrato",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Deleta um contrato."
                     }
                 },
                 "security": [
@@ -1082,6 +1080,24 @@
             }
         },
         "/advocates/processes": {
+            "get": {
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Obtém a lista de processos do advogado",
+                "description": "Obtém a lista de processos do advogado",
+                "operationId": "579788dde7f9f14fd6917247e97caf0f",
+                "responses": {
+                    "200": {
+                        "description": "Lista de processos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
             "post": {
                 "tags": [
                     "Process"
@@ -1233,6 +1249,37 @@
                 "responses": {
                     "200": {
                         "description": "Processo atualizado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/processes/{id}": {
+            "delete": {
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Deleta um processo",
+                "description": "Deleta um processo",
+                "operationId": "844f556563acbcbe03b4242258515bd0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do processo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta um processo."
                     }
                 },
                 "security": [
