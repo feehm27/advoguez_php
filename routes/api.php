@@ -7,6 +7,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -91,6 +92,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::put('/canceled', [ContractController::class, 'canceled']);
 		Route::put('/{id}', [ContractController::class, 'update']);
 		Route::delete('/{id}', [ContractController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão de processos
+	 */
+	Route::prefix('advocates/processes')->group(function () {
+		Route::get('', [ProcessController::class, 'index']);
+		Route::post('', [ProcessController::class, 'store']);
+		Route::post('/{id}', [ProcessController::class, 'update']);
+		Route::delete('/{id}', [ProcessController::class, 'destroy']);
 	});
 
 	/**

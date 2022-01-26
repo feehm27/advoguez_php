@@ -1079,6 +1079,216 @@
                 ]
             }
         },
+        "/advocates/processes": {
+            "get": {
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Obtém a lista de processos do advogado",
+                "description": "Obtém a lista de processos do advogado",
+                "operationId": "579788dde7f9f14fd6917247e97caf0f",
+                "responses": {
+                    "200": {
+                        "description": "Lista de processos."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Cadastra um novo processo",
+                "description": "Cria um novo processo",
+                "operationId": "611b80c986eec1e8fddad72b1cd1d0e1",
+                "parameters": [
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "Identificador do cliente",
+                        "required": true,
+                        "schema": {
+                            "type": "file"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "number": {
+                                        "type": "string",
+                                        "example": "5074276-41.2019.8.13.00152"
+                                    },
+                                    "labor_stick": {
+                                        "type": "string",
+                                        "example": "5 vara do trabalho"
+                                    },
+                                    "petition": {
+                                        "type": "string",
+                                        "example": "Pensão alimenticia"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Petição inicial"
+                                    },
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "observations": {
+                                        "type": "string",
+                                        "example": "Observação"
+                                    },
+                                    "client_id": {
+                                        "type": "integer",
+                                        "example": "2"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Processo criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "advocates/processes/{id}": {
+            "put": {
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Atualiza um processo",
+                "description": "Atualiza um processo",
+                "operationId": "30bea301372cd24cbfd2778ae568bac7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do processo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "labor_stick",
+                        "in": "query",
+                        "description": "Vara do trabalho",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "5 vara da familia"
+                    },
+                    {
+                        "name": "petition",
+                        "in": "query",
+                        "description": "Assunto da petição",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "file",
+                        "in": "query",
+                        "description": "Arquivo anexado do processo",
+                        "required": true,
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Data de inicio",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "agency",
+                        "in": "query",
+                        "description": "Data de encerramento",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        }
+                    },
+                    {
+                        "name": "observation",
+                        "in": "query",
+                        "description": "Observações",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Processo atualizado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/processes/{id}": {
+            "delete": {
+                "tags": [
+                    "Process"
+                ],
+                "summary": "Deleta um processo",
+                "description": "Deleta um processo",
+                "operationId": "844f556563acbcbe03b4242258515bd0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do processo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta um processo."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/advocates/users": {
             "get": {
                 "tags": [
