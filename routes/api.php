@@ -8,6 +8,7 @@ use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProcessController;
+use App\Http\Controllers\ProcessHistoryController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -95,6 +96,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 
 	/**
+	 * Rotas necessárias para a gestão de histórico dos processos
+	 */
+	Route::prefix('advocates/processes/history')->group(function () {
+		Route::get('', [ProcessHistoryController::class, 'index']);
+		Route::post('', [ProcessHistoryController::class, 'store']);
+		Route::delete('/{id}', [ProcessHistoryController::class, 'destroy']);
+	});
+
+	/**
 	 * Rotas necessárias para a gestão de processos
 	 */
 	Route::prefix('advocates/processes')->group(function () {
@@ -103,7 +113,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('/{id}', [ProcessController::class, 'update']);
 		Route::delete('/{id}', [ProcessController::class, 'destroy']);
 	});
-
+	
 	/**
 	 * Rotas necessárias para as mensagens do cliente e do advogado
 	 */
