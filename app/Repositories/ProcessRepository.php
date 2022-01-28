@@ -25,8 +25,11 @@ class ProcessRepository
                 ->get();
 
         foreach($processes as $process) {
+            
             $process->client = $process->client()->first();
-            $process->historics = $process->historics()->get();
+
+            $process->historics = $process->historics()
+                ->orderBy('modification_date', 'desc')->get();
         }
 
         return $processes;
