@@ -10,20 +10,21 @@ use App\Http\Requests\ProcessHistory\Store;
 use App\Http\Utils\StatusCodeUtils;
 
 //Repositories
-use App\Repositories\ProcessHistoryRepository;
+use App\Repositories\ProcessHistoricRepository;
+
 
 use Exception;
 
-class ProcessHistoryController extends Controller
+class ProcessHistoricController extends Controller
 {
-    public function __construct(ProcessHistoryRepository $repository)
+    public function __construct(ProcessHistoricRepository $repository)
 	{
 		$this->repository = $repository;
 	}
 
     /**
      * @OA\Get(
-     *     tags={"ProcessHistory"},
+     *     tags={"ProcessHistoric"},
      *     summary="Obtém a lista de historico de um processo",
      *     description="Obtém a lista de historico de um proceso",
      *     path="/advocates/processes/history",
@@ -50,7 +51,7 @@ class ProcessHistoryController extends Controller
 
     /**
      * @OA\Post(
-     *     tags={"ProcessHistory"},
+     *     tags={"ProcessHistoric"},
      *     summary="Cadastra um novo historico do processo",
      *     description="Cadastra um novo historico do processo",
      *     path="/advocates/processes/history",
@@ -93,7 +94,7 @@ class ProcessHistoryController extends Controller
 
     /**
      * @OA\Delete(
-     *     tags={"ProcessHistory"},
+     *     tags={"ProcessHistoric"},
      *     summary="Deleta o histórico de um processo",
      *     description="Deleta o histórico de um processo",
      *     path="/advocates/processes/history/{id}",

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProcessHistoriesTable extends Migration
+class CreateProcessHistoricsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateProcessHistoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('process_histories', function (Blueprint $table) {
+        Schema::create('process_historics', function (Blueprint $table) {
             $table->id();
             $table->date('modification_date');
             $table->string('status_process');
@@ -33,6 +33,6 @@ class CreateProcessHistoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('process_histories');
+        Schema::dropIfExists('process_historics');
     }
 }

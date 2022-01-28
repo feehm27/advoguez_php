@@ -8,7 +8,7 @@ use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProcessController;
-use App\Http\Controllers\ProcessHistoryController;
+use App\Http\Controllers\ProcessHistoricController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -98,10 +98,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	/**
 	 * Rotas necessárias para a gestão de histórico dos processos
 	 */
-	Route::prefix('advocates/processes/history')->group(function () {
-		Route::get('', [ProcessHistoryController::class, 'index']);
-		Route::post('', [ProcessHistoryController::class, 'store']);
-		Route::delete('/{id}', [ProcessHistoryController::class, 'destroy']);
+	Route::prefix('advocates/processes/historic')->group(function () {
+		Route::get('', [ProcessHistoricController::class, 'index']);
+		Route::post('', [ProcessHistoricController::class, 'store']);
+		Route::delete('/{id}', [ProcessHistoricController::class, 'destroy']);
 	});
 
 	/**

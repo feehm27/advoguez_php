@@ -2,14 +2,15 @@
 
 namespace App\Repositories;
 
+use App\Models\ProcessHistoric;
 use App\Models\ProcessHistory;
 
 /**
- * Class ProcessHistoryRepository.
+ * Class ProcessHistoricRepository.
  */
-class ProcessHistoryRepository 
+class ProcessHistoricRepository 
 {
-    public function __construct(ProcessHistory $model)
+    public function __construct(ProcessHistoric $model)
 	{
 		$this->model = $model;
 	}

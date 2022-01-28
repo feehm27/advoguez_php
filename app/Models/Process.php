@@ -32,4 +32,9 @@ class Process extends Model
 	{
 		return $this->hasMany('App\Models\Client', 'id', 'client_id');
 	}
+
+	public function historics()
+	{
+		return $this->hasMany('App\Models\ProcessHistoric', 'process_id', 'id');
+	}
 }

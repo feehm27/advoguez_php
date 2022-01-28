@@ -26,6 +26,7 @@ class ProcessRepository
 
         foreach($processes as $process) {
             $process->client = $process->client()->first();
+            $process->historics = $process->historics()->get();
         }
 
         return $processes;
