@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
-use App\Models\ProcessHistory;
+use App\Models\ProcessHistoric;
 
 class Destroy extends FormRequest
 {
@@ -59,7 +59,7 @@ class Destroy extends FormRequest
 		$this->user = Auth::user();
 		$this->id = $this->route('id');
 
-        $this->processHistory = ProcessHistory::find($this->id);
+        $this->processHistory = ProcessHistoric::find($this->id);
 
 		$this->merge([
 			'id'      	        => $this->id,
