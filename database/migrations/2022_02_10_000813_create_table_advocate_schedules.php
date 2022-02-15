@@ -16,7 +16,7 @@ class CreateTableAdvocateSchedules extends Migration
         Schema::create('advocate_schedules', function (Blueprint $table) {
             $table->id();
             $table->date('date');
-            $table->json('horarys');
+            $table->text('horarys');
             $table->integer('time_type');
             $table->string('color');
             $table->unsignedBigInteger('client_id')->nullable();
