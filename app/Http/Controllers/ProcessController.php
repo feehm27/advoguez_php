@@ -236,12 +236,11 @@ class ProcessController extends Controller
 	{
 		try {
 
-			$process = $request->process;
-			$process->delete();
+            $data = $this->repository->deleteProcessAndHistorics($request->process);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
-				'data' 			=>  []
+				'data' 			=>  $data
 			]);
 		} catch (Exception $error) {
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);

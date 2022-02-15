@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdvocateController;
+use App\Http\Controllers\AdvocateScheduleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProcessController;
+use App\Http\Controllers\ProcessHistoricController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -95,6 +97,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 
 	/**
+	 * Rotas necessárias para a gestão de histórico dos processos
+	 */
+	Route::prefix('advocates/processes/historic')->group(function () {
+		Route::get('', [ProcessHistoricController::class, 'index']);
+		Route::post('', [ProcessHistoricController::class, 'store']);
+		Route::delete('/{id}', [ProcessHistoricController::class, 'destroy']);
+	});
+
+	/**
 	 * Rotas necessárias para a gestão de processos
 	 */
 	Route::prefix('advocates/processes')->group(function () {
@@ -104,6 +115,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::delete('/{id}', [ProcessController::class, 'destroy']);
 	});
 
+	/**
+	 * Rotas necessárias para a gestão da agenda do advogado
+	 */
+	Route::prefix('advocates/schedules')->group(function () {
+		Route::get('', [AdvocateScheduleController::class, 'index']);
+		Route::post('', [AdvocateScheduleController::class, 'store']);
+		Route::delete('', [AdvocateScheduleController::class, 'destroy']);
+	});
+	
 	/**
 	 * Rotas necessárias para as mensagens do cliente e do advogado
 	 */

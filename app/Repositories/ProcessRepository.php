@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Process;
+use App\Models\ProcessHistoric;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -25,7 +26,11 @@ class ProcessRepository
                 ->get();
 
         foreach($processes as $process) {
+            
             $process->client = $process->client()->first();
+
+            $process->historics = $process->historics()
+                ->orderBy('modification_date', 'desc')->get();
         }
 
         return $processes;
@@ -38,7 +43,7 @@ class ProcessRepository
     {
         $file = $inputs['file'];
         $clientId = $inputs['client_id'];
-        unset($inputs['file']);
+        $inputs['file'] = '';
 
         $process = $this->model->create($inputs);
         $link = $this->uploadProcess($file, $clientId, $process->id);
@@ -64,7 +69,18 @@ class ProcessRepository
         return $process;
     }
 
+    public function deleteProcessAndHistorics($process)
+    {
+        $historics = $process->historics()->get();
 
+        if(!$historics->isEmpty())
+        {
+            $historicsIds = $historics->pluck('id')->toArray();
+            ProcessHistoric::whereIn('id', $historicsIds)->delete();
+        }
+
+		return $process->delete();
+    }
     /**
      * Faz upload do processo
      */

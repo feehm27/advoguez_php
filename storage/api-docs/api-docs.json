@@ -125,6 +125,79 @@
                 ]
             }
         },
+        "/advocates/schedules": {
+            "get": {
+                "tags": [
+                    "AdvocateSchedule"
+                ],
+                "summary": "Obtém os dados da agenda do advogado",
+                "description": "Obtém os dados da agenda do advogado",
+                "operationId": "2c7e5a700ba06f5de30e0e61b713fdd8",
+                "parameters": [
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "description": "Data a ser pesquisada",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Agenda."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "AdvocateSchedule"
+                ],
+                "summary": "Cadastra os horários na agenda",
+                "description": "Cadastra os horários na agenda",
+                "operationId": "b01298f768d6612680713b71aa4a23bb",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "date": {
+                                        "type": "date",
+                                        "example": "2021-05-21"
+                                    },
+                                    "horarys": {
+                                        "type": "json",
+                                        "example": "[{08:30, 09:00}]"
+                                    },
+                                    "time_type": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Agenda atualizada."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/register": {
             "post": {
                 "tags": [
@@ -1280,6 +1353,103 @@
                 "responses": {
                     "200": {
                         "description": "Deleta um processo."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/processes/history": {
+            "get": {
+                "tags": [
+                    "ProcessHistoric"
+                ],
+                "summary": "Obtém a lista de historico de um processo",
+                "description": "Obtém a lista de historico de um proceso",
+                "operationId": "db3f09ed624143925960d5f90adbb958",
+                "responses": {
+                    "200": {
+                        "description": "Lista de historicos de um processo."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "ProcessHistoric"
+                ],
+                "summary": "Cadastra um novo historico do processo",
+                "description": "Cadastra um novo historico do processo",
+                "operationId": "e8b336cab1b122dbb12f731adeb30d76",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "modification_date": {
+                                        "type": "string",
+                                        "example": "2022-01-03"
+                                    },
+                                    "status_process": {
+                                        "type": "date",
+                                        "example": "Petição Inicial"
+                                    },
+                                    "modification_description": {
+                                        "type": "string",
+                                        "example": "Alteração do status do processo."
+                                    },
+                                    "process_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Historico criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/processes/history/{id}": {
+            "delete": {
+                "tags": [
+                    "ProcessHistoric"
+                ],
+                "summary": "Deleta o histórico de um processo",
+                "description": "Deleta o histórico de um processo",
+                "operationId": "08628a9b2c2e8bacd839ab6feeee39f0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do historico do processo",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta o historico de um processo."
                     }
                 },
                 "security": [
