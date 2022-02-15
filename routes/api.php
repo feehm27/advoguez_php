@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdvocateController;
+use App\Http\Controllers\AdvocateScheduleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
@@ -112,6 +113,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('', [ProcessController::class, 'store']);
 		Route::post('/{id}', [ProcessController::class, 'update']);
 		Route::delete('/{id}', [ProcessController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão da agenda do advogado
+	 */
+	Route::prefix('advocates/schedules')->group(function () {
+		Route::get('', [AdvocateScheduleController::class, 'index']);
+		Route::post('', [AdvocateScheduleController::class, 'store']);
+		Route::delete('', [AdvocateScheduleController::class, 'destroy']);
 	});
 	
 	/**
