@@ -5,6 +5,7 @@ use App\Http\Controllers\AdvocateScheduleController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ContractController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
@@ -131,6 +132,15 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('', [MessageController::class, 'index']);
 		Route::get('sent', [MessageController::class, 'getMessagesSent']);
 		Route::post('', [MessageController::class, 'store']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão da agenda do advogado
+	 */
+	Route::prefix('advocates/dashboard')->group(function () {
+		Route::get('count/clients', [DashboardController::class, 'countClients']);
+		Route::get('count/contracts', [DashboardController::class, 'countContracts']);
+		Route::get('processes', [DashboardController::class, 'getProcesses']);
 	});
 });
 
