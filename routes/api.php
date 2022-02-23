@@ -145,6 +145,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('clients', [DashboardController::class, 'getClients']);
 		Route::get('profit', [DashboardController::class, 'getAnnualProfit']);
 	});
+
+	/**
+	 * Rotas necessárias para a gestão da agenda do advogado
+	 */
+	Route::prefix('clients/dashboard')->group(function () {
+		Route::get('process', [DashboardController::class, 'getProcessByClient']);
+		Route::get('contract', [DashboardController::class, 'getContractByClient']);
+	});
 });
 
 Route::post('/register', [AuthController::class, 'register']);

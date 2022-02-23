@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Http\Utils\ProcessesUtils;
 use App\Models\Client;
+use App\Models\ClientUser;
 use App\Models\Contract;
 use App\Models\Process;
 use Carbon\Carbon;
@@ -150,4 +151,51 @@ class DashboardRepository
             'data' => $contractsSum
         ];
     }   
+
+    public function getProcessByClient($userId)
+    {
+        $status = null;
+        $lastModification = null;
+        $clientId = ClientUser::where('user_id', $userId)->first()->client_id;
+      
+        $process = $this->process->where('client_id', $clientId)->first();
+        
+        if($process) {
+
+            $historics = $process->historics()->orderBy('modification_date', 'desc')->get();
+        
+            if(!$historics->isEmpty()) {
+                $historic = $historics->first();
+                $status = $historic->status_process;
+                $lastModification = $historic->modification_date;
+            }else{
+                $status = $process->status;
+                $lastModification = $process->start_date;
+            }
+        }
+
+        return [
+            'status'  => $status,
+            'date' => $lastModification
+        ];
+    }
+
+    public function getContractByClient($userId)
+    {
+        $startDate = null;
+        $endDate = null;
+        $clientId = ClientUser::where('user_id', $userId)->first()->client_id;
+       
+        $contract = $this->contract->where('client_id', $clientId)->orderBy('created_at', 'desc')->first();
+
+        if($contract){
+            $startDate = $contract->start_date;
+            $endDate = $contract->finish_date;
+        }
+
+        return [
+            "start_date" => $startDate,
+            "end_date"  => $endDate
+        ];
+    }
 }
