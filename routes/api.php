@@ -153,6 +153,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('process', [DashboardController::class, 'getProcessByClient']);
 		Route::get('contract', [DashboardController::class, 'getContractByClient']);
 	});
+
+	/**
+	 * Rotas necessárias para a gestão de contratos do cliente
+	 */
+	Route::prefix('clients/contracts')->group(function () {
+		Route::get('', [ContractController::class, 'getContractByClient']);
+	});
+
 });
 
 Route::post('/register', [AuthController::class, 'register']);

@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Models\Advocate;
 use App\Models\Client;
+use App\Models\ClientUser;
 use App\Models\Contract;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -103,4 +104,18 @@ class ContractRepository
 
         return Storage::disk('s3')->url($path);
     }
+
+    /**
+     * Obtém o contrato do cliente
+     */
+    public function getContractByClient(Int $userId)
+    {
+        $clientId = ClientUser::where('user_id', $userId)->first()->client_id;
+
+        $contract = $this->model
+            ->where('client_id', $clientId)->orderBy('created_at', 'desc')
+            ->first();
+
+        return $contract;
+    } 
 }
