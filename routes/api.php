@@ -141,6 +141,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('count/clients', [DashboardController::class, 'countClients']);
 		Route::get('count/contracts', [DashboardController::class, 'countContracts']);
 		Route::get('processes', [DashboardController::class, 'getProcesses']);
+		Route::get('contracts', [DashboardController::class, 'getContracts']);
+		Route::get('clients', [DashboardController::class, 'getClients']);
+		Route::get('profit', [DashboardController::class, 'getAnnualProfit']);
 	});
 });
 

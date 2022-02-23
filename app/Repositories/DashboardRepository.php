@@ -8,6 +8,7 @@ use App\Models\Contract;
 use App\Models\Process;
 use Carbon\Carbon;
 
+
 /**
  * Class DashboardRepository.
  */
@@ -82,4 +83,71 @@ class DashboardRepository
             'backgrounds'   => $backgrounds
         ];
     }
+
+    public function getContracts($advocateUserId) 
+    {
+        $contractsActives = [];
+        $contractsInactives = [];
+
+        for ($index = 1; $index <= 12; $index++) {
+            
+            $startDayOfMonth = date('Y-m-d', mktime(0,0,0, $index, 1, date('Y')));
+            $endDayOfMonth = Carbon::parse($startDayOfMonth)->endOfMonth()->format('Y-m-d');
+            
+            $contractActive =  $this->contract->where('advocate_user_id', $advocateUserId)
+                ->whereBetween('start_date', [$startDayOfMonth, $endDayOfMonth])->count();
+            array_push($contractsActives,$contractActive);
+
+            $contractInactive =  $this->contract->where('advocate_user_id', $advocateUserId)
+                ->whereBetween('finish_date', [$startDayOfMonth, $endDayOfMonth])
+                ->count();
+
+            array_push($contractsInactives, $contractInactive);
+        }
+
+        return [
+            'contracts_actives' =>  $contractsActives,
+            'contracts_inactives' => $contractsInactives
+        ];
+    }
+    
+    public function getClients($advocateUserId)
+    {
+        $passYear = Carbon::now()->subYear()->format('Y');
+
+        $passClients = $this->client->where('advocate_user_id', $advocateUserId)
+            ->where('created_at', 'LIKE', '%'.$passYear.'%')->count();
+    
+        $currentYear = Carbon::now()->format('Y');
+        $currentClients = $this->client->where('advocate_user_id', $advocateUserId)
+            ->where('created_at', 'LIKE', '%'.$currentYear.'%')->count();
+
+        return [
+            'data'      =>  [$passClients, $currentClients],
+            'labels'    =>  [$passYear, $currentYear],
+        ];
+    }
+
+    public function getAnnualProfit($advocateUserId) 
+    {
+        $contractsSum = [];
+     
+        for ($index = 1; $index <= 12; $index++) {
+
+            $startDayOfMonth = date('Y-m-d', mktime(0,0,0, $index, 1, date('Y')));
+            $endDayOfMonth = Carbon::parse($startDayOfMonth)->endOfMonth()->format('Y-m-d');
+
+            $sum = $this->contract
+                ->where('advocate_user_id', $advocateUserId)
+                ->whereBetween('start_date', [$startDayOfMonth, $endDayOfMonth])
+                ->whereNotBetween('finish_date', [$startDayOfMonth, $endDayOfMonth])
+                ->sum('contract_price');
+
+            array_push($contractsSum, $sum);
+        }
+
+        return [
+            'data' => $contractsSum
+        ];
+    }   
 }

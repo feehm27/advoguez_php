@@ -70,4 +70,61 @@ class DashboardController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/**
+	 * Obtém os processos
+	 */
+	public function getContracts()
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->getContracts($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Obtém os clientes pelo ano
+	 */
+	public function getClients()
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->getClients($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Obtém o lucro anual
+	 */
+	public function getAnnualProfit()
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->getAnnualProfit($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
 }

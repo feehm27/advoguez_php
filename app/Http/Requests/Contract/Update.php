@@ -66,14 +66,16 @@ class Update extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-        $characters = array('.', '/', '-', 'R$', ',');
-
+        $characters = array('.', '/', '-', 'R$', ',', ' ');
+        
         if ($this->contract_price) {
             $this->contract_price = str_replace($characters, '', $this->contract_price);
-		}
+            $this->contract_price = preg_replace('/[^a-zA-Z0-9]/','', $this->contract_price);
+        }
 
         if ($this->fine_price) {
             $this->fine_price = str_replace($characters, '', $this->fine_price);
+            $this->fine_price = preg_replace('/[^a-zA-Z0-9]/','', $this->fine_price);
 		}
 
 		$this->account = str_replace($characters, '', $this->account);
