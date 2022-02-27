@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Models\ClientUser;
 use App\Models\Process;
 use App\Models\ProcessHistoric;
 use Illuminate\Support\Facades\Storage;
@@ -94,4 +95,49 @@ class ProcessRepository
 
         return $urlPublic;
     }
+
+    /**
+     * Obtém o processo do cliente
+     */
+    public function getProcessByClient(Int $userId)
+    {
+        $status = null;
+        $lastModification = null;
+        $historics = []; 
+        $numberProcess = null;
+        $observation = 'Sem observações';
+
+        $clientId = ClientUser::where('user_id', $userId)->first()->client_id;
+        $process = $this->model->where('client_id', $clientId)->first();
+
+        if($process) {
+
+            $historics = $process->historics()->orderBy('modification_date', 'desc')->get();
+
+            if(!$historics->isEmpty()) {
+
+                $historic = $historics->first();
+                $status = $historic->status_process;
+                $lastModification = $historic->modification_date;
+
+            }else{
+                $status = $process->status;
+                $lastModification = $process->start_date;
+            }
+
+            $numberProcess = $process->number;
+            
+            if($process->observation){
+                $observation = $process->observation;
+            }
+        }
+
+        return [
+            'status'             => $status,
+            'last_modification'  => $lastModification,
+            'historics'          => $historics,
+            'number_process'     => $numberProcess,
+            'observation'        => $observation
+        ];
+    } 
 }

@@ -161,6 +161,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('', [ContractController::class, 'getContractByClient']);
 	});
 
+	/**
+	 * Rotas necessárias para a gestão de processos do cliente
+	 */
+	Route::prefix('clients/processes')->group(function () {
+		Route::get('', [ProcessController::class, 'getProcessByClient']);
+	});
+
 });
 
 Route::post('/register', [AuthController::class, 'register']);
