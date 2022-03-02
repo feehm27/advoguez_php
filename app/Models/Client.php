@@ -9,7 +9,8 @@ class Client extends Model
 {
     use HasFactory;
 
-    use HasFactory;
+	
+	protected $dates = ['created_at', 'updated_at'];
 
 	/**
 	 * The attributes that are mass assignable.
@@ -36,7 +37,8 @@ class Client extends Model
 		'district',
 		'state',
 		'city',
-        'advocate_user_id'
+        'advocate_user_id',
+		'created_at'
 	];
 
 	public function user()

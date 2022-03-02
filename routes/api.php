@@ -11,6 +11,7 @@ use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProcessHistoricController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
@@ -123,6 +124,18 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::get('', [AdvocateScheduleController::class, 'index']);
 		Route::post('', [AdvocateScheduleController::class, 'store']);
 		Route::delete('', [AdvocateScheduleController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para a gestão de relatórios
+	 */
+	Route::prefix('advocates/reports')->group(function () {
+		Route::get('', [ReportController::class, 'index']);
+		Route::post('', [ReportController::class, 'store']);
+		Route::post('clients', [ReportController::class, 'createClient']);
+		Route::post('contracts', [ReportController::class, 'createContract']);
+		Route::post('processes', [ReportController::class, 'createProcess']);
+		Route::delete('/{id}', [ReportController::class, 'destroy']);
 	});
 	
 	/**
