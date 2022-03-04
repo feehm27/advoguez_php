@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\ProcessReport;
 use App\Models\Report;
 
 class StoreProcess extends FormRequest
@@ -32,12 +33,15 @@ class StoreProcess extends FormRequest
     public function rules()
     {
         return [              
+			'id'                    => 'nullable|integer',
             'start_date'            => 'nullable|date_format:Y-m-d',
             'end_date'              => 'nullable|date_format:Y-m-d',
-            'stage'                 => 'nullable|string',
+            'status'                => 'nullable|string',
 			'report_id'             => 'required|integer',
 			'report'                => 'required',
-            'advocate_user_id'      => 'required'
+            'advocate_user_id'      => 'required',
+			'process_report'        => 'nullable',
+			'user_id'				=> 'required'
         ];
     }
 
@@ -60,13 +64,20 @@ class StoreProcess extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
+		$this->processReport = null;
 		$this->user = Auth::user();
-    
+
+		if($this->id){
+			$this->processReport = ProcessReport::find($this->id);
+		}
+
 		$report = Report::find($this->report_id);
 
         $this->merge([
-			'advocate_user_id' 	=> $this->user->id,
-			'report'            => $report
+			'advocate_user_id' 	 => $this->user->id,
+			'process_report'     => $this->processReport,
+			'report'             => $report,
+			'user_id'            => $this->user->id
 		]);
 	}
 

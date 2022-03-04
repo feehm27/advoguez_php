@@ -72,6 +72,9 @@
             </tr>
             <tbody class="size">
                 @foreach($rows as $row)
+                    @php
+                        unset($row['id']);
+                    @endphp
                     <tr>
                         @foreach($row as $value)
                             <td>{{$value}}</td>

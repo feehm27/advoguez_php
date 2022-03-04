@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\ContractReport;
 use App\Models\Report;
 
 class StoreContract extends FormRequest
@@ -31,7 +32,8 @@ class StoreContract extends FormRequest
      */
     public function rules()
     {
-        return [              
+        return [    
+			'id'                    => 'nullable|integer',          
             'start_date'            => 'nullable|date_format:Y-m-d',
             'finish_date'           => 'nullable|date_format:Y-m-d',
             'canceled_at'           => 'nullable|date_format:Y-m-d',
@@ -39,7 +41,9 @@ class StoreContract extends FormRequest
             'payment_day'           => 'nullable|integer',
 			'report_id'             => 'required|integer',
 			'report'                => 'required',
-            'advocate_user_id'      => 'required'
+            'advocate_user_id'      => 'required',
+			'contract_report'       => 'nullable',
+			'user_id'				=> 'required'
         ];
     }
 
@@ -63,14 +67,21 @@ class StoreContract extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->user = Auth::user();
-    
+		$this->contractReport = null;
+
 		$report = Report::find($this->report_id);
 		$paymentDay = intval($this->payment_day);
 
+		if($this->id){
+			$this->contractReport = ContractReport::find($this->id);
+		}
+
         $this->merge([
-			'advocate_user_id' 	=> $this->user->id,
-			'report'            => $report,
-			'payment_day'       => $paymentDay
+			'advocate_user_id' 		=> $this->user->id,
+			'report'            	=> $report,
+			'payment_day'       	=> $paymentDay,
+			'contract_report'       => $this->contractReport,
+			'user_id'               => $this->user->id
 		]);
 	}
 

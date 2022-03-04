@@ -22,9 +22,9 @@ class HeaderPDFUtils
     const ATTRIBUTES_CONTRACT_REPORT = ['client_id', 'start_date', 'finish_date', 'canceled_at', 'payment_day', 'contract_price', 
     'fine_price','agency', 'account', 'bank'];
 
-    const HEADER_PROCESSES_REPORT =  ['Nome do cliente', 'Número do processo', 'Data de inicio','Data de encerramento', 'Etapa', 'Vara Trabalhista',
+    const HEADER_PROCESSES_REPORT =  ['Nome do cliente', 'Número do processo', 'Data de inicio','Data de encerramento', 'Etapa Inicial', 'Etapa Atual', 'Vara Trabalhista',
     'Assunto'];
 
-    const ATTRIBUTES_PROCESSES_REPORT = ['client_id', 'number', 'start_date', 'end_date', 'status', 'labor_stick', 'petition'];
+    const ATTRIBUTES_PROCESSES_REPORT = ['id', 'client_id', 'number', 'start_date', 'end_date', 'status', 'observations', 'labor_stick', 'petition'];
 
 }

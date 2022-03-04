@@ -8,6 +8,7 @@ use App\Http\Requests\Report\Store;
 use App\Http\Requests\Report\StoreClient;
 use App\Http\Requests\Report\StoreContract;
 use App\Http\Requests\Report\StoreProcess;
+use App\Http\Requests\Report\Update;
 use App\Http\Utils\StatusCodeUtils;
 use App\Repositories\ReportRepository;
 use Exception;
@@ -89,6 +90,66 @@ class ReportController extends Controller
     }
 
     /**
+     * @OA\Put(
+     *     tags={"Report"},
+     *     summary="Atualiza um relatório",
+     *     description="Atualiza um relatório",
+     *     path="/advocates/reports/{id}",
+     *     security={{"bearerAuth": {}}},
+     *     @OA\Response(response="200", description="Relatório atualizado."),
+	 *      @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         description="Nome do relatório",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="string",
+	 * 			)
+     *      ),
+	 *       @OA\Parameter(
+     *         name="export_format",
+     *         in="query",
+     *         description="Formato do relatório",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="email",
+	 * 			)
+     *      ),
+	 *       @OA\Parameter(
+     *         name="type",
+     *         in="query",
+     *         description="Tipo do relatório",
+     *         required=true,
+	 *         @OA\Schema(
+     *           type="true",
+	 * 			)
+     *      ),
+     * )
+     * 
+    */
+	public function update(Update $request)
+	{
+		try {
+
+			$inputs = [         
+		        'name'         		=> $request->name,
+		        'export_format'     => $request->export_format,
+		        'type'              => $request->type,
+			];
+            
+            $report = $request->report;
+            $data = $report->update($inputs);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+    /**
      * @OA\Post(
      *     tags={"Report"},
      *     summary="Cria um relatório de cliente",
@@ -115,6 +176,8 @@ class ReportController extends Controller
         try {
 
             $report = $request->report;
+            $clientReport = $request->client_report;
+            $advocateUserId = $request->user->id;
           
             $inputsClient = [
                 'birthday'              => $request->birthday,
@@ -124,7 +187,7 @@ class ReportController extends Controller
                 'report_id'             => $report->id
             ];
 
-            $data = $this->repository->createAndExport($report->type, $inputsClient, $report);
+            $data = $this->repository->createAndExport($report->type, $inputsClient, $report, $advocateUserId, $clientReport);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
@@ -162,7 +225,9 @@ class ReportController extends Controller
         try {
 
             $report = $request->report;
-            
+            $contractReport = $request->contract_report;
+            $advocateUserId = $request->user->id;
+          
             $inputs = [
                 'start_date'              => $request->start_date,
                 'finish_date'             => $request->finish_date,
@@ -172,7 +237,7 @@ class ReportController extends Controller
                 'report_id'               => $report->id
             ];
 
-            $data = $this->repository->createAndExport($report->type, $inputs, $report);
+            $data = $this->repository->createAndExport($report->type, $inputs, $report, $advocateUserId, $contractReport);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
@@ -208,15 +273,17 @@ class ReportController extends Controller
         try {
 
             $report = $request->report;
-            
+            $processReport = $request->process_report;
+            $advocateUserId = $request->user->id;
+
             $inputs = [
                 'start_date'          => $request->start_date,
                 'end_date'            => $request->end_date,
-                'stage'               => $request->stage,
+                'status'              => $request->status,
                 'report_id'           => $report->id
             ];
 
-            $data = $this->repository->createAndExport($report->type, $inputs, $report);
+            $data = $this->repository->createAndExport($report->type, $inputs, $report,  $advocateUserId, $processReport);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,

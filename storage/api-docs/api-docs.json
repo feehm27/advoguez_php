@@ -1521,6 +1521,84 @@
                 ]
             }
         },
+        "/advocates/reports/{id}": {
+            "put": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Atualiza um relatório",
+                "description": "Atualiza um relatório",
+                "operationId": "19c1931abfe38df07d714b90bef53c17",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "export_format",
+                        "in": "query",
+                        "description": "Formato do relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "email"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Tipo do relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "true"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Relatório atualizado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Deleta um relatório",
+                "description": "Deleta um relatório",
+                "operationId": "0182695d6df9d6e92a28b3d83de2990a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do relátorio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta um relatório."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/advocates/reports/clients": {
             "post": {
                 "tags": [

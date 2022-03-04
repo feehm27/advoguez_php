@@ -57,25 +57,25 @@ class ReportRepository {
         return $this->model->create($inputs);
     }
 
-    public function createByType(String $type, Array $inputs)
-    {   
-        return $this->$$type->create($inputs);
-    }
-
     /**
      * Cria um relatório de cliente, contrato ou processo e exporta para a amazon
      */
-    public function createAndExport(String $type, Array $inputs, Report $report) 
+    public function createAndExport(String $type, Array $inputs, Report $report,  Int $advocateUserId, $typeReport = null) 
     {
         switch ($type) {
 
             case 'Clientes':    
 
-                $clientReport = $this->client->create($inputs);
+                if($typeReport) {
+                    $typeReport->update($inputs);
+                    $clientReport = $this->client->find($typeReport->id);
+                }else{
+                    $clientReport = $this->client->create($inputs);
+                }
+               
                 unset($inputs['report_id']);
                 $filters = (array_filter($inputs));
-
-                $clients = $this->filterClients($filters);
+                $clients = $this->filterClients($filters, $advocateUserId);
                 $publicUrl = $this->generateReportClient($clients, $report);
                 
                 $clientReport->link_report = $publicUrl;
@@ -87,11 +87,17 @@ class ReportRepository {
 
             case 'Contratos':
 
-                $contractReport = $this->contract->create($inputs);
+                if($typeReport) {
+                    $typeReport->update($inputs);
+                    $contractReport = $this->contract->find($typeReport->id);
+                }else{
+                    $contractReport = $this->contract->create($inputs);
+                }
+
                 unset($inputs['report_id']);
                 $filters = (array_filter($inputs));
 
-                $contracts = $this->filterContracts($filters);
+                $contracts = $this->filterContracts($filters, $advocateUserId);
                 $publicUrl = $this->generateReportContract($contracts, $report);
 
                 $contractReport->link_report = $publicUrl;
@@ -103,17 +109,19 @@ class ReportRepository {
 
             case 'Processos':
 
-                $processReport = $this->process->create($inputs);
+                if($typeReport){
+                    $typeReport->update($inputs);
+                    $processReport = $this->process->find($typeReport->id);
+                }else{
+                    $processReport = $this->process->create($inputs);
+                }
+
                 unset($inputs['report_id']);
                 $filters = (array_filter($inputs));
 
-                if(empty($filters)){
-                    $processes = Process::all(HeaderPDFUtils::ATTRIBUTES_PROCESSES_REPORT);
-                }else {
-                    $processes = Process::where($filters)->get(HeaderPDFUtils::ATTRIBUTES_PROCESSES_REPORT);
-                }
-                 
+                $processes = $this->filterProcesses($filters, 74);   
                 $publicUrl = $this->generateReportProcess($processes, $report);
+
                 $processReport->link_report = $publicUrl;
                 $processReport->save();
 
@@ -127,17 +135,60 @@ class ReportRepository {
         }
     }
 
+     /**
+     * Filtra os processos
+     */
+    public function filterProcesses(Array $filters, Int $advocateUserId)
+    {
+        if(empty($filters)) {   
+            return Process::where('advocate_user_id', $advocateUserId)->get(HeaderPDFUtils::ATTRIBUTES_PROCESSES_REPORT);
+        }
+
+        $processes = Process::where('advocate_user_id', $advocateUserId);
+
+        if(isset($filters['start_date'])) {
+            $processes = $processes->where('start_date', $filters['start_date']);
+        }
+
+        if(isset($filters['end_date'])) {
+            $processes = $processes->where('end_date', $filters['end_date']);
+        }
+
+        if(isset($filters['status'])) {
+
+            $processesIds = [];
+            $allProcesses = $processes->get();
+
+            foreach ($allProcesses as $process) {
+
+                $historic = $process->historics()->orderBy('modification_date', 'desc')->first();
+
+                if($historic && $historic->status_process === $filters['status']) {
+                    array_push($processesIds, $process->id);
+                }else{
+                    if($process->status == $filters['status']){
+                        array_push($processesIds, $process->id);
+                    }
+                }
+            }
+
+            $processes = $processes->whereIn('id', $processesIds);
+        }
+        
+        return $processes->get(HeaderPDFUtils::ATTRIBUTES_PROCESSES_REPORT);
+    }
+
     /**
      * Filtra os clientes
      */
-    public function filterClients(Array $filters) {
+    public function filterClients(Array $filters, Int $advocateUserId) {
 
         if(empty($filters)) {   
-            return Client::all(HeaderPDFUtils::ATTRIBUTES_CLIENT_REPORT);
+            return Client::where('advocate_user_id', $advocateUserId)->get(HeaderPDFUtils::ATTRIBUTES_CLIENT_REPORT);
         }
 
-        $clients = new Client();
-
+        $clients =  Client::where('advocate_user_id', $advocateUserId);
+    
         if(isset($filters['birthday'])) {
             $clients = $clients->where('birthday', $filters['birthday']);
         }
@@ -160,13 +211,13 @@ class ReportRepository {
     /**
      * Filtra os contratos
      */
-    public function filterContracts(Array $filters) {
+    public function filterContracts(Array $filters, Int $advocateUserId) {
 
         if(empty($filters)) {   
-            return Contract::all(HeaderPDFUtils::ATTRIBUTES_CONTRACT_REPORT);
+            return Contract::where('advocate_user_id', $advocateUserId)->get(HeaderPDFUtils::ATTRIBUTES_CONTRACT_REPORT);
         }
 
-        $contracts = new Contract();
+        $contracts = Contract::where('advocate_user_id', $advocateUserId);
 
         if(isset($filters['start_date'])) {
             $contracts = $contracts->where('start_date', $filters['start_date']);
@@ -297,6 +348,14 @@ class ReportRepository {
             $process->start_date = Carbon::parse($process->start_date)->format('d/m/Y');
             $process->end_date = $process->end_date ?Carbon::parse($process->end_date)->format('d/m/Y') : '-';
             $process->client_id = $process->client()->first()->name;
+
+            $historic = $process->historics()->orderBy('modification_date', 'desc')->first();
+
+            if($historic) {
+                $process->observations = $historic->status_process;
+            }else{
+                $process->observations = $process->status;
+            }
             $process->number = MaskUtils::maskProcessNumber($process->number);
         }
 

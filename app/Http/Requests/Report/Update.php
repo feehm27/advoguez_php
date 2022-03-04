@@ -4,15 +4,16 @@ namespace App\Http\Requests\Report;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
-use App\Models\ClientReport;
+use App\Models\Contract;
 use App\Models\Report;
+use Illuminate\Support\Facades\Auth;
 
-class StoreClient extends FormRequest
+class Update extends FormRequest
 {
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -32,17 +33,12 @@ class StoreClient extends FormRequest
      */
     public function rules()
     {
-        return [              
-			'id'                    => 'nullable|integer',
-            'birthday'              => 'nullable|date_format:Y-m-d',
-            'registration_date'     => 'nullable|date_format:Y-m-d',
-            'gender'                => 'nullable|string',
-            'civil_status'          => 'nullable|string',
-			'report_id'             => 'required|integer',
-			'report'                => 'required',
-            'advocate_user_id'      => 'required',
-			'client_report'         => 'nullable',
-			'user_id'				=> 'required'
+        return [       
+            'id'                => 'required|integer',       
+            'name'              => 'required|string',
+            'export_format'     => 'required|string',
+            'type'              => 'required|string',
+            'report'            => 'required'
         ];
     }
 
@@ -54,7 +50,8 @@ class StoreClient extends FormRequest
 	public function messages()
 	{
 		return [
-			'required' => "O campo :attribute é obrigatório",
+			'required'          => "O campo :attribute é obrigatório",
+            'report.required'   => "Relatório não encontrado"
 		];
 	}
 
@@ -65,20 +62,14 @@ class StoreClient extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->clientReport = null;
 		$this->user = Auth::user();
-
-        $report = Report::find($this->report_id);
-
-		if($this->id){
-			$this->clientReport = ClientReport::find($this->id);
-		}
+        $this->id = $this->route('id');
+		
+		$this->report = Report::find($this->id);
 
         $this->merge([
-			'advocate_user_id' 	=> $this->user->id,
-			'client_report'     => $this->clientReport,
-			'report'            => $report,
-			'user_id'           => $this->user->id
+			'report'  => $this->report,
+			'id'      => $this->id
 		]);
 	}
 

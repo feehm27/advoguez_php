@@ -132,10 +132,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('advocates/reports')->group(function () {
 		Route::get('', [ReportController::class, 'index']);
 		Route::post('', [ReportController::class, 'store']);
+		Route::put('/{id}', [ReportController::class, 'update']);
+		Route::delete('/{id}', [ReportController::class, 'destroy']);
 		Route::post('clients', [ReportController::class, 'createClient']);
 		Route::post('contracts', [ReportController::class, 'createContract']);
 		Route::post('processes', [ReportController::class, 'createProcess']);
-		Route::delete('/{id}', [ReportController::class, 'destroy']);
 	});
 	
 	/**
