@@ -1459,6 +1459,294 @@
                 ]
             }
         },
+        "/advocates/reports": {
+            "get": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Obtém a lista de relatórios do advogado",
+                "description": "Obtém a lista de relatórios do advogado",
+                "operationId": "45148e6adaa7e0b132d2d9b99dbdb56b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de relatórios."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Cria um relatório",
+                "description": "Cria um relatório",
+                "operationId": "8422b1e9edd0847008a544621403965b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Relatório XPTO"
+                                    },
+                                    "type": {
+                                        "type": "string",
+                                        "example": "Clientes"
+                                    },
+                                    "export_format": {
+                                        "type": "string",
+                                        "example": "Paisagem"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Relatório criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/reports/{id}": {
+            "put": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Atualiza um relatório",
+                "description": "Atualiza um relatório",
+                "operationId": "19c1931abfe38df07d714b90bef53c17",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nome do relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "export_format",
+                        "in": "query",
+                        "description": "Formato do relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "email"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Tipo do relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "true"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Relatório atualizado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Deleta um relatório",
+                "description": "Deleta um relatório",
+                "operationId": "0182695d6df9d6e92a28b3d83de2990a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Identificador do relátorio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Deleta um relatório."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/reports/clients": {
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Cria um relatório de cliente",
+                "description": "Cria um relatório de cliente",
+                "operationId": "95616021dac3f767ed5396edb0da57a7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "birthday": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "registration_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "gender": {
+                                        "type": "string",
+                                        "example": "Feminino"
+                                    },
+                                    "civil_status": {
+                                        "type": "string",
+                                        "example": "Solteiro"
+                                    },
+                                    "report_id": {
+                                        "type": "integer",
+                                        "example": "30"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Relatório do cliente criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/reports/contracts": {
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Cria um relatório de contrato",
+                "description": "Cria um relatório de contrato",
+                "operationId": "a217319524214be7b35b9f40eed60052",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "finish_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "canceled_at": {
+                                        "type": "integer",
+                                        "example": "30"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Ativo"
+                                    },
+                                    "payment_day": {
+                                        "type": "integer",
+                                        "example": "5"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Contrato criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/advocates/reports/processes": {
+            "post": {
+                "tags": [
+                    "Report"
+                ],
+                "summary": "Cria um relatório de processo",
+                "description": "Cria um relatório de processo",
+                "operationId": "1bebbe2e390feefcfe345311c6f74dc9",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "start_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "end_date": {
+                                        "type": "string",
+                                        "example": "2021-05-21"
+                                    },
+                                    "stage": {
+                                        "type": "string",
+                                        "example": "Petição inicial"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Relatório do processo criado."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/advocates/users": {
             "get": {
                 "tags": [

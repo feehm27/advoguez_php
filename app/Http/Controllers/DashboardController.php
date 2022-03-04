@@ -127,4 +127,43 @@ class DashboardController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/**
+	 * Obtém o processo do cliente
+	 */
+	public function getProcessByClient()
+	{
+		try {
+
+			$userId = Auth::user()->id;
+			$data =  $this->repository->getProcessByClient($userId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	
+	/**
+	 * Obtém o contrato do cliente
+	 */
+	public function getContractByClient()
+	{
+		try {
+
+			$userId = Auth::user()->id;
+			$data =  $this->repository->getContractByClient($userId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
 }

@@ -20,6 +20,7 @@ class Contract extends Model
 		'finish_date',
         'payment_day',
         'contract_price',
+        'canceled_at',
         'fine_price',
         'agency',
         'account',
@@ -29,4 +30,9 @@ class Contract extends Model
         'link_contract',
         'advocate_user_id'
 	];
+
+    public function client()
+	{
+		return $this->hasMany('App\Models\Client', 'id', 'client_id');
+	}
 }

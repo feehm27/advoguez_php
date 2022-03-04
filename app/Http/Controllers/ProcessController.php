@@ -9,6 +9,7 @@ use App\Http\Requests\Process\Update;
 use App\Http\Utils\StatusCodeUtils;
 use App\Repositories\ProcessRepository;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 
 class ProcessController extends Controller
 {
@@ -246,4 +247,23 @@ class ProcessController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
+
+    /**
+     * Obtém o processo do cliente
+     */
+    public function getProcessByClient()
+    {
+        try {
+
+			$userId = Auth::user()->id;
+			$data =  $this->repository->getProcessByClient($userId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+    }
 }
