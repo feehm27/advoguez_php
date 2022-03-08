@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MessageReceivedController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProcessHistoricController;
 use App\Http\Controllers\ReportController;
@@ -139,6 +140,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 		Route::post('processes', [ReportController::class, 'createProcess']);
 	});
 	
+	/**
+	 * Rotas necessárias para as mensagens enviadas ao advogado
+	 */
+	Route::prefix('advocates/messages/received')->group(function () {
+		Route::get('', [MessageReceivedController::class, 'index']);
+		Route::post('', [MessageReceivedController::class, 'store']);
+	});
+
 	/**
 	 * Rotas necessárias para as mensagens do cliente e do advogado
 	 */
