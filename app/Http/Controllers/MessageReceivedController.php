@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MessageReceived\Destroy;
 use App\Http\Requests\MessageReceived\Index;
 use App\Http\Requests\MessageReceived\Store;
 use App\Http\Utils\StatusCodeUtils;
@@ -49,6 +50,26 @@ class MessageReceivedController extends Controller
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
 				'data' 			=>  $data,
+			]);
+
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public function destroy(Destroy $request)
+	{
+		try {
+
+			if($request->all_messages){
+				$this->repository->deleteAllMessages($request->client_id);
+			}else{
+				$this->repository->deleteMessage($request->message_received);
+			}
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  []
 			]);
 
 		} catch (Exception $error) {

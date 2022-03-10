@@ -3,13 +3,15 @@
 namespace App\Http\Requests\MessageReceived;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\Client;
+use App\Models\MessageReceived;
 
-class Store extends FormRequest
+class Destroy extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +20,9 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if ($this->user->is_advocate == 1) return true;
+
+		return false;   
     }
 
     /**
@@ -29,12 +33,24 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-			'subject'           => 'required|string',
-            'message'           => 'required|string',
-            'client_id'         => 'required|integer',
-            'advocate_user_id'  => 'required|integer',
-		];
+            'id'                => 'required_without:all_messages|nullable|integer',
+            'client_id'         => 'required_with:all_messages|integer',
+            'all_messages'      => 'nullable|boolean',
+            'message_received'  => 'required_without:all_messages|nullable',
+        ];
     }
+
+     /**
+	 * Get the error messages for the defined validation rules.
+	 *
+	 * @return array
+	 */
+	public function messages()
+	{
+		return [
+            'required'  => "O campo :attribute é obrigatório",
+        ];
+	}
 
     /**
 	 * Prepare the data for validation.
@@ -43,15 +59,20 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-     
-		$this->user = Auth::user();
+        $this->user = Auth::user();
+        $this->messageReceived = null;
 
+        if($this->id) {
+            $this->messageReceived = MessageReceived::find($this->id);
+        }
+	
 		$this->merge([
-			'user_id'       =>  $this->user->id
+			'id'                => $this->id,
+            'message_received'  => $this->messageReceived 
 		]);
 	}
 
-	/**
+    /**
 	 * Return validation errors as json response
 	 *
 	 * @param Validator $validator

@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Client;
+use App\Models\MessageAnswer;
 use App\Models\MessageReceived;
 
 class MessageReceivedRepository 
@@ -12,6 +13,9 @@ class MessageReceivedRepository
 		$this->model = $model;
 	}
 
+	/**
+	 * Obtém as mensagens
+	 */
 	public function getMessages(Int $advocateUserId)
 	{
 		
@@ -26,7 +30,9 @@ class MessageReceivedRepository
 			$messagesByClient = [];
 			$findClient = Client::find($key);
 			
-			foreach($client as $value){
+			foreach($client as $value) {
+				$answers = MessageAnswer::where('message_received_id', $value->id)->orderBy('created_at', 'desc')->get();
+				$value->answers = $answers;
 				array_push($messagesByClient, $value);
 			}
 
@@ -48,4 +54,24 @@ class MessageReceivedRepository
         
         return $this->model->create($inputs);
 	}	
+
+	/**
+	 * Deleta todas as mensagens
+	 */
+	public function deleteAllMessages(Int $clientId)
+	{
+		$messagesReceivedIds = $this->model->where('client_id', $clientId)->pluck('id')->toArray();
+		MessageAnswer::whereIn('message_received_id', $messagesReceivedIds)->delete();
+		$this->model->whereIn('id', $messagesReceivedIds)->delete();
+	}
+
+
+	/**
+	 * Deleta uma mensagem e seus vinculos
+	 */
+	public function deleteMessage(MessageReceived $messageReceived)
+	{
+		MessageAnswer::where('message_received_id', $messageReceived->id)->delete();
+		$messageReceived->delete();
+	}
 }

@@ -8,6 +8,7 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
+use App\Http\Controllers\MessageAnswerController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\MessageReceivedController;
 use App\Http\Controllers\ProcessController;
@@ -146,6 +147,14 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('advocates/messages/received')->group(function () {
 		Route::get('', [MessageReceivedController::class, 'index']);
 		Route::post('', [MessageReceivedController::class, 'store']);
+		Route::post('destroy', [MessageReceivedController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para as mensagens respondidas
+	 */
+	Route::prefix('advocates/messages/answers')->group(function () {
+		Route::post('', [MessageAnswerController::class, 'store']);
 	});
 
 	/**
