@@ -19,6 +19,9 @@ class CreateMessageAnswers extends Migration
             $table->text('answer');
             $table->unsignedBigInteger('code_message')->index();
         
+            $table->boolean('response_client')->default(0);
+            $table->boolean('response_advocate')->default(0);
+            
             $table->unsignedBigInteger('message_received_id');
             $table->foreign('message_received_id')->references('id')->on('message_receiveds');
 

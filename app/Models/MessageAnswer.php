@@ -18,6 +18,8 @@ class MessageAnswer extends Model
 		'id',
 		'answer',
 		'code_message',
+		'response_client',
+		'response_advocate',
 		'message_received_id',
 		'advocate_user_id',
 	];

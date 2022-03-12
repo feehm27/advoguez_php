@@ -22,6 +22,8 @@ class MessageAnswerController extends Controller
                 'answer'            	=> $request->answer,
                 'code_message'      	=> $request->code_message,
 				'message_received_id'	=> $request->message_received_id,
+				'response_client'       => $request->response_client,
+				'response_advocate'		=> $request->response_advocate,
                 'advocate_user_id'  	=> $request->advocate_user_id,
             ];
 

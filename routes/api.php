@@ -151,6 +151,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 
 	/**
+	 * Rotas necessárias para as mensagens do cliente
+	 */
+	Route::prefix('clients/messages/received')->group(function () {
+		Route::get('', [MessageReceivedController::class, 'getMessagesByClient']);
+	});
+
+	/**
 	 * Rotas necessárias para as mensagens respondidas
 	 */
 	Route::prefix('advocates/messages/answers')->group(function () {

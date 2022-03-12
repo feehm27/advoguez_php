@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Http\Requests\MessageAnswer;
+namespace App\Http\Requests\MessageReceived;
 
-use App\Http\Utils\StatusCodeUtils;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
-class Store extends FormRequest
+use App\Http\Utils\StatusCodeUtils;
+
+class IndexClients extends FormRequest
 {
-   /**
+    /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        return true;
+		return true;
     }
 
     /**
@@ -28,12 +29,7 @@ class Store extends FormRequest
     public function rules()
     {
         return [
-			'answer'            	=> 'required|string',
-            'code_message'      	=> 'required|integer',
-			'message_received_id'	=> 'required|integer',
-			'response_client'       => 'nullable|boolean',
-			'response_advocate'     => 'nullable|boolean',
-            'advocate_user_id'  	=> 'required|integer',
+			'client_id' => 'required',
 		];
     }
 
@@ -44,14 +40,9 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		if(!$this->advocate_user_id){
-
-			$this->user = Auth::user();
-
-			$this->merge([
-				'advocate_user_id' =>  $this->user->id
-			]);
-		}
+		$this->merge([
+			//
+		]);
 	}
 
 	/**

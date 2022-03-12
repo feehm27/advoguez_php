@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MessageReceived\Destroy;
 use App\Http\Requests\MessageReceived\Index;
+use App\Http\Requests\MessageReceived\IndexClients;
 use App\Http\Requests\MessageReceived\Store;
 use App\Http\Utils\StatusCodeUtils;
 use App\Repositories\MessageReceivedRepository;
@@ -70,6 +71,23 @@ class MessageReceivedController extends Controller
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
 				'data' 			=>  []
+			]);
+
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	public function getMessagesByClient(IndexClients $request)
+	{
+		try {
+
+            $clientId = $request->client_id;
+			$data = $this->repository->getMessagesByClient($clientId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
 			]);
 
 		} catch (Exception $error) {

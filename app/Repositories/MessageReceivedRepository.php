@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Client;
 use App\Models\MessageAnswer;
 use App\Models\MessageReceived;
+use App\Models\User;
 
 class MessageReceivedRepository 
 {
@@ -21,8 +22,8 @@ class MessageReceivedRepository
 		
 		$messagesReceived = [];
 		
-		$allMessages = $this->model->all();
-		$messagesByAdvocate = $allMessages->where('advocate_user_id', 74);
+		$allMessages = $this->model->orderBy('created_at', 'desc')->get();
+		$messagesByAdvocate = $allMessages->where('advocate_user_id', $advocateUserId);
 		$clients = $messagesByAdvocate->groupBy('client_id');
 
 		foreach($clients as $key => $client) {	
@@ -65,7 +66,6 @@ class MessageReceivedRepository
 		$this->model->whereIn('id', $messagesReceivedIds)->delete();
 	}
 
-
 	/**
 	 * Deleta uma mensagem e seus vinculos
 	 */
@@ -73,5 +73,23 @@ class MessageReceivedRepository
 	{
 		MessageAnswer::where('message_received_id', $messageReceived->id)->delete();
 		$messageReceived->delete();
+	}
+
+	public function getMessagesByClient(Int $clientId)
+	{
+		$messagesClient = $this->model->where('client_id', $clientId)->orderBy('created_at', 'desc')->get();
+
+		foreach($messagesClient as $message) {
+
+			$answers = MessageAnswer::where('message_received_id', $message->id)
+				->orderBy('created_at', 'desc')->get();
+
+			$advocate = User::find($message->advocate_user_id);
+
+			$message->answers = $answers;
+			$message->advocate = $advocate;
+		}
+
+		return $messagesClient;
 	}
 }
