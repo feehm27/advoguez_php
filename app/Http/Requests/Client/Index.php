@@ -32,7 +32,8 @@ class Index extends FormRequest
 	{
 		return [
 			'user_id' 		  => 'required',
-			'check_contract'  => 'nullable|boolean'
+			'check_contract'  => 'nullable|boolean',
+			'check_process'   => 'nullable|boolean'
 		];
 	}
 

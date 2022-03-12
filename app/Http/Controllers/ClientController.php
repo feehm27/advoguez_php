@@ -41,8 +41,9 @@ class ClientController extends Controller
 
 			$advocateUserId = $request->user->id;
             $checkContract = $request->check_contract;
+            $checkProcess = $request->check_process;
 
-			$data = $this->repository->getClients($advocateUserId, $checkContract);
+			$data = $this->repository->getClients($advocateUserId, $checkContract, $checkProcess);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,

@@ -50,4 +50,9 @@ class Client extends Model
 	{
 		return $this->hasMany('App\Models\Contract', 'client_id', 'id');
 	}
+
+	public function process() 
+	{
+		return $this->hasMany('App\Models\Process', 'client_id', 'id');
+	}
 }
