@@ -45,4 +45,9 @@ class Client extends Model
 	{
 		return $this->hasOne(ClientUser::class);
 	}
+
+	public function contract() 
+	{
+		return $this->hasMany('App\Models\Contract', 'client_id', 'id');
+	}
 }

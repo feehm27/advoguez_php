@@ -32,8 +32,22 @@ class ClientRepository
     /**
      * Obtém os clientes
      */
-    public function getClients(Int $advocateUserId)
+    public function getClients(Int $advocateUserId, $checkContract = null)
     {
+        if($checkContract) {
+
+            $clients = $this->model->where('advocate_user_id', 74)->get();
+
+            if(!$clients->isEmpty()) {
+
+                $clientsWithoutContract =  $clients->reject(function ($client, $key) {
+                    return $client->contract()->first();               
+                });
+                
+                return $clientsWithoutContract->values();
+            }
+        }
+
         return $this->model->where('advocate_user_id', $advocateUserId)->get();
     }
 

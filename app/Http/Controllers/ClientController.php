@@ -40,7 +40,9 @@ class ClientController extends Controller
         try {
 
 			$advocateUserId = $request->user->id;
-			$data = $this->repository->getClients($advocateUserId);
+            $checkContract = $request->check_contract;
+
+			$data = $this->repository->getClients($advocateUserId, $checkContract);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
