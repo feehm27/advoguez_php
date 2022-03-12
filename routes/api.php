@@ -165,15 +165,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 
 	/**
-	 * Rotas necessárias para as mensagens do cliente e do advogado
-	 */
-	Route::prefix('messages')->group(function () {
-		Route::get('', [MessageController::class, 'index']);
-		Route::get('sent', [MessageController::class, 'getMessagesSent']);
-		Route::post('', [MessageController::class, 'store']);
-	});
-
-	/**
 	 * Rotas necessárias para a gestão da agenda do advogado
 	 */
 	Route::prefix('advocates/dashboard')->group(function () {
