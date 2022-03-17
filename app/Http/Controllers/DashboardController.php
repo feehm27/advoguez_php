@@ -52,6 +52,22 @@ class DashboardController extends Controller
 		}
     }
 
+	public function countMeetings() 
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->countMeetings($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	/**
 	 * Obtém os processos
 	 */

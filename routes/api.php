@@ -170,6 +170,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('advocates/dashboard')->group(function () {
 		Route::get('count/clients', [DashboardController::class, 'countClients']);
 		Route::get('count/contracts', [DashboardController::class, 'countContracts']);
+		Route::get('count/meetings', [DashboardController::class, 'countMeetings']);
 		Route::get('processes', [DashboardController::class, 'getProcesses']);
 		Route::get('contracts', [DashboardController::class, 'getContracts']);
 		Route::get('clients', [DashboardController::class, 'getClients']);

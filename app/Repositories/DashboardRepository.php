@@ -3,23 +3,24 @@
 namespace App\Repositories;
 
 use App\Http\Utils\ProcessesUtils;
+use App\Models\AdvocateSchedule;
 use App\Models\Client;
 use App\Models\ClientUser;
 use App\Models\Contract;
 use App\Models\Process;
 use Carbon\Carbon;
 
-
 /**
  * Class DashboardRepository.
  */
 class DashboardRepository
 {
-    public function __construct(Client $client, Contract $contract, Process $process)
+    public function __construct(Client $client, Contract $contract, Process $process, AdvocateSchedule $schedule)
 	{
 		$this->client = $client;
         $this->contract = $contract;
         $this->process = $process;
+        $this->schedule = $schedule;
 	}
 
     /**
@@ -37,6 +38,17 @@ class DashboardRepository
     {
         return $this->contract->where('advocate_user_id', $advocateUserId)
             ->whereNull('canceled_at')->count();
+    }
+
+    /**
+     * Contabiliza os contratos ativos
+     */
+    public function countMeetings($advocateUserId) 
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        return $this->schedule->where('advocate_user_id', $advocateUserId)
+            ->where('date', $currentDate)->whereNotNull('client_id')->count();
     }
 
     /**
