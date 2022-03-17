@@ -34,6 +34,8 @@ class Store extends FormRequest
             'date'                => 'required|date|date_format:Y-m-d',
             'horarys'             => 'required|array',
             'time_type'           => 'required|integer',
+			'is_removed'          => 'nullable|boolean',
+			'is_cancel'			  => 'nullable|boolean',
             'advocate_user_id'    => 'required|integer'
         ];
     }

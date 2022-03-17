@@ -84,7 +84,10 @@ class AdvocateScheduleController extends Controller
                 'advocate_user_id'    => $request->advocate_user_id,
 			];
 
-			$data = $this->repository->create($inputs);
+            $isRemoved = $request->is_removed;
+            $isCancel = $request->is_cancel;
+
+			$data = $this->repository->create($inputs, $isRemoved, $isCancel);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
