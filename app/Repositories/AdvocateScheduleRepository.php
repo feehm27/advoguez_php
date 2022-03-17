@@ -164,8 +164,9 @@ class AdvocateScheduleRepository {
 
             if(empty($horarysToShedule)){
                 $schedules->delete();
-            }else{
-                $schedules->horarys = ["hours" => $horarysToShedule];
+            }else {
+                $object = array_values($horarysToShedule);
+                $schedules->horarys = json_encode(["hours" => $object]);
                 $schedules->save();
             }
         }
