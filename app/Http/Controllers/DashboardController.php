@@ -145,6 +145,25 @@ class DashboardController extends Controller
 	}
 
 	/**
+	 * Obtém as reuniões agendadas na semana
+	 */
+	public function getMeetingsForWeek() 
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->getMeetingsForWeek($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
 	 * Obtém o processo do cliente
 	 */
 	public function getProcessByClient()

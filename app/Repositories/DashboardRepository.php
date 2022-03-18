@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Http\Utils\DaysWeekUtils;
 use App\Http\Utils\ProcessesUtils;
 use App\Models\AdvocateSchedule;
 use App\Models\Client;
@@ -9,6 +10,7 @@ use App\Models\ClientUser;
 use App\Models\Contract;
 use App\Models\Process;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 
 /**
  * Class DashboardRepository.
@@ -162,7 +164,35 @@ class DashboardRepository
         return [
             'data' => $contractsSum
         ];
-    }   
+    }
+    
+    public function getMeetingsForWeek($advocateUserId) 
+    {
+        $labels = [];
+        $counts = [];
+
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+
+        $periods = CarbonPeriod::create($weekStartDate, $weekEndDate);
+
+        foreach($periods as $key => $period)
+        {
+            $label =  DaysWeekUtils::days[$key];
+         
+            $count = $this->schedule->where('advocate_user_id', $advocateUserId)
+                ->where('date', $period->format('Y-m-d'))->whereNotNull('client_id')->count();
+
+            array_push($counts, $count);
+            array_push($labels, $label);
+        }
+
+        return [
+            "labels" => $labels,
+            "data"   => $counts
+        ];
+    }
 
     public function getProcessByClient($userId)
     {
