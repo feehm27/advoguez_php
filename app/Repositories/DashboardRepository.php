@@ -240,4 +240,28 @@ class DashboardRepository
             "end_date"  => $endDate
         ];
     }
+
+    /**
+     * Obtém reunião agendada do cliente
+     */
+    public function getMeetingByClient($userId)
+    {
+        $currentDate = Carbon::now()->subDay()->format('Y-m-d');
+        $clientId = ClientUser::where('user_id', $userId)->first()->client_id;
+      
+        $schedule = $this->schedule->where('client_id', $clientId)->whereDate('date', '>=', $currentDate)->first();
+
+        if($schedule) {
+
+            $advocate = $schedule->advocate()->first();
+            $date = Carbon::parse($schedule->date)->format('d/m/Y');
+            $hours = json_decode($schedule->horarys)->hours[0];
+
+            $schedule->advocate = $advocate;
+            $schedule->date = $date;
+            $schedule->hours = $hours;
+        }
+
+        return $schedule;
+    }
 }

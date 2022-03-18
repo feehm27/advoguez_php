@@ -20,7 +20,7 @@ class AdvocateScheduleRepository {
 
     public function getSchedules($advocateUserId, $date)
     {
-        $currentDay = Carbon::now()->format('Y-m-d');
+        $currentDay = Carbon::now()->subDay()->format('Y-m-d');
         $endMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
 
         $scheduleDates = $this->model->where('advocate_user_id', $advocateUserId)

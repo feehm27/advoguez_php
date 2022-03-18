@@ -28,4 +28,9 @@ class AdvocateSchedule extends Model
 	{
 		return $this->hasMany('App\Models\Client', 'id', 'client_id');
 	}
+
+	public function advocate()
+	{
+		return $this->hasMany('App\Models\User', 'id', 'advocate_user_id');
+	}
 }

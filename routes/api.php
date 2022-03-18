@@ -184,6 +184,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('clients/dashboard')->group(function () {
 		Route::get('process', [DashboardController::class, 'getProcessByClient']);
 		Route::get('contract', [DashboardController::class, 'getContractByClient']);
+		Route::get('meeting', [DashboardController::class, 'getMeetingByClient']);
 	});
 
 	/**

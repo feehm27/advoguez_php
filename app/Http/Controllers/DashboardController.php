@@ -201,4 +201,23 @@ class DashboardController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
+
+	/**
+	 * Obtém a reunião agendada do cliente
+	 */
+	public function getMeetingByClient()
+	{
+		try {
+
+			$userId = Auth::user()->id;
+			$data =  $this->repository->getMeetingByClient($userId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
 }
