@@ -8,7 +8,9 @@ use App\Http\Controllers\ContractController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\IdentityController;
 use App\Http\Controllers\MenuPermissionController;
+use App\Http\Controllers\MessageAnswerController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\MessageReceivedController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\ProcessHistoricController;
 use App\Http\Controllers\ReportController;
@@ -127,6 +129,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 
 	/**
+	 * Rotas necessárias para a gestão da agenda do advogado
+	 */
+	Route::prefix('clients/schedules')->group(function () {
+		Route::get('', [ClientController::class, 'getSchedulesForClient']);
+		Route::get('check', [ClientController::class, 'checkSchedule']);
+		Route::post('', [AdvocateScheduleController::class, 'storeByClient']);
+		Route::post('cancel', [ClientController::class, 'cancelMetting']);
+	});
+
+	/**
 	 * Rotas necessárias para a gestão de relatórios
 	 */
 	Route::prefix('advocates/reports')->group(function () {
@@ -140,12 +152,26 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 	
 	/**
-	 * Rotas necessárias para as mensagens do cliente e do advogado
+	 * Rotas necessárias para as mensagens enviadas ao advogado
 	 */
-	Route::prefix('messages')->group(function () {
-		Route::get('', [MessageController::class, 'index']);
-		Route::get('sent', [MessageController::class, 'getMessagesSent']);
-		Route::post('', [MessageController::class, 'store']);
+	Route::prefix('advocates/messages/received')->group(function () {
+		Route::get('', [MessageReceivedController::class, 'index']);
+		Route::post('', [MessageReceivedController::class, 'store']);
+		Route::post('destroy', [MessageReceivedController::class, 'destroy']);
+	});
+
+	/**
+	 * Rotas necessárias para as mensagens do cliente
+	 */
+	Route::prefix('clients/messages/received')->group(function () {
+		Route::get('', [MessageReceivedController::class, 'getMessagesByClient']);
+	});
+
+	/**
+	 * Rotas necessárias para as mensagens respondidas
+	 */
+	Route::prefix('advocates/messages/answers')->group(function () {
+		Route::post('', [MessageAnswerController::class, 'store']);
 	});
 
 	/**
@@ -154,10 +180,12 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('advocates/dashboard')->group(function () {
 		Route::get('count/clients', [DashboardController::class, 'countClients']);
 		Route::get('count/contracts', [DashboardController::class, 'countContracts']);
+		Route::get('count/meetings', [DashboardController::class, 'countMeetings']);
 		Route::get('processes', [DashboardController::class, 'getProcesses']);
 		Route::get('contracts', [DashboardController::class, 'getContracts']);
 		Route::get('clients', [DashboardController::class, 'getClients']);
 		Route::get('profit', [DashboardController::class, 'getAnnualProfit']);
+		Route::get('meetings', [DashboardController::class, 'getMeetingsForWeek']);
 	});
 
 	/**
@@ -166,6 +194,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	Route::prefix('clients/dashboard')->group(function () {
 		Route::get('process', [DashboardController::class, 'getProcessByClient']);
 		Route::get('contract', [DashboardController::class, 'getContractByClient']);
+		Route::get('meeting', [DashboardController::class, 'getMeetingByClient']);
 	});
 
 	/**

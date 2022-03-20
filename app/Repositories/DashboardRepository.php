@@ -2,24 +2,27 @@
 
 namespace App\Repositories;
 
+use App\Http\Utils\DaysWeekUtils;
 use App\Http\Utils\ProcessesUtils;
+use App\Models\AdvocateSchedule;
 use App\Models\Client;
 use App\Models\ClientUser;
 use App\Models\Contract;
 use App\Models\Process;
 use Carbon\Carbon;
-
+use Carbon\CarbonPeriod;
 
 /**
  * Class DashboardRepository.
  */
 class DashboardRepository
 {
-    public function __construct(Client $client, Contract $contract, Process $process)
+    public function __construct(Client $client, Contract $contract, Process $process, AdvocateSchedule $schedule)
 	{
 		$this->client = $client;
         $this->contract = $contract;
         $this->process = $process;
+        $this->schedule = $schedule;
 	}
 
     /**
@@ -37,6 +40,17 @@ class DashboardRepository
     {
         return $this->contract->where('advocate_user_id', $advocateUserId)
             ->whereNull('canceled_at')->count();
+    }
+
+    /**
+     * Contabiliza os contratos ativos
+     */
+    public function countMeetings($advocateUserId) 
+    {
+        $currentDate = Carbon::now()->format('Y-m-d');
+
+        return $this->schedule->where('advocate_user_id', $advocateUserId)
+            ->where('date', $currentDate)->whereNotNull('client_id')->count();
     }
 
     /**
@@ -150,7 +164,35 @@ class DashboardRepository
         return [
             'data' => $contractsSum
         ];
-    }   
+    }
+    
+    public function getMeetingsForWeek($advocateUserId) 
+    {
+        $labels = [];
+        $counts = [];
+
+        $now = Carbon::now();
+        $weekStartDate = $now->startOfWeek()->format('Y-m-d');
+        $weekEndDate = $now->endOfWeek()->format('Y-m-d');
+
+        $periods = CarbonPeriod::create($weekStartDate, $weekEndDate);
+
+        foreach($periods as $key => $period)
+        {
+            $label =  DaysWeekUtils::days[$key];
+         
+            $count = $this->schedule->where('advocate_user_id', $advocateUserId)
+                ->where('date', $period->format('Y-m-d'))->whereNotNull('client_id')->count();
+
+            array_push($counts, $count);
+            array_push($labels, $label);
+        }
+
+        return [
+            "labels" => $labels,
+            "data"   => $counts
+        ];
+    }
 
     public function getProcessByClient($userId)
     {
@@ -197,5 +239,29 @@ class DashboardRepository
             "start_date" => $startDate,
             "end_date"  => $endDate
         ];
+    }
+
+    /**
+     * Obtém reunião agendada do cliente
+     */
+    public function getMeetingByClient($userId)
+    {
+        $currentDate = Carbon::now()->subDay()->format('Y-m-d');
+        $clientId = ClientUser::where('user_id', $userId)->first()->client_id;
+      
+        $schedule = $this->schedule->where('client_id', $clientId)->whereDate('date', '>=', $currentDate)->first();
+
+        if($schedule) {
+
+            $advocate = $schedule->advocate()->first();
+            $date = Carbon::parse($schedule->date)->format('d/m/Y');
+            $hours = json_decode($schedule->horarys)->hours[0];
+
+            $schedule->advocate = $advocate;
+            $schedule->date = $date;
+            $schedule->hours = $hours;
+        }
+
+        return $schedule;
     }
 }

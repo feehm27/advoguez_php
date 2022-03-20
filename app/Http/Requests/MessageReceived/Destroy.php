@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\AdvocateSchedule;
+namespace App\Http\Requests\MessageReceived;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -8,8 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\Client;
+use App\Models\MessageReceived;
 
-class Store extends FormRequest
+class Destroy extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +22,7 @@ class Store extends FormRequest
     {
         if ($this->user->is_advocate == 1) return true;
 
-		return false;    
+		return false;   
     }
 
     /**
@@ -30,17 +32,15 @@ class Store extends FormRequest
      */
     public function rules()
     {
-        return [   
-            'date'                => 'required|date|date_format:Y-m-d',
-            'horarys'             => 'required|array',
-            'time_type'           => 'required|integer',
-			'is_removed'          => 'nullable|boolean',
-			'is_cancel'			  => 'nullable|boolean',
-            'advocate_user_id'    => 'required|integer'
+        return [
+            'id'                => 'required_without:all_messages|nullable|integer',
+            'client_id'         => 'required_with:all_messages|integer',
+            'all_messages'      => 'nullable|boolean',
+            'message_received'  => 'required_without:all_messages|nullable',
         ];
     }
 
-    /**
+     /**
 	 * Get the error messages for the defined validation rules.
 	 *
 	 * @return array
@@ -48,8 +48,8 @@ class Store extends FormRequest
 	public function messages()
 	{
 		return [
-			'required'         => "O campo :attribute é obrigatório",
-		];
+            'required'  => "O campo :attribute é obrigatório",
+        ];
 	}
 
     /**
@@ -59,10 +59,16 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->user = Auth::user();
+        $this->user = Auth::user();
+        $this->messageReceived = null;
 
-        $this->merge([
-            'advocate_user_id' 	=> $this->user->id,
+        if($this->id) {
+            $this->messageReceived = MessageReceived::find($this->id);
+        }
+	
+		$this->merge([
+			'id'                => $this->id,
+            'message_received'  => $this->messageReceived 
 		]);
 	}
 

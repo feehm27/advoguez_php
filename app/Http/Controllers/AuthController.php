@@ -10,6 +10,7 @@ use App\Http\Requests\Auth\LoginFacebook;
 use App\Http\Requests\Auth\Register;
 use App\Http\Utils\StatusCodeUtils;
 use App\Mail\ResetPasswordMail;
+use App\Models\Client;
 use App\Models\ClientUser;
 
 //Model
@@ -165,6 +166,15 @@ class AuthController extends Controller
 
 		if($user->is_advocate === 1 && $user->advocate_user_id === null){
 			$user->isAdmin = true;
+		}
+
+		if($user->is_client === 1) {
+			
+			$clientUser = ClientUser::where('user_id', $user->id)->first();
+
+			if($clientUser){
+				$user->client = Client::find($clientUser->client_id);
+			}
 		}
 
 		return $user;

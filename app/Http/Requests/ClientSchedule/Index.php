@@ -1,26 +1,23 @@
 <?php
 
-namespace App\Http\Requests\Client;
+namespace App\Http\Requests\ClientSchedule;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
 
 class Index extends FormRequest
 {
-    /**
+     /**
 	 * Determine if the user is authorized to make this request.
 	 *
 	 * @return bool
 	 */
 	public function authorize()
 	{
-		if ($this->user->is_advocate == 1) return true;
-
-		return false;
+		return true;
 	}
 
 	/**
@@ -30,10 +27,9 @@ class Index extends FormRequest
 	 */
 	public function rules()
 	{
-		return [
-			'user_id' 		  => 'required',
-			'check_contract'  => 'nullable|boolean',
-			'check_process'   => 'nullable|boolean'
+		return [	
+			'client_id' 	=> 'required|integer',
+			'date'          => 'required|date_format:Y-m',
 		];
 	}
 
@@ -44,11 +40,7 @@ class Index extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->user = Auth::user();
-
-		$this->merge([
-			'user_id' =>  $this->user->id
-		]);
+		//
 	}
 
 	/**

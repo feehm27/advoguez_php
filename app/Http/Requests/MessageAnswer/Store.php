@@ -1,26 +1,23 @@
 <?php
 
-namespace App\Http\Requests\AdvocateSchedule;
-
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Contracts\Validation\Validator;
+namespace App\Http\Requests\MessageAnswer;
 
 use App\Http\Utils\StatusCodeUtils;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Contracts\Validation\Validator;
 
 class Store extends FormRequest
 {
-    /**
+   /**
      * Determine if the user is authorized to make this request.
      *
      * @return bool
      */
     public function authorize()
     {
-        if ($this->user->is_advocate == 1) return true;
-
-		return false;    
+        return true;
     }
 
     /**
@@ -30,27 +27,15 @@ class Store extends FormRequest
      */
     public function rules()
     {
-        return [   
-            'date'                => 'required|date|date_format:Y-m-d',
-            'horarys'             => 'required|array',
-            'time_type'           => 'required|integer',
-			'is_removed'          => 'nullable|boolean',
-			'is_cancel'			  => 'nullable|boolean',
-            'advocate_user_id'    => 'required|integer'
-        ];
-    }
-
-    /**
-	 * Get the error messages for the defined validation rules.
-	 *
-	 * @return array
-	 */
-	public function messages()
-	{
-		return [
-			'required'         => "O campo :attribute é obrigatório",
+        return [
+			'answer'            	=> 'required|string',
+            'code_message'      	=> 'required|integer',
+			'message_received_id'	=> 'required|integer',
+			'response_client'       => 'nullable|boolean',
+			'response_advocate'     => 'nullable|boolean',
+            'advocate_user_id'  	=> 'required|integer',
 		];
-	}
+    }
 
     /**
 	 * Prepare the data for validation.
@@ -59,14 +44,17 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->user = Auth::user();
+		if(!$this->advocate_user_id){
 
-        $this->merge([
-            'advocate_user_id' 	=> $this->user->id,
-		]);
+			$this->user = Auth::user();
+
+			$this->merge([
+				'advocate_user_id' =>  $this->user->id
+			]);
+		}
 	}
 
-    /**
+	/**
 	 * Return validation errors as json response
 	 *
 	 * @param Validator $validator

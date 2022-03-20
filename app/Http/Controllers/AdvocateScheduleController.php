@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\AdvocateSchedule\Index;
 use App\Http\Requests\AdvocateSchedule\Store;
+use App\Http\Requests\AdvocateSchedule\StoreClient;
 use App\Http\Utils\StatusCodeUtils;
 use App\Repositories\AdvocateScheduleRepository;
 use Exception;
@@ -84,7 +85,10 @@ class AdvocateScheduleController extends Controller
                 'advocate_user_id'    => $request->advocate_user_id,
 			];
 
-			$data = $this->repository->create($inputs);
+            $isRemoved = $request->is_removed;
+            $isCancel = $request->is_cancel;
+
+			$data = $this->repository->create($inputs, $isRemoved, $isCancel);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
@@ -94,4 +98,32 @@ class AdvocateScheduleController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
+
+    /**
+     * Agenda a reunião para o cliente
+     */
+    public function storeByClient(StoreClient $request)
+    {
+        try {
+
+			$inputs = [     
+                'date'                => $request->date,
+                'horarys'             => $request->horarys,
+                'time_type'           => $request->time_type,
+                'color'               => $request->color,
+                'advocate_user_id'    => $request->advocate_user_id,
+                'client_id'           => $request->client_id
+			];
+
+			$data = $this->repository->scheduleMeetingClient($inputs);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+    }
+    
 }

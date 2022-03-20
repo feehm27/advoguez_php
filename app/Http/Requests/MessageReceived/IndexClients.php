@@ -1,53 +1,47 @@
 <?php
 
-namespace App\Http\Requests\Client;
+namespace App\Http\Requests\MessageReceived;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
 
-class Index extends FormRequest
+class IndexClients extends FormRequest
 {
     /**
-	 * Determine if the user is authorized to make this request.
-	 *
-	 * @return bool
-	 */
-	public function authorize()
-	{
-		if ($this->user->is_advocate == 1) return true;
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+		return true;
+    }
 
-		return false;
-	}
-
-	/**
-	 * Get the validation rules that apply to the request.
-	 *
-	 * @return array
-	 */
-	public function rules()
-	{
-		return [
-			'user_id' 		  => 'required',
-			'check_contract'  => 'nullable|boolean',
-			'check_process'   => 'nullable|boolean'
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+			'client_id' => 'required',
 		];
-	}
+    }
 
-	/**
+    /**
 	 * Prepare the data for validation.
 	 *
 	 * @return void
 	 */
 	protected function prepareForValidation()
 	{
-		$this->user = Auth::user();
-
 		$this->merge([
-			'user_id' =>  $this->user->id
+			//
 		]);
 	}
 

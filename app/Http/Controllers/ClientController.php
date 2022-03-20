@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Client\CancelSchedule;
+use App\Http\Requests\Client\CheckSchedule;
 use App\Http\Requests\Client\Create;
 use App\Http\Requests\Client\Destroy;
 use App\Http\Requests\Client\Download;
 use App\Http\Requests\Client\Index;
 use App\Http\Requests\Client\Show;
 use App\Http\Requests\Client\Update;
-
+use App\Http\Requests\ClientSchedule\Index as ClientScheduleIndex;
 //Utils
 use App\Http\Utils\StatusCodeUtils;
 
@@ -40,7 +42,10 @@ class ClientController extends Controller
         try {
 
 			$advocateUserId = $request->user->id;
-			$data = $this->repository->getClients($advocateUserId);
+            $checkContract = $request->check_contract;
+            $checkProcess = $request->check_process;
+
+			$data = $this->repository->getClients($advocateUserId, $checkContract, $checkProcess);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,
@@ -462,5 +467,66 @@ class ClientController extends Controller
 			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
 		}
 	}
+
+   public function getSchedulesForClient(ClientScheduleIndex $request)
+    {
+        try {
+
+			$clientId = $request->client_id;
+            $date = $request->date;
+
+			$data = $this->repository->getSchedules($clientId, $date);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+    }
+
+    public function checkSchedule(CheckSchedule $request)
+    {
+        try {
+
+			$clientId = $request->client_id;
+          
+			$data = $this->repository->checkSchedule($clientId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+    }
+
+    public function cancelMetting(CancelSchedule $request)
+    {
+        try {
+
+            $inputs = [
+                'date'                => $request->date,
+                'horarys'             => $request->horarys,
+                'client_id'           => $request->client_id,
+                'advocate_user_id'    => $request->advocate_user_id,
+                'advocate_name'       => $request->advocate_name,
+                'email'               => $request->email
+            ];
+                
+			$data = $this->repository->cancelMeeting($inputs);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+    }
+
+
 }
 

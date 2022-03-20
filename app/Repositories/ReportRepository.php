@@ -119,7 +119,7 @@ class ReportRepository {
                 unset($inputs['report_id']);
                 $filters = (array_filter($inputs));
 
-                $processes = $this->filterProcesses($filters, 74);   
+                $processes = $this->filterProcesses($filters, $advocateUserId);   
                 $publicUrl = $this->generateReportProcess($processes, $report);
 
                 $processReport->link_report = $publicUrl;

@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
 
-class Store extends FormRequest
+class StoreClient extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,9 +18,7 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user->is_advocate == 1) return true;
-
-		return false;    
+        return true;
     }
 
     /**
@@ -34,8 +32,8 @@ class Store extends FormRequest
             'date'                => 'required|date|date_format:Y-m-d',
             'horarys'             => 'required|array',
             'time_type'           => 'required|integer',
-			'is_removed'          => 'nullable|boolean',
-			'is_cancel'			  => 'nullable|boolean',
+			'color'	              => 'required|string',
+		    'client_id'			  => 'required|integer',
             'advocate_user_id'    => 'required|integer'
         ];
     }
@@ -59,10 +57,10 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->user = Auth::user();
+		$this->color = 'white';
 
         $this->merge([
-            'advocate_user_id' 	=> $this->user->id,
+            'color' 	=> $this->color
 		]);
 	}
 

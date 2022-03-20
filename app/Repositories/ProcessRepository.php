@@ -28,10 +28,17 @@ class ProcessRepository
 
         foreach($processes as $process) {
             
-            $process->client = $process->client()->first();
+            $historics = $process->historics()->orderBy('modification_date', 'desc')->get();
 
-            $process->historics = $process->historics()
-                ->orderBy('modification_date', 'desc')->get();
+            if(!$historics->isEmpty()) {
+                $historic = $historics->first();
+                $process->current_status = $historic->status_process;
+            }else{
+                $process->current_status = $process->status;
+            }
+
+            $process->client = $process->client()->first();
+            $process->historics = $historics;
         }
 
         return $processes;

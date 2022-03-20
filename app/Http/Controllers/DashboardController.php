@@ -52,6 +52,22 @@ class DashboardController extends Controller
 		}
     }
 
+	public function countMeetings() 
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->countMeetings($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	/**
 	 * Obtém os processos
 	 */
@@ -129,6 +145,25 @@ class DashboardController extends Controller
 	}
 
 	/**
+	 * Obtém as reuniões agendadas na semana
+	 */
+	public function getMeetingsForWeek() 
+	{
+		try {
+
+			$advocateUserId = Auth::user()->id;
+			$data =  $this->repository->getMeetingsForWeek($advocateUserId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
 	 * Obtém o processo do cliente
 	 */
 	public function getProcessByClient()
@@ -157,6 +192,25 @@ class DashboardController extends Controller
 
 			$userId = Auth::user()->id;
 			$data =  $this->repository->getContractByClient($userId);
+
+			return response()->json([
+				'status_code' 	=>  StatusCodeUtils::SUCCESS,
+				'data' 			=>  $data,
+			]);
+		} catch (Exception $error) {
+			return response()->json(['error' => $error->getMessage()], StatusCodeUtils::INTERNAL_SERVER_ERROR);
+		}
+	}
+
+	/**
+	 * Obtém a reunião agendada do cliente
+	 */
+	public function getMeetingByClient()
+	{
+		try {
+
+			$userId = Auth::user()->id;
+			$data =  $this->repository->getMeetingByClient($userId);
 
 			return response()->json([
 				'status_code' 	=>  StatusCodeUtils::SUCCESS,

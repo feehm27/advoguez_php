@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\AdvocateSchedule;
+namespace App\Http\Requests\Client;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -8,8 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\User;
 
-class Store extends FormRequest
+class CancelSchedule extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,12 +19,9 @@ class Store extends FormRequest
      */
     public function authorize()
     {
-        if ($this->user->is_advocate == 1) return true;
-
-		return false;    
+        return true;
     }
-
-    /**
+ /**
      * Get the validation rules that apply to the request.
      *
      * @return array
@@ -33,10 +31,10 @@ class Store extends FormRequest
         return [   
             'date'                => 'required|date|date_format:Y-m-d',
             'horarys'             => 'required|array',
-            'time_type'           => 'required|integer',
-			'is_removed'          => 'nullable|boolean',
-			'is_cancel'			  => 'nullable|boolean',
-            'advocate_user_id'    => 'required|integer'
+			'client_id'           => 'required|integer',
+            'advocate_user_id'    => 'required|integer',
+            'advocate_name'       => 'required|string',
+            'email'               => 'required|string'
         ];
     }
 
@@ -59,10 +57,18 @@ class Store extends FormRequest
 	 */
 	protected function prepareForValidation()
 	{
-		$this->user = Auth::user();
+        $this->email = null;
+
+		$advocateUser = User::find($this->advocate_user_id);
+
+        if($advocateUser){
+            $this->email            = $advocateUser->email;
+            $this->advocate_name    = $advocateUser->name;
+        }
 
         $this->merge([
-            'advocate_user_id' 	=> $this->user->id,
+            'advocate_name' => $this->advocate_name,
+            'email'         => $this->email
 		]);
 	}
 
