@@ -21,7 +21,7 @@ class AdvocateScheduleRepository {
     public function getSchedules($advocateUserId, $date)
     {
         $currentDay = Carbon::now()->subDay()->format('Y-m-d');
-        $endMonth = Carbon::now()->endOfMonth()->format('Y-m-d');
+        $endMonth = Carbon::parse($date)->endOfMonth()->format('Y-m-d');
 
         $scheduleDates = $this->model->where('advocate_user_id', $advocateUserId)
             ->whereBetween('date', [$currentDay, $endMonth])
@@ -41,24 +41,24 @@ class AdvocateScheduleRepository {
 
                 $client = $schedule->client()->first();
 
-                if($client) {
+                if($client && $schedule->time_type === 3) {
                     $schedule->client = [
                         "client_id"     => $client->id,
                         "client_name"   => $client->name
                     ];
-                }
-                
-                if($schedule->time_type === 2){
                     $haveSchedule = true;
+                }
+
+                if($haveSchedule){
+                    $scheduleDate = $scheduleDate->where('time_type', 3)->values();
                 }
             }
 
             if($haveSchedule) {
-                $newKey = $key .'$'. 2 .'%'. '#EE96AA';
+                $newKey = $key .'$'. 3 .'%'. '#EE96AA';
                 $newSchedules[$newKey] = $scheduleDate;
-
             }else{
-                $newKey = $key .'$'. 3 .'%'. '#5ab5cb';
+                $newKey = $key .'$'. 2 .'%'. '#5ab5cb';
                 $newSchedules[$newKey] = $scheduleDate;
             }
         }
@@ -84,39 +84,67 @@ class AdvocateScheduleRepository {
     }
 
     /**
+     * Agenda a reunião para o cliente
+     */
+    public function scheduleMeetingClient(Array $inputs)
+    {
+        $existSchedule = $this->model->where('client_id', $inputs['client_id'])
+            ->whereDate('date', $inputs['date'])->first();
+
+        if($existSchedule){
+            $existSchedule->delete();
+        }
+
+        $this->removeAvailableTime($inputs);
+
+        $inputs['horarys'] = json_encode($inputs['horarys']);
+
+        return $this->model->create($inputs);
+    }
+    
+    /**
      * Cancela reunião com o cliente
      */
     private function cancelMetting($inputs)
     {
         $listMails = [];
-
-        $advocateUserId = $inputs['advocate_user_id'];
-        $timeType = $inputs['time_type'];
         $date = $inputs['date'];
-
-        $schedules = $this->model->where('advocate_user_id', $advocateUserId)
-            ->where('date', $date)->where('time_type', $timeType)->get();
-     
+        $advocateUserId = $inputs['advocate_user_id'];
         $horarysToRemoved = $inputs['horarys']['hours'];
 
-        foreach ($schedules as $schedule) {
+        $schedulesByClient = $this->model->where('advocate_user_id', $advocateUserId )->where('date', $date)->where('time_type', 3)->get();
 
-            $horarysToShedule = json_decode($schedule->horarys, true)['hours'];
+        if(!$schedulesByClient->isEmpty()){
 
-            foreach ($horarysToRemoved as $key => $hour) {
-                
-                if (in_array($hour, $horarysToShedule)) {
+            foreach($schedulesByClient as $scheduleClient)
+            {   
+                $hourClient = json_decode($scheduleClient->horarys)->hours[0];
 
-                    $mails = [ 
-                        "client_id" => $schedule->client_id,
-                        "hour"      => $hour
+                if (in_array($hourClient, $horarysToRemoved)) {
+                    $mails = [
+                        "client_id" => $scheduleClient->client_id,
+                        "hour"      => $hourClient
                     ];
-
-                    $schedule->delete();
                     array_push($listMails, $mails);
+                    $scheduleClient->delete();
                 }
             }
-        }   
+        }
+
+        $schedulesByAdvocate = $this->model->where('advocate_user_id', $advocateUserId)->where('date', $date)->where('time_type', 1)->first();
+
+        if($schedulesByAdvocate) {
+          
+            $horarysToShedule = json_decode($schedulesByAdvocate->horarys, true)['hours'];
+
+            foreach($horarysToRemoved as $key => $hour){
+                array_push($horarysToShedule, $hour);
+            }
+        
+            $object = array_values($horarysToShedule);
+            $schedulesByAdvocate->horarys = json_encode(["hours" => $object]);
+            $schedulesByAdvocate->save();
+        }
 
         $this->sendMails($listMails, $date);
     }

@@ -129,6 +129,16 @@ Route::middleware(['auth:sanctum'])->group(function () {
 	});
 
 	/**
+	 * Rotas necessárias para a gestão da agenda do advogado
+	 */
+	Route::prefix('clients/schedules')->group(function () {
+		Route::get('', [ClientController::class, 'getSchedulesForClient']);
+		Route::get('check', [ClientController::class, 'checkSchedule']);
+		Route::post('', [AdvocateScheduleController::class, 'storeByClient']);
+		Route::post('cancel', [ClientController::class, 'cancelMetting']);
+	});
+
+	/**
 	 * Rotas necessárias para a gestão de relatórios
 	 */
 	Route::prefix('advocates/reports')->group(function () {
