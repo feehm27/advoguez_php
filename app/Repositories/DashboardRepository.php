@@ -62,33 +62,35 @@ class DashboardRepository
         $labels = [];
         $dataSets = [];
         $backgrounds = [];
+        $newKey = "";
+        
+        $currentDate = Carbon::now()->subDay(1)->format('Y-m-d');
 
         $processes = $this->process->where('advocate_user_id', $advocateUserId)
-            ->get()->groupBy('status');
+            ->whereNull('end_date')
+            ->orWhere('end_date', '>=', $currentDate)
+            ->get()
+            ->groupBy('status');
 
-        foreach($processes as $key => $process) 
-        {
-            foreach($process as $value) {
+        foreach($processes as $key => $process)  {  
 
-                $endDate = $value->end_date;
-                $currentDate = Carbon::now()->subDay(1)->format('Y-m-d');
-
-                if(!$endDate || $endDate >= $currentDate) 
-                {
-                    $count = $processes[$key]->count();
-                    $color = ProcessesUtils::status[$key];
-                    $title = $key;
-        
-                    $device['title'] = $title;
-                    $device["value"] = $count;
-                    $device['color'] = $color;
-        
-                    array_push($dataSets, $count);
-                    array_push($backgrounds, $color);
-                    array_push($labels, $title);
-                    array_push($devices, $device);
-                }
+            if($key !== $newKey) {
+               
+                $count = $processes[$key]->count();
+                $color = ProcessesUtils::status[$key];
+                $title = $key;
+    
+                $device['title'] = $title;
+                $device["value"] = $count;
+                $device['color'] = $color;
+    
+                array_push($dataSets, $count);
+                array_push($backgrounds, $color);
+                array_push($labels, $title);
+                array_push($devices, $device);
             }
+
+            $newKey = $key;
         }
 
         return [
@@ -110,7 +112,9 @@ class DashboardRepository
             $endDayOfMonth = Carbon::parse($startDayOfMonth)->endOfMonth()->format('Y-m-d');
             
             $contractActive =  $this->contract->where('advocate_user_id', $advocateUserId)
+                ->whereNotNull('canceled_at')
                 ->whereBetween('start_date', [$startDayOfMonth, $endDayOfMonth])->count();
+
             array_push($contractsActives,$contractActive);
 
             $contractInactive =  $this->contract->where('advocate_user_id', $advocateUserId)

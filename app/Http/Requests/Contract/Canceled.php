@@ -58,7 +58,7 @@ class Canceled extends FormRequest
 	protected function prepareForValidation()
 	{
 		$this->contract = Contract::find($this->contract_id);
-		$this->canceled_at = Carbon::now();
+		$this->canceled_at = Carbon::now()->subDay();
 
 		$this->merge([
 			'contract' 	   => $this->contract,
