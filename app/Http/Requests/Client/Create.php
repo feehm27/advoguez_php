@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Contracts\Validation\Validator;
 
 use App\Http\Utils\StatusCodeUtils;
+use App\Models\Client;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,7 +36,7 @@ class Create extends FormRequest
         return [              
             'name'              => 'required|string|max:200',
             'email'             => 'required|string|email|max:255|unique:clients',
-            'cpf'               => 'required|string|max:11|unique:clients',
+            'cpf'               => 'required|string|max:11',
             'rg'                => 'required|string|max:10',
             'issuing_organ'     => 'required|string|max:50',
             'nationality'       => 'required|string|max:200',
@@ -58,7 +59,8 @@ class Create extends FormRequest
             'is_advocate'       => 'required|boolean',
 			'facebook_id'       => 'nullable|string',
             'advocate_user_id'  => 'required',
-            'has_user'          => 'required|boolean'
+            'has_user'          => 'required|boolean',
+            'exist_cpf'         => ''
         ];
     }
 
@@ -70,8 +72,7 @@ class Create extends FormRequest
 	public function messages()
 	{
 		return [
-			'email.unique' => "Já existe um cadastro com este email",
-			'cpf.unique' => "Já existe um cadastro com este cpf"
+			'email.unique'      => "Já existe um cadastro com este email",
 		];
 	}
 
