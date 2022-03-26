@@ -1,18 +1,6 @@
 <h1 align="center">Projeto - Pós graduação - Puc Minas</h1>
-<p align="center">Sistema de gestão para advogados</p>
-
-<h4 align="center"> 
-	🚧 🚀 Em construção... 🚀 🚧
-</h4>
-
-### Features 
-
-As seguintes features foram desenvolvidas:
-
-- [x] Login com Laravel Sanctum
-- [x] Cadastro de usuários 
-- [x] Logout 
-- [x] Menus e permissões dos usuários
+<h4>Sistema Advoguez</h4>
+<p>É um sistema de gestão direcionado para advogados que queiram ter um controle de gerenciamento entre seus clientes, contratos e processos.</p>
 
 ### 🛠 Tecnologias
 
