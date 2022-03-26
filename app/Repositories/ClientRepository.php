@@ -251,23 +251,32 @@ class ClientRepository
         $scheduledTime = AdvocateSchedule::where('client_id', $clientId)
             ->where('date', $date)->where('time_type', 3)->first();
 
-
-        if($scheduledTime){
-           $scheduledTime->delete();
-        }
-     
         $schedulesAdvocate = AdvocateSchedule::where('advocate_user_id', $advocateUserId)
             ->where('date', $date)->where('time_type', 1)->first();
 
-        $horarysToAdd = json_decode($scheduledTime->horarys, true)['hours'];
-        $horarysToShedule = json_decode($schedulesAdvocate->horarys, true)['hours'];
-        array_push($horarysToShedule, $horarysToAdd[0]);
-        
-        $object = array_values($horarysToShedule);
-        $schedulesAdvocate->horarys = json_encode(["hours" => $object]);
-        $schedulesAdvocate->save();
+        if($scheduledTime) {
 
-        $this->sendMail($clientId, $inputs['advocate_name'], $email, $horarysToAdd[0], $date);
+            $horarysToAdd = json_decode($scheduledTime->horarys, true)['hours'];
+            $scheduledTime->delete();
+
+            if($schedulesAdvocate)
+            {
+                $horarysToShedule = json_decode($schedulesAdvocate->horarys, true)['hours'];
+                array_push($horarysToShedule, $horarysToAdd[0]);           
+                $object = array_values($horarysToShedule);
+                $schedulesAdvocate->horarys = json_encode(["hours" => $object]);
+                $schedulesAdvocate->save();
+
+            }else {
+                $inputs['horarys'] = json_encode($inputs['horarys']);
+                $inputs['time_type'] = 1;
+                $inputs['client_id'] = null;
+                $inputs['color'] = 'white';
+                AdvocateSchedule::create($inputs);
+            }
+    
+            $this->sendMail($clientId, $inputs['advocate_name'], $email, $horarysToAdd[0], $date);
+        }       
     }
 
     /**
